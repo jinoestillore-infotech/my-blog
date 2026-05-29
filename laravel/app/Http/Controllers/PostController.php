@@ -15,12 +15,22 @@ class PostController extends Controller
         $this->middleware('auth')->except(['show']);
     }
 
+    /**
+     * Display the authenticated user's library of posts.
+     */
     public function index()
     {
-        // Retrieve all posts belonging to the logged-in author (both draft and published)
-        $posts = Auth::user()->posts()->latest()->get();
+        $user = Auth::user();
 
-        return view('posts.index', compact('posts'));
+        // Get total counts across all pages for the filter metrics tabs
+        $allCount = $user->posts()->count();
+        $publishedCount = $user->posts()->published()->count();
+        $draftCount = $user->posts()->where('status', 'draft')->count();
+
+        // Retrieve paginated posts belonging to the logged-in author (9 per page)
+        $posts = $user->posts()->latest()->simplePaginate(9);
+
+        return view('posts.index', compact('posts', 'allCount', 'publishedCount', 'draftCount'));
     }
 
     /**

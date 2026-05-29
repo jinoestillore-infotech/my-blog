@@ -18,10 +18,10 @@
 <body class="bg-editor">
     <!-- Distraction-free Writing Navbar -->
     <header class="sticky-top">
-        <nav class="navbar navbar-expand navbar-custom py-3">
+        <nav class="navbar navbar-expand navbar-custom py-2">
             <div class="container">
                 <div class="d-flex align-items-center gap-3">
-                    <a class="navbar-brand fw-extrabold fs-3 text-brand" href="/dashboard" style="letter-spacing: -0.5px;">
+                    <a class="navbar-brand fw-extrabold fs-3 text-brand" href="/tots" style="letter-spacing: -0.5px;">
                         tots<span class="text-accent">.</span>
                     </a>
                     <span class="text-muted border-start ps-3 py-1">New Draft</span>
@@ -34,7 +34,7 @@
     <!-- Editor Main Form Section -->
     <main class="py-3">
         <div class="container">
-            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="post-form" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- Display Validation Error Alert Banner if any errors are detected -->
                 @if ($errors->any())
@@ -150,8 +150,15 @@
                             </div>
                             <hr class="text-muted opacity-10 mb-4">
                             <!-- Submit and Save Action Buttons -->
-                            <button type="submit" class="btn btn-brand w-100 py-2.5 rounded-pill fw-bold mb-2">
-                                <i class="bi bi-check-circle-fill me-1"></i> Save and Publish
+                            <button type="submit" id="submit-btn" class="btn btn-brand w-100 py-2.5 rounded-pill fw-bold mb-2">
+                                <span id="submit-text">
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+                                    Save and Publish
+                                </span>
+                                <span id="submit-loading" class="d-none">
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    Publishing...
+                                </span>
                             </button>
                             <a href="{{ route('tots') }}" class="btn btn-outline-custom btn-sm text-center rounded-pill px-3 py-2">
                                 Cancel
@@ -162,24 +169,45 @@
             </form>
         </div>
     </main>
-    <!-- Bootstrap Bundle with Popper JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <!-- Dynamic Image File Reader Preview Scripts -->
     <script>
-        document.getElementById('featured_image').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Update visual state to image preview
-                    document.getElementById('image-preview').src = e.target.result;
-                    document.getElementById('upload-placeholder').classList.add('d-none');
-                    document.getElementById('upload-preview-container').classList.remove('d-none');
-                    document.getElementById('upload-zone').classList.add('upload-active');
-                }
-                reader.readAsDataURL(file);
+    const form = document.getElementById('post-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    const submitText = document.getElementById('submit-text');
+    const submitLoading = document.getElementById('submit-loading');
+
+    let isSubmitting = false;
+    form.addEventListener('submit', function () {
+        // Prevent multiple submissions
+        if (isSubmitting) {
+            return false;
+        }
+        isSubmitting = true;
+        // Disable button
+        submitBtn.disabled = true;
+        // Show loading state
+        submitText.classList.add('d-none');
+        submitLoading.classList.remove('d-none');
+    });
+</script>
+<!-- Bootstrap Bundle with Popper JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Dynamic Image File Reader Preview Scripts -->
+<script>
+    document.getElementById('featured_image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Update visual state to image preview
+                document.getElementById('image-preview').src = e.target.result;
+                document.getElementById('upload-placeholder').classList.add('d-none');
+                document.getElementById('upload-preview-container').classList.remove('d-none');
+                document.getElementById('upload-zone').classList.add('upload-active');
             }
-        });
-    </script>
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 </body>
 </html>

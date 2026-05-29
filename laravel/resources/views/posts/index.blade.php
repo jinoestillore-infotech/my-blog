@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Stories - Tots Library</title>
+    <title>Tots Library</title>
     <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,27 +19,19 @@
 <body class="bg-library">
     <!-- Header Navigation -->
     <header class="sticky-top">
-        <nav class="navbar navbar-expand navbar-custom py-3">
+        <nav class="navbar navbar-expand navbar-custom py-2">
             <div class="container">
                 <div class="d-flex align-items-center gap-3">
                     <a class="navbar-brand fw-extrabold fs-3 text-brand" href="/tots" style="letter-spacing: -0.5px;">
                         tots<span class="text-accent">.</span>
                     </a>
-                    <span class="text-muted d-none d-sm-inline-block border-start ps-3 py-1">My Library</span>
-                </div>
-                <div class="ms-auto d-flex align-items-center gap-2">
-                    <a href="/dashboard" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2">
-                        <i class="bi bi-speedometer2"></i> Dashboard
-                    </a>
-                    <a href="/write" class="btn btn-brand btn-sm rounded-pill px-3 py-2">
-                        <i class="bi bi-pencil-square"></i> Write New
-                    </a>
+                    <span class="text-muted border-start ps-3 py-1">My Library</span>
                 </div>
             </div>
         </nav>
     </header>
     <!-- Main Content Grid -->
-    <main class="py-5">
+    <main class="py-5 pt-3">
         <div class="container">
             <!-- Flash Success Alert Block -->
             @if(session('success'))
@@ -54,7 +46,7 @@
             <!-- Library Heading and Header Controls -->
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
                 <div>
-                    <h1 class="fw-extrabold text-dark tracking-tight mb-1">My Stories</h1>
+                    <h1 class="fw-extrabold text-dark tracking-tight mb-1">Tots Library</h1>
                     <p class="text-muted mb-0">Manage, organize, edit, and keep track of your drafts and published works.</p>
                 </div>
                 <!-- Simple filter metrics tabs -->
@@ -134,34 +126,77 @@
                                     </div>
                                 </div>
                                 <!-- Card Action Footer -->
-                                <div class="card-footer bg-light border-0 p-3 d-flex gap-2 justify-content-between">
+                                <div class="card-footer bg-white border-0 p-3 pt-0 d-flex gap-2 justify-content-between">
                                     <!-- Edit Link -->
                                     <a href="/posts/{{ $post->id }}/edit" class="btn btn-light-custom btn-sm rounded-pill flex-grow-1 py-2">
                                         <i class="bi bi-pencil-square"></i> Edit
                                     </a>
-                                    <!-- Delete Button Triggering Form -->
-                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="flex-grow-1" onsubmit="return confirm('Are you sure you want to delete this story?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill w-100 py-2">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </button>
-                                    </form>
+                                    <!-- Trigger custom delete modal instead of browser confirm -->
+                                    <button type="button" class="btn btn-outline-danger btn-sm rounded-pill flex-grow-1 py-2" 
+                                            onclick="triggerDeleteModal('{{ route('posts.destroy', $post->id) }}', '{{ addslashes($post->title) }}')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
+                <div class="d-flex justify-content-between mt-4">
+                    @if ($posts->previousPageUrl())
+                        <a href="{{ $posts->previousPageUrl() }}"
+                        class="btn btn-outline-secondary">
+                            ← Previous
+                        </a>
+                    @endif
+
+                    @if ($posts->nextPageUrl())
+                        <a href="{{ $posts->nextPageUrl() }}"
+                        class="btn btn-outline-primary">
+                            Load More →
+                        </a>
+                    @endif
+                </div>
             @endif
+            <a href="/tots" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2 mt-4">
+                <i class="bi bi-speedometer2"></i> Back to Dashboard
+            </a>
         </div>
     </main>
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-5 mt-5">
-        <div class="container text-center">
-            <span class="fw-extrabold fs-4 text-white">tots<span class="text-accent">.</span></span>
-            <p class="text-muted small mt-2 mb-0">&copy; {{ date('Y') }} Tots. All rights reserved.</p>
+    <!-- Beautiful Reusable Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+                <div class="modal-header border-0 bg-danger-subtle text-danger pt-4 px-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                        <h5 class="modal-title fw-extrabold" id="deleteConfirmModalLabel">
+                            Delete 
+                            @if($post->status === 'published') 
+                            Published
+                            @else
+                            Drafted
+                            @endif
+                            Story</h5>
+                    </div>
+                </div>
+                <div class="modal-body px-4 py-4">
+                    <p class="text-secondary mb-3">Are you sure you want to permanently delete this story?</p>
+                    <p class="fw-bold text-dark mb-0 bg-light p-3 rounded-3 border-start border-danger border-3" id="delete-story-title-display"></p>
+                    <p class="text-danger small mt-2 mb-0"><i class="bi bi-info-circle"></i> This operation is permanent and cannot be undone.</p>
+                </div>
+                <div class="modal-footer border-0 pb-4 px-4 pt-0">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-light rounded-pill px-4 py-2 text-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form id="delete-story-form" method="POST" class="">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger rounded-pill px-4 py-2">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
 <!-- Bootstrap Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- Dynamic Filter Client-side Script -->
@@ -184,6 +219,20 @@
                 }
             }
         });
+    }
+
+    // Custom Modal triggering handler for delete action
+    function triggerDeleteModal(actionUrl, storyTitle) {
+        // Update modal text dynamically
+        document.getElementById('delete-story-title-display').textContent = storyTitle;
+        
+        // Assign action url directly to the hidden form
+        const form = document.getElementById('delete-story-form');
+        form.action = actionUrl;
+        
+        // Present the modal
+        const myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        myModal.show();
     }
 </script>
 <script src="{{ asset('js/toast.js') }}"></script>
