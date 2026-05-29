@@ -1,0 +1,168 @@
+/* STREAMING_CHUNK:Defining CSS theme variables... */
+:root {
+--brand-primary: #6366f1;
+--brand-hover: #4f46e5;
+--brand-light: #f5f3ff;
+--brand-accent: #f59e0b;
+--text-dark: #0f172a;
+--text-muted: #64748b;
+--bg-soft: #f8fafc;
+}
+
+body.bg-editor {
+font-family: 'Plus Jakarta Sans', sans-serif;
+background-color: var(--bg-soft);
+color: var(--text-dark);
+}
+
+/* Brand Custom Helper classes */
+.text-brand {
+color: var(--brand-primary);
+}
+.text-accent {
+color: var(--brand-accent);
+}
+
+/* Distraction-free Writing Header */
+.navbar-custom {
+background-color: rgba(255, 255, 255, 0.9);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid #e2e8f0;
+}
+
+/* STREAMING_CHUNK:Styling layout wrapper and navbar... /
+/ Navigation Custom and Outline Button adjustments */
+.btn-outline-custom {
+background-color: #ffffff;
+color: var(--text-dark);
+border: 1px solid #e2e8f0;
+transition: all 0.3s ease;
+}
+.btn-outline-custom:hover {
+background-color: #f1f5f9;
+color: var(--text-dark);
+transform: translateY(-1px);
+}
+
+.btn-brand {
+background-color: var(--brand-primary);
+color: #ffffff;
+border: none;
+font-weight: 500;
+transition: all 0.3s ease;
+box-shadow: 0 4px 14px rgba(99, 102, 241, 0.15);
+}
+.btn-brand:hover, .btn-brand:focus {
+background-color: var(--brand-hover);
+color: #ffffff;
+transform: translateY(-1px);
+box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+}
+
+/* STREAMING_CHUNK:Styling the editor form elements... /
+/ Primary Writer Workspace Canvas Card */
+.editor-card {
+border: 1px solid rgba(226, 232, 240, 0.8);
+border-radius: 24px;
+background-color: #ffffff;
+box-shadow: 0 8px 30px rgba(15, 23, 42, 0.03);
+}
+
+/* Large and Dynamic Title Input Customizations */
+.title-input {
+font-size: 2.25rem;
+font-weight: 800;
+color: var(--text-dark);
+line-height: 1.25;
+letter-spacing: -0.5px;
+resize: none;
+}
+.title-input::placeholder {
+color: #cbd5e1;
+font-weight: 800;
+}
+.title-input:focus {
+color: var(--text-dark);
+background-color: transparent;
+box-shadow: none;
+}
+
+/* Content Textarea canvas */
+.content-input {
+font-size: 1.1rem;
+font-weight: 400;
+color: #334155;
+line-height: 1.7;
+resize: vertical;
+min-height: 350px;
+}
+.content-input::placeholder {
+color: #94a3b8;
+}
+.content-input:focus {
+color: #334155;
+background-color: transparent;
+box-shadow: none;
+}
+
+.editor-divider {
+border-color: #f1f5f9;
+opacity: 1;
+}
+
+/* STREAMING_CHUNK:Styling file upload zone and cover image... /
+/ Right Sidebar Controls */
+.sidebar-card {
+border: 1px solid rgba(226, 232, 240, 0.8);
+border-radius: 24px;
+background-color: #ffffff;
+box-shadow: 0 8px 30px rgba(15, 23, 42, 0.03);
+}
+
+/* Drag-and-drop Image Upload Zone Widget */
+.upload-zone {
+border: 2px dashed #cbd5e1;
+transition: all 0.3s ease;
+background-color: var(--bg-soft);
+cursor: pointer;
+}
+.upload-zone:hover {
+border-color: var(--brand-primary);
+background-color: var(--brand-light);
+}
+.upload-active {
+border-style: solid;
+border-color: #e2e8f0;
+background-color: #ffffff;
+}
+
+.upload-icon-wrapper {
+width: 44px;
+height: 44px;
+border-radius: 10px;
+background-color: var(--brand-light);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.cursor-pointer {
+cursor: pointer;
+}
+
+/* STREAMING_CHUNK:Configuring custom button and transition states... /
+/ Select Inputs & Form Focus Configurations */
+.form-select, .excerpt-textarea {
+border-color: #e2e8f0;
+border-radius: 12px;
+padding: 0.75rem 1rem;
+font-size: 0.9rem;
+color: var(--text-dark);
+}
+.form-select:focus, .excerpt-textarea:focus {
+border-color: var(--brand-primary);
+box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+.excerpt-textarea {
+resize: none;
+}

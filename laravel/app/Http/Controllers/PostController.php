@@ -12,7 +12,15 @@ class PostController extends Controller
     public function __construct()
     {
         // Require login for writing, saving, editing, and deleting posts
-        $this->middleware('auth')->except(['show', 'publicIndex']);
+        $this->middleware('auth')->except(['show']);
+    }
+
+    public function index()
+    {
+        // Retrieve all posts belonging to the logged-in author (both draft and published)
+        $posts = Auth::user()->posts()->latest()->get();
+
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -48,10 +56,15 @@ class PostController extends Controller
             $count++;
         }
 
-        // Handle image upload if provided
+        // Handle image upload directly into public/images/featured_images
         $imagePath = null;
         if ($request->hasFile('featured_image')) {
-            $imagePath = $request->file('featured_image')->store('featured_images', 'public');
+            $image = $request->file('featured_image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            // Move file straight to public/images/featured_images/
+            $image->move(public_path('images/featured_images'), $imageName);
+            $imagePath = 'images/featured_images/' . $imageName;
         }
 
         // Create the post in the database attached to the logged-in user
@@ -65,7 +78,7 @@ class PostController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Your story was saved successfully!');
+        return redirect()->route('tots')->with('success', 'Your story was saved successfully!');
     }
 
     /**
@@ -128,9 +141,17 @@ class PostController extends Controller
             $post->slug = $slug;
         }
 
-        // Update image if a new one is uploaded
+        // Update image directly inside public folder if a new one is uploaded
         if ($request->hasFile('featured_image')) {
-            $post->featured_image = $request->file('featured_image')->store('featured_images', 'public');
+            // Delete old file from public path if it exists to avoid server clutter
+            if ($post->featured_image && file_exists(public_path($post->featured_image))) {
+                @unlink(public_path($post->featured_image));
+            }
+
+            $image = $request->file('featured_image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/featured_images'), $imageName);
+            $post->featured_image = 'images/featured_images/' . $imageName;
         }
 
         $post->title = $request->title;
@@ -139,7 +160,7 @@ class PostController extends Controller
         $post->status = $request->status;
         $post->save();
 
-        return redirect()->route('dashboard')->with('success', 'Your story has been updated!');
+        return redirect()->route('tots')->with('success', 'Your story has been updated!');
     }
 
     /**
@@ -153,8 +174,13 @@ class PostController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        // Delete post cover image file if it exists in public folder
+        if ($post->featured_image && file_exists(public_path($post->featured_image))) {
+            @unlink(public_path($post->featured_image));
+        }
+
         $post->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Story deleted successfully.');
+        return redirect()->route('tots')->with('success', 'Story deleted successfully.');
     }
 }

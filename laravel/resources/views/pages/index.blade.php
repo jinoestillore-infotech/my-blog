@@ -25,18 +25,18 @@
             <div class="card welcome-card p-4 p-md-5 border-0 shadow-sm text-white mb-4">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h1 class="fw-extrabold mb-2">Welcome back, {{ Auth::user()->name }}!</h1>
-                        <p class="mb-0 text-white-50 opacity-90">What story will you tell the world today? Keep writing, keep inspiring, and build your circle.</p>
+                        <h3 class="fw-extrabold mb-2">What story will you tell the world today?</h3>
+                        <p class="mb-0 text-white-50 opacity-90">Inspire others through your ideas, experiences, and creativity. Start writing and grow your community one post at a time.</p>
                     </div>
                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                        <a href="#" class="btn btn-light text-brand fw-bold rounded-pill px-4 py-2.5">
+                        <a href="{{ route('posts.create') }}" class="btn btn-light text-brand fw-bold rounded-pill px-4 py-2.5">
                             <i class="bi bi-pencil-square me-1"></i> Write a New Post
                         </a>
                     </div>
                 </div>
             </div>
 
-            <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="d-flex align-items-center gap-2 mb-3">
                 <a href="" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3">
                     <i class="bi bi-globe fs-4"></i>
                 </a>
@@ -72,7 +72,7 @@
                     <!-- My Stories Header -->
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="fw-bold text-dark mb-0">My Recent Stories</h4>
-                        <a href="#" class="text-brand text-decoration-none small fw-semibold">View All</a>
+                        <a href="{{ route('posts.index') }}" class="text-brand text-decoration-none small fw-semibold">View All</a>
                     </div>
                     <!-- Empty State Placeholder (since we have no post model/tables yet) -->
                     <div class="card empty-state-card p-5 border-0 text-center rounded-4 shadow-sm mb-4">
@@ -83,7 +83,7 @@
                         <p class="text-secondary small mx-auto mb-4" style="max-width: 400px;">
                             The world is waiting for your thoughts. Click below to create your very first blog post on Tots.
                         </p>
-                        <a href="#" class="btn btn-brand rounded-pill px-4">Create First Story</a>
+                        <a href="{{ route('posts.create') }}" class="btn btn-brand rounded-pill px-4">Create First Story</a>
                     </div>
                 </div>
                 <!-- Right Sidebar Column: User Quick Profile & Quick Draft -->

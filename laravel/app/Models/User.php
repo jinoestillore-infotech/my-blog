@@ -49,4 +49,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+        /**
+     * Get all the blog posts written by this user.
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
