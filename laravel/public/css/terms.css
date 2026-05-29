@@ -1,0 +1,76 @@
+:root {
+--brand-primary: #6366f1;
+--brand-hover: #4f46e5;
+--brand-light: #f5f3ff;
+--brand-accent: #f59e0b;
+--text-dark: #0f172a;
+--text-muted: #64748b;
+--bg-soft: #f8fafc;
+}
+
+body {
+font-family: 'Plus Jakarta Sans', sans-serif;
+background-color: var(--bg-soft);
+color: var(--text-dark);
+}
+
+/* Brand Helpers */
+.text-brand {
+color: var(--brand-primary);
+}
+.text-accent {
+color: var(--brand-accent);
+}
+
+/* Custom Navigation */
+.navbar-custom {
+background-color: rgba(255, 255, 255, 0.85);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid #f1f5f9;
+}
+
+/* Outline Button with Hover Effect */
+.btn-outline-custom {
+background-color: #ffffff;
+color: var(--text-dark);
+border: 1px solid #e2e8f0;
+border-radius: 50px;
+font-weight: 500;
+transition: all 0.3s ease;
+}
+.btn-outline-custom:hover {
+background-color: #f1f5f9;
+color: var(--text-dark);
+transform: translateY(-1px);
+box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+/* Premium Terms Card Styling */
+.terms-card {
+border: 1px solid rgba(226, 232, 240, 0.8);
+border-radius: 24px;
+box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+background: #ffffff;
+}
+
+/* Custom List Spacing & Indigo Bullets */
+li::marker {
+color: var(--brand-primary);
+}
+
+/* Support Help Block */
+.support-box {
+background-color: var(--bg-soft);
+border: 1px solid #e2e8f0;
+}
+.support-icon-wrapper {
+width: 40px;
+height: 40px;
+border-radius: 10px;
+background-color: var(--brand-light);
+color: var(--brand-primary);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.1rem;
+}
