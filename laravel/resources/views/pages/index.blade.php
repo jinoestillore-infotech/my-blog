@@ -15,21 +15,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Custom Separated CSS -->
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/toast.css') }}">
 </head>
 <body>
     <!-- Main Dashboard Section -->
     <main class="py-3">
         <div class="container">
-            <!-- Success Toast / Alert -->
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4 py-3" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-check-circle-fill fs-5 me-2 text-success"></i>
-                        <div>{{ session('success') }}</div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
             <!-- Welcome Header Panel -->
             <div class="card welcome-card p-4 p-md-5 border-0 shadow-sm text-white mb-4">
                 <div class="row align-items-center">
@@ -102,7 +93,7 @@
                         <div class="text-center">
                             <!-- Placeholder avatar initials -->
                             <div class="profile-avatar-placeholder mx-auto mb-3">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                                {{ strtoupper(substr(Auth::user()->name, 0, 3)) }}
                             </div>
                             <h5 class="fw-bold text-dark mb-1">{{ Auth::user()->name }}</h5>
                             <p class="text-brand small mb-3">&#64;{{ Auth::user()->username }}</p>
@@ -143,7 +134,20 @@
             </div>
         </div>
     </main>
-    <!-- Bootstrap Bundle with Popper JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Bootstrap Bundle with Popper JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="{{ asset('js/toast.js') }}"></script>
+<div class="toast-container position-fixed top-0 end-0 p-3" id="toastPlacement"></div>
+@if(session('success'))
+<script>
+    showToast(@json(session('success')), 'success');
+</script>
+@endif
+
+@if($errors->any())
+<script>
+    showToast(@json($errors->first()), 'error');
+</script>
+@endif
 </body>
 </html>
