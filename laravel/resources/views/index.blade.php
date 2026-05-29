@@ -10,13 +10,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
     <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
     <!-- Bootstrap Icons CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <!-- Custom CSS for Premium Tots Theme Overrides -->
     <style>
         :root {
@@ -28,7 +25,6 @@
             --text-muted: #64748b;
             --bg-soft: #f8fafc;
         }
-
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-soft);
@@ -175,22 +171,15 @@
 
                 <!-- Navigation items -->
                 <div class="collapse navbar-collapse" id="totsNavbar">
-                    <ul class="navbar-nav mx-auto mb-2 mb-md-0 gap-md-3">
-                        <li class="nav-item">
-                            <a class="nav-link text-secondary fw-semibold px-2" href="#">Explore Stories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-secondary fw-semibold px-2" href="#">Our Community</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-secondary fw-semibold px-2" href="#">Write</a>
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0 gap-md-3">
+                        <li class="nav-item me-5">
+                            <a class="nav-link text-secondary fw-semibold px-2" href="{{ route('community') }}">Our Community</a>
                         </li>
                     </ul>
-
                     <!-- Call To Action Buttons -->
                     <div class="d-flex align-items-center gap-3">
-                        <a href="#" class="text-decoration-none text-secondary fw-semibold px-3 border rounded-pill px-4 py-2">Log in</a>
-                        <a href="#" class="btn btn-brand px-4 text-nowrap">Get Started</a>
+                        <a href="{{ route('login') }}" class="text-decoration-none text-secondary fw-semibold border rounded-pill px-4 py-2">Log in</a>
+                        <a href="{{ route('register') }}" class="btn btn-brand px-4 text-nowrap">Get Started</a>
                     </div>
                 </div>
             </div>
@@ -230,10 +219,10 @@
                         <div class="card preview-card p-4">
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <div class="avatar-gradient-1">
-                                    AM
+                                    JE
                                 </div>
                                 <div>
-                                    <h6 class="mb-0 fw-bold">Amara Miller</h6>
+                                    <h6 class="mb-0 fw-bold">Jino Estillore</h6>
                                     <small class="text-muted">Published in Technology &bull; posted 5 mins ago</small>
                                 </div>
                             </div>
@@ -245,10 +234,10 @@
                         <div class="card preview-card p-4 align-self-end w-90">
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <div class="avatar-gradient-2">
-                                    KH
+                                    JE
                                 </div>
                                 <div>
-                                    <h6 class="mb-0 fw-bold">Kenji Haneda</h6>
+                                    <h6 class="mb-0 fw-bold">Jino Estillore</h6>
                                     <small class="text-muted">Published in Life &bull; posted 8 mins ago</small>
                                 </div>
                             </div>

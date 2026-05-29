@@ -1,0 +1,91 @@
+:root {
+--brand-primary: #6366f1;
+--brand-hover: #4f46e5;
+--brand-light: #f5f3ff;
+--brand-accent: #f59e0b;
+--text-dark: #0f172a;
+--text-muted: #64748b;
+--bg-soft: #f8fafc;
+}
+
+body.bg-auth {
+font-family: 'Plus Jakarta Sans', sans-serif;
+background-color: var(--bg-soft);
+background-image:
+radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0, transparent 50%),
+radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.03) 0, transparent 50%);
+color: var(--text-dark);
+}
+
+.navbar-custom {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Brand Colors */
+.text-brand {
+color: var(--brand-primary);
+}
+.text-accent {
+color: var(--brand-accent);
+}
+
+/* Elegant Cards */
+.auth-card {
+border: 1px solid rgba(226, 232, 240, 0.8);
+border-radius: 24px;
+background: #ffffff;
+box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Custom Input Groups Focus Styling */
+.input-group:focus-within .input-group-text {
+border-color: var(--brand-primary);
+color: var(--brand-primary) !important;
+}
+.form-control:focus {
+border-color: var(--brand-primary);
+box-shadow: none;
+}
+.input-group-text, .form-control {
+border-color: #e2e8f0;
+transition: all 0.2s ease;
+}
+
+/* Button brand styles */
+.btn-brand {
+background-color: var(--brand-primary);
+color: #ffffff;
+border: none;
+transition: all 0.3s ease;
+box-shadow: 0 4px 14px rgba(99, 102, 241, 0.15);
+}
+.btn-brand:hover, .btn-brand:focus {
+background-color: var(--brand-hover);
+color: #ffffff;
+transform: translateY(-1px);
+box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+}
+
+/* Custom Outline Button for redirection */
+.btn-outline-custom {
+background-color: #ffffff;
+color: var(--text-dark);
+border: 1px solid #e2e8f0;
+transition: all 0.3s ease;
+}
+.btn-outline-custom:hover {
+background-color: #f1f5f9;
+color: var(--text-dark);
+border-color: #cbd5e1;
+transform: translateY(-1px);
+}
+
+/* Customize form checkbox to match Indigo brand color */
+.form-check-input:checked {
+background-color: var(--brand-primary);
+border-color: var(--brand-primary);
+}
+.form-check-input:focus {
+box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.15);
+border-color: var(--brand-primary);
+}
