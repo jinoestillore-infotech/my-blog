@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return view('index');
@@ -18,13 +20,18 @@ Route::get('/community', function () {
         return view('community');
     })->name('community');
 
-Route::get('/register', function () {
-       return view('auth.register');
-   })->name('register');
+Route::middleware('auth')->group(function () {
+    Route::get('/tots', function () {
+        return view('pages.index');
+    })->name('tots');
 
-Route::get('/login', function () {
-       return view('auth.login');
-   })->name('login');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
 
-// // Post route will process user data and save it in your `users` table
-// Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
+
+    Route::get('/login', [LoginController::class, 'show'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1')->name('login.store');
+});

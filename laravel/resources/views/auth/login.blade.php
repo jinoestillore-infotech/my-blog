@@ -11,13 +11,18 @@
                     <!-- Form starts here -->
                     <form method="POST" action="/login">
                         @csrf
-
                         <!-- Email Field -->
                         <div class="mb-3">
                             <label for="email" class="form-label small fw-bold text-secondary">Email Address</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-transparent text-muted border-end-0"><i class="bi bi-envelope"></i></span>
-                                <input type="email" id="email" name="email" class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="you@example.com" required autofocus>
+                                <span class="input-group-text bg-transparent border-end-0 
+                                    @error('email') text-danger border-danger @else text-muted @enderror">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" id="email" name="email"
+                                    class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror"
+                                    value="{{ old('email') }}" placeholder="you@example.com"
+                                    required autofocus>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
