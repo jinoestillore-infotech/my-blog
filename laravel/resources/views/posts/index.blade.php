@@ -33,16 +33,6 @@
     <!-- Main Content Grid -->
     <main class="py-5 pt-3">
         <div class="container">
-            <!-- Flash Success Alert Block -->
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4 py-3" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-check-circle-fill fs-5 me-2 text-success"></i>
-                        <div>{{ session('success') }}</div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
             <!-- Library Heading and Header Controls -->
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
                 <div>
@@ -51,15 +41,15 @@
                 </div>
                 <!-- Simple filter metrics tabs -->
                 <div class="d-flex gap-2 bg-white p-1.5 rounded-pill border shadow-sm">
-                    <button class="btn btn-filter active rounded-pill px-3 py-1.5 small" onclick="filterStories('all')">
-                        All ({{ $posts->count() }})
-                    </button>
-                    <button class="btn btn-filter rounded-pill px-3 py-1.5 small" onclick="filterStories('published')">
-                        Published ({{ $posts->where('status', 'published')->count() }})
-                    </button>
-                    <button class="btn btn-filter rounded-pill px-3 py-1.5 small" onclick="filterStories('draft')">
-                        Drafts ({{ $posts->where('status', 'draft')->count() }})
-                    </button>
+                    <a class="btn btn-filter rounded-pill px-3 py-1.5 small {{ request('status') == 'all' ? 'active' : '' }}" href="?status=all">
+                        All ({{ $allCount }})
+                    </a>
+                    <a class="btn btn-filter rounded-pill px-3 py-1.5 small {{ request('status') == 'published' ? 'active' : '' }}" href="?status=published">
+                        Published ({{ $publishedCount }})
+                    </a>
+                    <a class="btn btn-filter rounded-pill px-3 py-1.5 small {{ request('status') == 'draft' ? 'active' : '' }}" href="?status=draft">
+                        Drafts ({{ $draftCount }})
+                    </a>
                 </div>
             </div>
             <!-- Empty State Check -->
@@ -201,25 +191,22 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- Dynamic Filter Client-side Script -->
 <script>
-    function filterStories(status) {
-        // Update active filter button highlight state
-        const buttons = document.querySelectorAll('.btn-filter');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-
-        const cards = document.querySelectorAll('.story-item-card');
-        cards.forEach(card => {
-            if (status === 'all') {
-                card.classList.remove('d-none');
-            } else {
-                if (card.getAttribute('data-status') === status) {
-                    card.classList.remove('d-none');
-                } else {
-                    card.classList.add('d-none');
-                }
-            }
-        });
-    }
+    // function filterStories(event, status) {
+    //     const buttons = document.querySelectorAll('.btn-filter');
+    //     buttons.forEach(btn => btn.classList.remove('active'));
+    //     event.target.classList.add('active');
+    //     const cards = document.querySelectorAll('.story-item-card');
+    //     cards.forEach(card => {
+    //         if (status === 'all') {
+    //             card.classList.remove('d-none');
+    //         } else {
+    //             card.classList.toggle(
+    //                 'd-none',
+    //                 card.getAttribute('data-status') !== status
+    //             );
+    //         }
+    //     });
+    // }
 
     // Custom Modal triggering handler for delete action
     function triggerDeleteModal(actionUrl, storyTitle) {

@@ -35,8 +35,8 @@ Route::middleware('auth')->group(function () {
     })->name('tots');
 
     // Secure Post writing operations
-    Route::get('/my-library', [PostController::class, 'index'])->name('posts.index');
-    Route::get('/write-story', [PostController::class, 'create'])->name('posts.create');
+    Route::get('/my-tots', [PostController::class, 'index'])->name('posts.index');
+    Route::get('/write-a-tots', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update');

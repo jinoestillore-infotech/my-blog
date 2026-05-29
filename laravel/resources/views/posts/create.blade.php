@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Write a New Story - Tots</title>
+    <title>Write Your Tots</title>
     <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,7 +94,7 @@
                             </h5>
                             <!-- Cover/Featured Image Upload Zone -->
                             <div class="mb-4">
-                                <label class="form-label small fw-bold text-secondary">Cover Image</label>
+                                <label class="form-label text-uppercase tracking-wide small fw-bold text-muted">Cover Image</label>
                                 <div class="upload-zone position-relative text-center p-4 rounded-4" id="upload-zone">
                                     <input type="file" 
                                            name="featured_image" 
@@ -120,7 +120,7 @@
                             </div>
                             <!-- Post Visibility Status -->
                             <div class="mb-4">
-                                <label for="status" class="form-label small fw-bold text-secondary">Visibility Status</label>
+                                <label for="status" class="form-label text-uppercase tracking-wide small fw-bold text-muted">Visibility Status</label>
                                 <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
                                     <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Save as Draft</option>
                                     <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Publish Immediately</option>
@@ -130,9 +130,9 @@
                                 @enderror
                             </div>
                             <!-- Custom Story Excerpt (Optional Summary) -->
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label for="excerpt" class="form-label small fw-bold text-secondary mb-0">Story Excerpt</label>
+                                    <label for="excerpt" class="form-label text-uppercase tracking-wide small fw-bold text-muted mb-0">Story Excerpt</label>
                                     <span class="text-muted" style="font-size: 0.75rem;">Optional</span>
                                 </div>
                                 <textarea name="excerpt" 
@@ -141,7 +141,7 @@
                                           rows="3" 
                                           maxlength="500" 
                                           placeholder="A short, catchy summary for preview cards...">{{ old('excerpt') }}</textarea>
-                                <div class="form-text text-muted" style="font-size: 0.75rem;">
+                                <div class="form-text text-muted small">
                                     If left empty, we will auto-generate one from your main text.
                                 </div>
                                 @error('excerpt')

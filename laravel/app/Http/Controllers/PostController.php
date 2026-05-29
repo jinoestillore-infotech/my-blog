@@ -18,19 +18,33 @@ class PostController extends Controller
     /**
      * Display the authenticated user's library of posts.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        // Get total counts across all pages for the filter metrics tabs
+        $filter = $request->query('status'); // all | published | draft
+
+        $baseQuery = $user->posts()->latest();
+
+        if ($filter === 'published') {
+            $baseQuery->published();
+        } elseif ($filter === 'draft') {
+            $baseQuery->where('status', 'draft');
+        }
+
+        $posts = $baseQuery->simplePaginate(9)->withQueryString();
+
         $allCount = $user->posts()->count();
         $publishedCount = $user->posts()->published()->count();
         $draftCount = $user->posts()->where('status', 'draft')->count();
 
-        // Retrieve paginated posts belonging to the logged-in author (9 per page)
-        $posts = $user->posts()->latest()->simplePaginate(9);
-
-        return view('posts.index', compact('posts', 'allCount', 'publishedCount', 'draftCount'));
+        return view('posts.index', compact(
+            'posts',
+            'allCount',
+            'publishedCount',
+            'draftCount',
+            'filter'
+        ));
     }
 
     /**
@@ -88,7 +102,7 @@ class PostController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('tots')->with('success', 'Your story was saved successfully!');
+        return redirect()->route('posts.index')->with('success', 'Your story was saved successfully!');
     }
 
     /**
@@ -170,7 +184,7 @@ class PostController extends Controller
         $post->status = $request->status;
         $post->save();
 
-        return redirect()->route('tots')->with('success', 'Your story has been updated!');
+        return redirect()->route('posts.index')->with('success', 'Your story has been updated!');
     }
 
     /**
@@ -191,6 +205,6 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect()->route('tots')->with('success', 'Story deleted successfully.');
+        return redirect()->route('posts.index')->with('success', 'Story deleted successfully.');
     }
 }
