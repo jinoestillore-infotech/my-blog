@@ -33,6 +33,9 @@
     <!-- Main Content Grid -->
     <main class="py-5 pt-3">
         <div class="container">
+            <a href="/tots" class="btn btn-sm rounded-pill mt-1 mb-2">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </a>
             <!-- Library Heading and Header Controls -->
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
                 <div>
@@ -41,7 +44,7 @@
                 </div>
                 <!-- Simple filter metrics tabs -->
                 <div class="d-flex gap-2 bg-white p-1.5 rounded-pill border shadow-sm">
-                    <a class="btn btn-filter rounded-pill px-3 py-1.5 small {{ request('status') == 'all' ? 'active' : '' }}" href="?status=all">
+                    <a class="btn btn-filter rounded-pill px-3 py-1.5 small {{ request('status', 'all') == 'all' ? 'active' : '' }}" href="?status=all">
                         All ({{ $allCount }})
                     </a>
                     <a class="btn btn-filter rounded-pill px-3 py-1.5 small {{ request('status') == 'published' ? 'active' : '' }}" href="?status=published">
@@ -134,22 +137,19 @@
                 <div class="d-flex justify-content-between mt-4">
                     @if ($posts->previousPageUrl())
                         <a href="{{ $posts->previousPageUrl() }}"
-                        class="btn btn-outline-secondary">
+                        class="btn btn-outline-secondary rounded-pill px-3">
                             ← Previous
                         </a>
                     @endif
 
                     @if ($posts->nextPageUrl())
                         <a href="{{ $posts->nextPageUrl() }}"
-                        class="btn btn-outline-primary">
+                        class="btn btn-outline-primary rounded-pill px-3">
                             Load More →
                         </a>
                     @endif
                 </div>
             @endif
-            <a href="/tots" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2 mt-4">
-                <i class="bi bi-speedometer2"></i> Back to Dashboard
-            </a>
         </div>
     </main>
     <!-- Beautiful Reusable Delete Confirmation Modal -->
