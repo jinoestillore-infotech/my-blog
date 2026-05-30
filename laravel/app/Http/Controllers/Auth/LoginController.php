@@ -41,7 +41,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             RateLimiter::clear($key);
-            return redirect()->intended(route('tots'))->with('success', 'Welcome back!');
+            return redirect()->intended(route('pages.index'))->with('success', 'Welcome back!');
         }
 
         RateLimiter::hit($key, 60);

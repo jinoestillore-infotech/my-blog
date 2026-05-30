@@ -202,9 +202,15 @@ class PostController extends Controller
         if ($post->featured_image && file_exists(public_path($post->featured_image))) {
             @unlink(public_path($post->featured_image));
         }
+        
+        $status = $post->status;
 
         $post->delete();
 
-        return redirect()->route('posts.index')->with('success', 'Story deleted successfully.');
+        $message = $status === 'draft'
+            ? 'Draft deleted successfully.'
+            : 'Published story deleted successfully.';
+
+        return redirect()->route('posts.index')->with('success', $message);
     }
 }

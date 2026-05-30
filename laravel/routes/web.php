@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('index');
@@ -30,10 +31,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/tots', function () {
-        return view('pages.index');
-    })->name('tots');
-
+    Route::get('/tots', [DashboardController::class, 'index'])->name('pages.index');
     // Secure Post writing operations
     Route::get('/my-tots', [PostController::class, 'index'])->name('posts.index');
     Route::get('/write-a-tots', [PostController::class, 'create'])->name('posts.create');

@@ -33,7 +33,7 @@
     <!-- Main Content Grid -->
     <main class="py-5 pt-3">
         <div class="container">
-            <a href="/tots" class="btn btn-sm rounded-pill mt-1 mb-2">
+            <a href="{{ route('pages.index') }}" class="btn btn-sm rounded-pill mt-1 mb-2">
                 <i class="bi bi-arrow-left"></i> Back to Dashboard
             </a>
             <!-- Library Heading and Header Controls -->

@@ -50,14 +50,14 @@
                         <div class="col-6 col-md-4">
                             <div class="stat-box p-4 rounded-4 text-center">
                                 <i class="bi bi-file-earmark-text text-brand fs-3 mb-2 d-block"></i>
-                                <h3 class="fw-extrabold text-dark mb-0">0</h3>
+                                <h3 class="fw-extrabold text-dark mb-0">{{ $publishedCount }}</h3>
                                 <span class="text-secondary small fw-medium">Published Posts</span>
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
                             <div class="stat-box p-4 rounded-4 text-center">
                                 <i class="bi bi-eye text-brand fs-3 mb-2 d-block"></i>
-                                <h3 class="fw-extrabold text-dark mb-0">0</h3>
+                                <h3 class="fw-extrabold text-dark mb-0">{{ $totalViews }}</h3>
                                 <span class="text-secondary small fw-medium">Total Reads</span>
                             </div>
                         </div>
@@ -74,6 +74,7 @@
                         <h4 class="fw-bold text-dark mb-0">My Recent Stories</h4>
                         <a href="{{ route('posts.index') }}" class="text-brand text-decoration-none small fw-semibold">View All</a>
                     </div>
+                    @if($recentPosts->isEmpty())
                     <!-- Empty State Placeholder (since we have no post model/tables yet) -->
                     <div class="card empty-state-card p-5 border-0 text-center rounded-4 shadow-sm mb-4">
                         <div class="empty-icon-wrapper mx-auto mb-3">
@@ -85,6 +86,34 @@
                         </p>
                         <a href="{{ route('posts.create') }}" class="btn btn-brand rounded-pill px-4">Create First Story</a>
                     </div>
+                    @else
+                    <!-- List of user's 3 most recent stories -->
+                        <div class="d-flex flex-column gap-3 mb-4">
+                            @foreach($recentPosts as $post)
+                                <div class="card p-3 border-0 rounded-4 shadow-sm">
+                                    <div class="row align-items-center g-3">
+                                        <div class="col-md-9">
+                                            <div class="d-flex align-items-center gap-2 mb-1.5">
+                                                @if($post->status === 'published')
+                                                    <span class="badge bg-success-subtle text-success rounded-pill px-2.5 py-1 small">Published</span>
+                                                @else
+                                                    <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill px-2.5 py-1 small">Draft</span>
+                                                @endif
+                                                <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ $post->updated_at->format('M d, Y') }}</small>
+                                            </div>
+                                            <h5 class="fw-bold text-dark mb-1">{{ $post->title }}</h5>
+                                            <p class="text-secondary small mb-0 text-truncate" style="max-width: 500px;">{{ $post->excerpt ?? 'No summary available.' }}</p>
+                                        </div>
+                                        <div class="col-md-3 text-md-end">
+                                            <a href="/posts/{{ $post->id }}/edit" class="btn btn-outline-custom btn-sm rounded-pill px-3">
+                                                <i class="bi bi-pencil-square me-1"></i>Edit Story
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <!-- Right Sidebar Column: User Quick Profile & Quick Draft -->
                 <div class="col-lg-4">
@@ -120,14 +149,17 @@
                     <!-- Quick Draft Form Module -->
                     <div class="card quick-draft-card p-4 border-0 shadow-sm rounded-4">
                         <h5 class="fw-bold text-dark mb-3"><i class="bi bi-lightning-charge-fill text-accent me-1"></i>Quick Draft</h5>
-                        <form>
+                        <form action="{{ route('posts.store') }}" method="POST">
+                            @csrf
+                            <!-- Automatically force status to draft -->
+                            <input type="hidden" name="status" value="draft">
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Catchy title goes here..." required>
+                                <input type="text" name="title" class="form-control" placeholder="Catchy title goes here..." required>
                             </div>
                             <div class="mb-3">
-                                <textarea class="form-control" rows="4" placeholder="What's on your mind? Spill your thoughts..." required></textarea>
+                                <textarea name="content" class="form-control" rows="4" placeholder="What's on your mind? Spill your thoughts..." required></textarea>
                             </div>
-                            <button type="button" class="btn btn-brand btn-sm rounded-pill w-100 py-2">Save Draft</button>
+                            <button type="submit" class="btn btn-brand btn-sm rounded-pill w-100 py-2">Save Draft</button>
                         </form>
                     </div>
                 </div>

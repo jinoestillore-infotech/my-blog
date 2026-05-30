@@ -122,7 +122,7 @@
                                 <button type="submit" class="btn btn-brand rounded-pill py-2.5">
                                     <i class="bi bi-cloud-arrow-up-fill"></i> Save Changes
                                 </button>
-                                <a href="/my-library" class="btn btn-outline-custom btn-sm text-center rounded-pill px-3 py-2">
+                                <a href="{{ route('posts.index') }}" class="btn btn-outline-custom btn-sm text-center rounded-pill px-3 py-2">
                                     Cancel
                                 </a>
                             </div>
