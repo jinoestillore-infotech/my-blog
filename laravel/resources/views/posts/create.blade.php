@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand navbar-custom py-2">
             <div class="container">
                 <div class="d-flex align-items-center gap-3">
-                    <a class="navbar-brand fw-extrabold fs-3 text-brand" href="/tots" style="letter-spacing: -0.5px;">
+                    <a class="navbar-brand fw-extrabold fs-3 text-brand" href="{{ route('pages.index') }}" style="letter-spacing: -0.5px;">
                         tots<span class="text-accent">.</span>
                     </a>
                     <span class="text-muted border-start ps-3 py-1">New Draft</span>
@@ -88,7 +88,7 @@
                     <!-- Right Sidebar Column: Publishing Control Panel -->
                     <div class="col-lg-4">
                         <!-- Publishing Options Card -->
-                        <div class="card sidebar-card p-4 border-0 shadow-sm rounded-4 h-100 mb-4">
+                        <div class="card sidebar-card p-4 pb-2 border-0 shadow-sm rounded-4 h-100 mb-4">
                             <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
                                 <i class="bi bi-sliders text-brand"></i> Publish Controls
                             </h5>
@@ -130,7 +130,7 @@
                                 @enderror
                             </div>
                             <!-- Custom Story Excerpt (Optional Summary) -->
-                            <div class="mb-3">
+                            <div class="mb-4">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <label for="excerpt" class="form-label text-uppercase tracking-wide small fw-bold text-muted mb-0">Story Excerpt</label>
                                     <span class="text-muted" style="font-size: 0.75rem;">Optional</span>
@@ -148,7 +148,6 @@
                                     <div class="invalid-feedback mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <hr class="text-muted opacity-10 mb-4">
                             <!-- Submit and Save Action Buttons -->
                             <button type="submit" id="submit-btn" class="btn btn-brand w-100 py-2.5 rounded-pill fw-bold mb-2">
                                 <span id="submit-text">
@@ -160,7 +159,7 @@
                                     Publishing...
                                 </span>
                             </button>
-                            <a href="{{ route('tots') }}" class="btn btn-outline-custom btn-sm text-center rounded-pill px-3 py-2">
+                            <a href="{{ route('pages.index') }}" class="btn btn-outline-custom btn-sm text-center rounded-pill px-3 py-2">
                                 Cancel
                             </a>
                         </div>

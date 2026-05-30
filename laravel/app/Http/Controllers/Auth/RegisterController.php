@@ -39,6 +39,6 @@ class RegisterController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect(route('tots'))->with('success', 'Account created successfully! Welcome to Tots.');
+        return redirect(route('pages.index'))->with('success', 'Account created successfully! Welcome to Tots.');
     }
 }

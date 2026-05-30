@@ -37,7 +37,7 @@
             </div>
 
             <div class="d-flex align-items-center gap-2 mb-3">
-                <a href="" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3">
+                <a href="{{ route('posts.show') }}" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3">
                     <i class="bi bi-globe fs-4"></i>
                 </a>
             </div>
@@ -120,10 +120,14 @@
                     <!-- Quick Profile Details -->
                     <div class="card profile-summary-card p-4 border-0 shadow-sm rounded-4 mb-4">
                         <div class="text-center">
+                            @if(Auth::user()->avatar)
+                                <img src="{{ asset(Auth::user()->avatar) }}" class="profile-avatar-placeholder mx-auto mb-3 object-fit-cover" alt="Avatar">
+                            @else
                             <!-- Placeholder avatar initials -->
                             <div class="profile-avatar-placeholder mx-auto mb-3">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 3)) }}
                             </div>
+                            @endif
                             <h5 class="fw-bold text-dark mb-1">{{ Auth::user()->name }}</h5>
                             <p class="text-brand small mb-3">&#64;{{ Auth::user()->username }}</p>
                             <!-- Bio Field -->
@@ -132,7 +136,7 @@
                             </p>
                             <hr class="text-muted opacity-20">
                             <div class="m-1 d-flex align-items-center gap-2">
-                                <a href="#" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2">
+                                <a href="{{ route('profile.edit') }}" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2">
                                     <i class="bi bi-gear me-1"></i> Edit Author Profile
                                 </a>
                                 <!-- Secure Logout Link -->

@@ -63,7 +63,7 @@
                 <div class="row g-4">
                     <!-- LEFT COLUMN: Content Editor Canvas -->
                     <div class="col-lg-8">
-                        <div class="card editor-card border-0 shadow-sm h-100 rounded-4 p-4 p-md-5">
+                        <div class="card editor-card border-0 shadow-sm h-100 rounded-4 p-4 pb-1 p-md-5">
                             <!-- Large Title Textarea -->
                             <div class="mb-4">
                                 <label for="title" class="form-label text-uppercase text-muted tracking-wide fw-bold">Title</label>
@@ -83,7 +83,7 @@
                     </div>
                     <!-- RIGHT COLUMN: Publishing Panel Sidebar -->
                     <div class="col-lg-4">
-                        <div class="card sidebar-card border-0 shadow-sm h-100 rounded-4 p-4 mb-4 sticky-lg-top-sidebar">
+                        <div class="card sidebar-card border-0 shadow-sm h-100 rounded-4 p-4 pb-2 mb-4 sticky-lg-top-sidebar">
                             <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
                                 <i class="bi bi-sliders2 text-brand"></i>Publishing Settings
                             </h5>
@@ -118,7 +118,7 @@
                                 </div>
                             </div>
                             <!-- Actions triggers -->
-                            <div class="d-grid gap-2">
+                            <div class="d-grid gap-2 pb-0 mt-3">
                                 <button type="submit" class="btn btn-brand rounded-pill py-2.5">
                                     <i class="bi bi-cloud-arrow-up-fill"></i> Save Changes
                                 </button>
