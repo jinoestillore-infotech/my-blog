@@ -40,4 +40,25 @@ class Post extends Model
     {
         return $query->where('status', 'published');
     }
+
+    
+    /**
+     * Get all users who have liked this blog post.
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'post_likes');
+    }
+
+    
+    /**
+     * Helper to verify if a user has already liked this post.
+     */
+    public function isLikedBy($user)
+    {
+        if (!$user) {
+            return false;
+        }
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
 }

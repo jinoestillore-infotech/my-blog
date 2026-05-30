@@ -65,7 +65,7 @@
                     <p class="text-secondary small mx-auto mb-4" style="max-width: 450px;">
                         You haven't written any drafts or stories yet. Let's tap into your creative mind and start your very first post!
                     </p>
-                    <a href="/write" class="btn btn-brand rounded-pill px-4 py-2.5">
+                    <a href="{{ route('posts.create') }}" class="btn btn-brand rounded-pill px-4 py-2.5">
                         <i class="bi bi-pencil-square me-1"></i> Start Writing Now
                     </a>
                 </div>
@@ -160,13 +160,7 @@
                     <div class="d-flex align-items-center gap-2">
                         <i class="bi bi-exclamation-triangle-fill fs-4"></i>
                         <h5 class="modal-title fw-extrabold" id="deleteConfirmModalLabel">
-                            Delete 
-                            @if($post->status === 'published') 
-                            Published
-                            @else
-                            Drafted
-                            @endif
-                            Story</h5>
+                            Delete This Story</h5>
                     </div>
                 </div>
                 <div class="modal-body px-4 py-4">
@@ -191,22 +185,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- Dynamic Filter Client-side Script -->
 <script>
-    // function filterStories(event, status) {
-    //     const buttons = document.querySelectorAll('.btn-filter');
-    //     buttons.forEach(btn => btn.classList.remove('active'));
-    //     event.target.classList.add('active');
-    //     const cards = document.querySelectorAll('.story-item-card');
-    //     cards.forEach(card => {
-    //         if (status === 'all') {
-    //             card.classList.remove('d-none');
-    //         } else {
-    //             card.classList.toggle(
-    //                 'd-none',
-    //                 card.getAttribute('data-status') !== status
-    //             );
-    //         }
-    //     });
-    // }
 
     // Custom Modal triggering handler for delete action
     function triggerDeleteModal(actionUrl, storyTitle) {

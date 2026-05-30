@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExploreFeedController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 
@@ -32,6 +33,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Facebook-style Social Explore Feed (Strictly Authenticated)
+    Route::get('/feed', [ExploreFeedController::class, 'index'])->name('feed.index');
+
     Route::get('/tots', [DashboardController::class, 'index'])->name('pages.index');
     // Secure Post writing operations
     Route::get('/my-tots', [PostController::class, 'index'])->name('posts.index');
@@ -40,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+    // Core Like interaction endpoint
+    Route::post('/posts/{id}/like', [PostController::class, 'toggleLike'])->name('posts.like');
 
     // Dynamic User Profile Settings Workspace
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

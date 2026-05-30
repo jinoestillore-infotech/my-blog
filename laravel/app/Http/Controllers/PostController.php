@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -104,19 +105,52 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Your story was saved successfully!');
     }
-
     /**
      * Display the specified blog post to readers.
      */
     public function show($slug)
     {
-        // Find the published post by its SEO slug or fail with a 404 error page
         $post = Post::where('slug', $slug)->published()->firstOrFail();
 
-        // Safely increment the read counts on visit
-        $post->increment('views');
+        // Increment reads uniquely only if the user has not viewed this post yet
+        if (Auth::check()) {
+            $viewExists = DB::table('post_views')
+                ->where('user_id', Auth::id())
+                ->where('post_id', $post->id)
+                ->exists();
+
+            if (!$viewExists) {
+                // Register unique view record
+                DB::table('post_views')->insert([
+                    'user_id' => Auth::id(),
+                    'post_id' => $post->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                // Increment total view count on posts table safely
+                $post->increment('views');
+            }
+        }
 
         return view('posts.show', compact('post'));
+    }
+
+    /**
+     * Toggle the authenticated user's like status on a post.
+     */
+    public function toggleLike($id)
+    {
+        $post = Post::findOrFail($id);
+        $user = Auth::user();
+
+        // Toggle connection in post_likes pivot table
+        $liked = $post->likes()->toggle($user->id);
+
+        return response()->json([
+            'liked' => count($liked['attached']) > 0,
+            'likes_count' => $post->likes()->count()
+        ]);
     }
 
     /**
@@ -202,7 +236,7 @@ class PostController extends Controller
         if ($post->featured_image && file_exists(public_path($post->featured_image))) {
             @unlink(public_path($post->featured_image));
         }
-        
+
         $status = $post->status;
 
         $post->delete();
