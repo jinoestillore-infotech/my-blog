@@ -38,7 +38,7 @@
 
             <div class="d-flex align-items-center gap-2 mb-3">
                 <a href="{{ route('feed.index') }}" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3">
-                    <i class="bi bi-globe fs-4"></i>
+                    <i class="bi bi-globe me-1"></i> Explore Feed
                 </a>
             </div>
 
@@ -47,25 +47,32 @@
                 <div class="col-lg-8">
                     <!-- Quick Stats Row -->
                     <div class="row g-3 mb-4">
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-3">
                             <div class="stat-box p-4 rounded-4 text-center">
                                 <i class="bi bi-file-earmark-text text-brand fs-3 mb-2 d-block"></i>
                                 <h3 class="fw-extrabold text-dark mb-0">{{ $publishedCount }}</h3>
                                 <span class="text-secondary small fw-medium">Published Posts</span>
                             </div>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-3">
                             <div class="stat-box p-4 rounded-4 text-center">
                                 <i class="bi bi-eye text-brand fs-3 mb-2 d-block"></i>
                                 <h3 class="fw-extrabold text-dark mb-0">{{ $totalViews }}</h3>
                                 <span class="text-secondary small fw-medium">Total Reads</span>
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-6 col-md-3">
                             <div class="stat-box p-4 rounded-4 text-center">
                                 <i class="bi bi-people text-brand fs-3 mb-2 d-block"></i>
-                                <h3 class="fw-extrabold text-dark mb-0">0</h3>
+                                <h3 class="fw-extrabold text-dark mb-0">{{ $followersCount }}</h3>
                                 <span class="text-secondary small fw-medium">Followers</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box p-4 rounded-4 text-center">
+                                <i class="bi bi-people text-brand fs-3 mb-2 d-block"></i>
+                                <h3 class="fw-extrabold text-dark mb-0">{{ $followingCount }}</h3>
+                                <span class="text-secondary small fw-medium">Following</span>
                             </div>
                         </div>
                     </div>

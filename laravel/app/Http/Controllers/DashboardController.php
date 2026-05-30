@@ -32,9 +32,13 @@ class DashboardController extends Controller
         // Sum up total views across all posts owned by this user
         $totalViews = $user->posts()->sum('views');
         
-        // Get the latest 3 posts (draft or published) to show in the quick list
-        $recentPosts = $user->posts()->latest()->take(3)->get();
+        // Dynamically count followers and following relationships
+        $followersCount = $user->followers()->count();
+        $followingCount = $user->following()->count();
 
-        return view('pages.index', compact('publishedCount', 'totalViews', 'recentPosts'));
+        // Get the latest 3 posts (draft or published) to show in the quick list
+        $recentPosts = $user->posts()->latest()->take(4)->get();
+
+        return view('pages.index', compact('publishedCount', 'totalViews', 'recentPosts', 'followersCount', 'followingCount'));
     }
 }

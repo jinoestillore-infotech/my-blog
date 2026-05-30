@@ -26,11 +26,35 @@
                 <a class="navbar-brand fw-extrabold fs-3 text-brand" href="/feed" style="letter-spacing: -0.5px;">
                     tots<span class="text-accent">.</span>
                 </a>
-                <!-- Call To Action / User State Buttons -->
-                <div class="d-flex align-items-center gap-3">
-                    <a href="{{ route('pages.index') }}" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2">
-                        <span class="text-secondary small fw-bold">Hi, {{ Auth::user()->name }}</span>
-                    </a>
+                <!-- User Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2 dropdown-toggle d-flex align-items-center gap-2"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+
+                        <span class="text-secondary small fw-bold">
+                            Hi, {{ Auth::user()->name }}
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('pages.index') }}">
+                                <i class="bi bi-speedometer2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -136,7 +160,7 @@
                                             <button type="button" 
                                                     class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-1.5 px-3 py-1.5 {{ $post->isLikedBy(Auth::user()) ? 'liked-active' : '' }}" 
                                                     onclick="toggleLike(this, {{ $post->id }})">
-                                                <i class="bi {{ $post->isLikedBy(Auth::user()) ? 'bi-heart-fill' : 'bi-heart' }} text-danger"></i>
+                                                <i class="bi {{ $post->isLikedBy(Auth::user()) ? 'bi-heart-fill' : 'bi-heart' }} text-danger me-1"></i>
                                                 <span class="small fw-semibold reaction-count">{{ $post->likes_count }}</span>
                                             </button>
                                             <!-- Total Unique Reads Indicator -->
@@ -162,29 +186,45 @@
                 <!-- RIGHT SIDEBAR: Community Widget suggestions & Trending Topics -->
                 <div class="col-md-4 col-lg-3 d-none d-md-block">
                     <div class="sticky-sidebar">
-                        <!-- Who To Follow Card suggestions -->
+                        <!-- Dynamic Who To Follow Card suggestions -->
                         <div class="card community-widget-card p-4 border-0 shadow-sm rounded-4 mb-4">
-                            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-lightning-charge-fill text-accent me-1"></i>Who to Follow</h6>
+                            <h6 class="fw-bold text-dark mb-3">
+                                <i class="bi bi-lightning-charge-fill text-accent me-1"></i>Who to Follow
+                            </h6>
+                            
                             <div class="d-flex flex-column gap-3">
-                                <!-- Suggested Creator 1 -->
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="avatar-gradient-1">AM</div>
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <h6 class="mb-0 fw-bold text-dark text-truncate small">Amara Miller</h6>
-                                        <small class="text-muted d-block text-truncate fs-11">&#64;amaramiller</small>
+                                @forelse($suggestedUsers as $suggestedUser)
+                                    <div class="d-flex align-items-center gap-3">
+                                        
+                                        <!-- User Avatar or Initials Fallback -->
+                                        @if($suggestedUser->avatar)
+                                            <img src="{{ asset($suggestedUser->avatar) }}" class="rounded-circle object-fit-cover" style="width: 38px; height: 38px;" alt="Avatar">
+                                        @else
+                                            <div class="rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold small" style="width: 38px; height: 38px;">
+                                                {{ strtoupper(substr($suggestedUser->name, 0, 2)) }}
+                                            </div>
+                                        @endif
+                                        
+                                        <!-- User Details -->
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h6 class="mb-0 fw-bold text-dark text-truncate small">{{ $suggestedUser->name }}</h6>
+                                            <small class="text-muted d-block text-truncate fs-11">&#64;{{ $suggestedUser->username }}</small>
+                                        </div>
+                                        
+                                        <!-- Interactive Follow Form Button Triggering FollowController AJAX -->
+                                        <button type="button" 
+                                                class="btn btn-sm rounded-pill px-2.5 py-1 follow-btn btn-outline-brand" 
+                                                onclick="toggleFollow(this, '{{ $suggestedUser->id }}')">
+                                            Follow
+                                        </button>
                                     </div>
-                                    <a href="{{ route('community') }}" class="btn btn-outline-brand btn-xs rounded-pill px-2.5 py-1">Follow</a>
-                                </div>
-                                <!-- Suggested Creator 2 -->
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="avatar-gradient-2">KH</div>
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <h6 class="mb-0 fw-bold text-dark text-truncate small">Kenji Haneda</h6>
-                                        <small class="text-muted d-block text-truncate fs-11">&#64;kenjih</small>
+                                @empty
+                                    <div class="text-center py-2">
+                                        <p class="text-secondary small mb-0">No suggestions right now!</p>
                                     </div>
-                                    <a href="{{ route('community') }}" class="btn btn-outline-brand btn-xs rounded-pill px-2.5 py-1">Follow</a>
-                                </div>
+                                @endforelse
                             </div>
+                            
                             <hr class="opacity-10 my-3">
                             <a href="{{ route('community') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
                                 View Creator Directory <i class="bi bi-chevron-right"></i>
@@ -250,6 +290,44 @@
                 btn.disabled = false;
             });
         }
+
+        function toggleFollow(btn, userId) {
+            // Prevent double clicking during active requests
+            btn.disabled = true;
+
+            fetch(`/users/${userId}/follow`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.disabled = false;
+                if (data.success) {
+                    if (data.is_following) {
+                        // UI state when following
+                        btn.textContent = 'Following';
+                        btn.classList.remove('btn-outline-brand');
+                        btn.classList.add('btn-brand', 'text-white');
+                    } else {
+                        // UI state when unfollowing
+                        btn.textContent = 'Follow';
+                        btn.classList.remove('btn-brand', 'text-white');
+                        btn.classList.add('btn-outline-brand');
+                    }
+                } else {
+                    alert(data.message || 'Something went wrong.');
+                }
+            })
+            .catch(error => {
+                btn.disabled = false;
+                console.error('Error handling follow process:', error);
+            });
+        }
     </script>
+    
 </body>
 </html>

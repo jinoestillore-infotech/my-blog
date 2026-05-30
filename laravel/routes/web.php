@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExploreFeedController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 
@@ -47,6 +48,9 @@ Route::middleware('auth')->group(function () {
     // Core Like interaction endpoint
     Route::post('/posts/{id}/like', [PostController::class, 'toggleLike'])->name('posts.like');
 
+    // Secure Follow API Toggle Route
+    Route::post('/users/{id}/follow', [FollowController::class, 'toggleFollow'])->name('users.follow');
+    
     // Dynamic User Profile Settings Workspace
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
