@@ -36,6 +36,10 @@ class ExploreFeedController extends Controller
     {
         $currentUser = Auth::user();
         $selectedTag = $request->query('tag');
+        $likedPostIds = $currentUser
+            ->likedPosts()
+            ->pluck('posts.id')
+            ->flip();
 
         // 1. Fetch published posts with filters applied
         $postsQuery = Post::where('status', 'published')
@@ -112,6 +116,7 @@ class ExploreFeedController extends Controller
 
         // Take the top 5 trending tags to display in our view widget
         $trendingTags = array_slice(array_keys($tagScores), 0, 5);
-        return view('feed.index', compact('posts', 'suggestedUsers', 'trendingTags'));
+
+        return view('feed.index', compact('posts', 'suggestedUsers', 'trendingTags', 'likedPostIds'));
     }
 }

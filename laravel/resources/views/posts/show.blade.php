@@ -89,7 +89,7 @@
                         </div>
                     @endif
                     <!-- Main Body Content Text Prose -->
-                    <article class="story-body-content text-secondary mb-5 lh-lg">
+                    <article class="story-body-content text-secondary mb-5 text-break lh-lg">
                         {!! nl2br(e($post->content)) !!}
                     </article>
                     <!-- Author Sign-off Bio Card -->

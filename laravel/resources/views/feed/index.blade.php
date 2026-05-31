@@ -59,18 +59,32 @@
         </nav>
     </header>
     <!-- Main Container Layout -->
-    <main class="py-5">
+    <main class="pt-4 pb-3">
         <div class="container">
             <div class="row g-4">
+                <div class="ms-2 p-1 pb-1 d-flex align-items-center gap-3">
+                    @if(Auth::user()->avatar)
+                    <img src="{{ asset(Auth::user()->avatar) }}" class="feed-author-img object-fit-cover rounded-circle d-block d-lg-none" alt="Avatar">
+                    @else
+                    <div class="feed-author-placeholder rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold d-block d-lg-none">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                    </div>
+                    @endif
+                    <!-- User details -->
+                    <div class="flex-grow-1 d-block d-lg-none">
+                        <h6 class="mb-0 fw-bold text-dark">{{ Auth::user()->name }}</h6>
+                        <small class="text-muted" style="font-size: .75rem;">&#64;{{ Auth::user()->username }}</small>
+                    </div>
+                </div>
                 <!-- LEFT SIDEBAR: Logged-in User Card -->
-                <div class="col-lg-3">
+                <div class="col-12 col-lg-3">
                     <div class="sticky-sidebar">
                         <!-- Logged In User Quick Sidebar Info Card -->
                         <div class="card profile-card p-4 border-0 shadow-sm rounded-4 text-center mb-4">
                             @if(Auth::user()->avatar)
                                 <img src="{{ asset(Auth::user()->avatar) }}" class="profile-avatar mx-auto mb-3 object-fit-cover d-none d-lg-block" alt="Avatar">
                             @else
-                                <div class="profile-avatar-placeholder mx-auto mb-3 d-flex align-items-center justify-content-center fw-extrabold text-brand d-none d-lg-block">
+                                <div class="profile-avatar-placeholder mx-auto mb-3 d-flex align-items-center justify-content-center fw-extrabold text-brand d-none d-md-block">
                                     <i class="bi bi-person fs-1"></i>
                                 </div>
                             @endif
@@ -86,7 +100,7 @@
                             </div>
                         </div>
                         <!-- Dynamic Who To Follow Card suggestions -->
-                        <div class="card community-widget-card d-md-none d-sm-block p-4 border-0 shadow-0 rounded-4 mb-4">
+                        <div class="card community-widget-card d-lg-none d-md-block p-4 border-0 shadow-0 rounded-4 mb-4">
                             <h6 class="fw-bold text-dark mb-3">
                                 <i class="bi bi-lightning-charge-fill text-accent me-1"></i>Who to Follow
                             </h6>
@@ -121,7 +135,16 @@
                                     </div>
                                 @endforelse
                             </div>
-                            
+                            <h6 class="fw-bold text-dark mb-3 mt-4"><i class="bi bi-hash text-brand"></i>Trending Topics</h6>
+                            <div class="d-flex flex-wrap gap-1.5">
+                                @forelse($trendingTags as $tag)
+                                    <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge" onclick="filterByTag('{{ $tag }}')">
+                                        #{{ $tag }}
+                                    </span>
+                                @empty
+                                    <span class="text-muted small">No popular topics this week.</span>
+                                @endforelse
+                            </div>
                             <hr class="opacity-10 my-3">
                             <a href="{{ route('popular') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
                                 View Popular Writers <i class="bi bi-chevron-right"></i>
@@ -130,7 +153,7 @@
                     </div>
                 </div>
                 <!-- CENTER FEED: The Social Explore Post Feed -->
-                <div class="col-12 col-md-8 col-lg-6 mx-auto">
+                <div class="col-12 col-md-12 col-lg-6 mx-auto">
                     <!-- Quick Feed Greeting Banner -->
                     <div class="d-flex justify-content-between align-items-center mb-4 px-1">
                         <h4 class="fw-semibold text-dark mb-0">
@@ -168,83 +191,17 @@
                         </div>
                     @else
                         <!-- Scrollable List of Published Stories -->
-                        <div class="d-flex flex-column gap-4">
-                            @foreach($posts as $post)
-                                <article class="card feed-post-card border-0 shadow-sm rounded-4 overflow-hidden">
-                                    <!-- Post Author Metadata Header -->
-                                    <div class="p-4 pb-3 d-flex align-items-center gap-3">
-                                        <!-- Author Profile Pic -->
-                                        @if($post->user->avatar)
-                                            <img src="{{ asset($post->user->avatar) }}" class="feed-author-img object-fit-cover rounded-circle" alt="Author">
-                                        @else
-                                            <div class="feed-author-placeholder rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold">
-                                                {{ strtoupper(substr($post->user->name, 0, 2)) }}
-                                            </div>
-                                        @endif
-                                        <!-- User details -->
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-0 fw-bold text-dark">{{ $post->user->name }}</h6>
-                                            <small class="text-muted" style="font-size: .75rem;">&#64;{{ $post->user->username }} &bull; {{ $post->created_at->diffForHumans() }}</small>
-                                        </div>
-                                        <span class="badge bg-light text-brand rounded-pill px-1.5 py-1 d-none d-lg-block" style="font-size: .75rem;">
-                                        <i class="bi bi-clock me-1"></i>{{ max(1, ceil(str_word_count(strip_tags($post->content)) / 200)) }} min read
-                                        </span>
-                                    </div>
-                                    <!-- Post Content Details -->
-                                    <div class="px-4 pb-3">
-                                        <!-- Title -->
-                                        <h3 class="h5 fw-extrabold text-dark mb-2 feed-post-title">
-                                            <a href="{{ route('posts.show', $post->slug) }}" class="text-decoration-none text-dark hover-brand-link">
-                                                {{ $post->title }}
-                                            </a>
-                                            <span class="badge bg-light text-brand rounded-pill px-1.5 py-1 d-md-none d-sm-block" style="font-size: .75rem;">
-                                            <i class="bi bi-clock me-1"></i>{{ max(1, ceil(str_word_count(strip_tags($post->content)) / 200)) }} min read
-                                            </span>
-                                        </h3>
-                                        <!-- Excerpt -->
-                                        <p class="text-secondary small mb-0 lh-base">
-                                            {{ $post->excerpt ?? Str::limit(strip_tags($post->content), 180) }}
-                                        </p>
-                                    </div>
-                                    <!-- Post Cover Image -->
-                                    @if($post->featured_image)
-                                        <div class="feed-image-container position-relative">
-                                            <a href="{{ route('posts.show', $post->slug) }}">
-                                                <img src="{{ asset($post->featured_image) }}" class="w-100 img-fluid feed-cover-img" alt="Cover">
-                                            </a>
-                                        </div>
-                                    @endif
-                                    <!-- Interactive Reactions Footer Panel -->
-                                    <div class="px-4 py-3 bg-light border-top border-light-subtle d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <!-- Persistent Database Like Toggle Button -->
-                                            <button type="button" 
-                                                    class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-1.5 px-3 py-1.5 {{ $post->isLikedBy(Auth::user()) ? 'liked-active' : '' }}" 
-                                                    onclick="toggleLike(this, {{ $post->id }})">
-                                                <i class="bi {{ $post->isLikedBy(Auth::user()) ? 'bi-heart-fill' : 'bi-heart' }} text-danger me-1"></i>
-                                                <span class="small fw-semibold reaction-count">{{ $post->likes_count }}</span>
-                                            </button>
-                                            <!-- Total Unique Reads Indicator -->
-                                            <span class="text-secondary small d-flex align-items-center gap-1">
-                                                <i class="bi bi-eye"></i>
-                                                {{ $post->views }} reads
-                                            </span>
-                                        </div>
-                                        <!-- Direct Link to Post Details -->
-                                        <a href="{{ route('posts.show', $post->slug) }}" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-1.5 fw-semibold d-flex align-items-center gap-1">
-                                            Read More <i class="bi bi-arrow-right-short fs-5"></i>
-                                        </a>
-                                    </div>
-                                </article>
-                            @endforeach
+                        <div class="d-flex flex-column gap-4" id="posts-container">
+                            @include('feed.partials.posts')
                         </div>
                         <!-- Paginated Navigation Controls -->
-                        <div class="d-flex justify-content-center mt-5">
+                        <div class="d-flex justify-content-center mt-3">
                             @if($posts->hasMorePages())
                                 <div class="text-center mt-5">
                                     <a href="{{ $posts->nextPageUrl() }}"
-                                    class="btn btn-brand rounded-pill px-4">
-                                        Load More
+                                    class="btn btn-brand rounded-pill px-4"
+                                    id="load-more-btn">
+                                        Load More Tots.
                                     </a>
                                 </div>
                             @endif
@@ -255,7 +212,7 @@
                 <div class="col-md-4 col-lg-3"> <!-- d-none d-md-block -->
                     <div class="sticky-sidebar">
                         <!-- Dynamic Who To Follow Card suggestions -->
-                        <div class="card community-widget-card d-none d-md-block p-4 border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card community-widget-card d-none d-lg-block p-4 border-0 shadow-sm rounded-4 mb-4">
                             <h6 class="fw-bold text-dark mb-3">
                                 <i class="bi bi-lightning-charge-fill text-accent me-1"></i>Who to Follow
                             </h6>
@@ -298,7 +255,7 @@
                             </a>
                         </div>
                         <!-- Trending Topics tag cloud (True Dynamic Algorithm Output) -->
-                        <div class="card community-widget-card p-4 border-0 shadow-sm rounded-4">
+                        <div class="card community-widget-card d-none d-lg-block p-4 border-0 shadow-sm rounded-4">
                             <h6 class="fw-bold text-dark mb-3"><i class="bi bi-hash text-brand"></i>Trending Topics</h6>
                             <div class="d-flex flex-wrap gap-1.5">
                                 @forelse($trendingTags as $tag)
@@ -405,7 +362,54 @@
             url.searchParams.delete('page');
             window.location.href = url.toString();
         }
-    </script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            if (!loadMoreBtn) return;
+
+            loadMoreBtn.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent normal navigation
+                const url = this.href;
+
+                this.disabled = true;
+                this.textContent = 'Loading...';
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // Parse returned HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newPosts = doc.querySelectorAll('#posts-container > article');
+
+                    // Append new posts
+                    const container = document.getElementById('posts-container');
+                    newPosts.forEach(post => container.appendChild(post));
+
+                    // Update / replace the Load More button
+                    const newBtn = doc.getElementById('load-more-btn');
+                    if (newBtn) {
+                        loadMoreBtn.href = newBtn.href;
+                        loadMoreBtn.disabled = false;
+                        loadMoreBtn.textContent = 'Load More';
+                    } else {
+                        loadMoreBtn.remove(); // No more pages
+                    }
+
+                    // Re-initialize any JS like toggleLike if needed
+                })
+                .catch(err => {
+                    console.error('Error loading more posts:', err);
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.textContent = 'Load More';
+                });
+            });
+        });
+        </script>
     
 </body>
 </html>
