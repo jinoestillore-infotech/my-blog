@@ -38,7 +38,7 @@
 
             <div class="d-flex align-items-center gap-2 mb-3">
                 <a href="{{ route('tots-feed') }}" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3">
-                    <i class="bi bi-globe me-1"></i> Explore Feed
+                    <i class="bi bi-globe me-1"></i> Tots Feed
                 </a>
             </div>
 
@@ -108,7 +108,7 @@
                                                 @endif
                                                 <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ $post->updated_at->format('M d, Y') }}</small>
                                             </div>
-                                            <h5 class="fw-bold text-dark mb-1">{{ $post->title }}</h5>
+                                            <h5 class="fw-bold text-dark mb-1 mt-2">{{ $post->title }}</h5>
                                             <p class="text-secondary small mb-0 text-truncate" style="max-width: 500px;">{{ $post->excerpt ?? 'No summary available.' }}</p>
                                         </div>
                                         <div class="col-md-3 text-md-end">

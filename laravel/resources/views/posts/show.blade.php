@@ -31,9 +31,15 @@
                 </a>
                 <!-- Back navigation action -->
                 <div class="ms-auto">
+                    @auth
                     <a href="{{ route('tots-feed') }}" class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2 d-flex align-items-center gap-2">
                         <i class="bi bi-arrow-left"></i> Back to Explore
                     </a>
+                    @else
+                    <a href="{{ route('home') }}" class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2 d-flex align-items-center gap-2">
+                        <i class="bi bi-arrow-left"></i> Go Back
+                    </a>
+                    @endauth
                 </div>
             </div>
         </nav>

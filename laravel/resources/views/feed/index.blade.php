@@ -160,7 +160,7 @@
                             @if(request('tag'))
                                 Tag: <span class="text-brand">#{{ request('tag') }}</span>
                             @else
-                                Explore Feed
+                                Explore Tots Feed
                             @endif
                         </h4>
                         
