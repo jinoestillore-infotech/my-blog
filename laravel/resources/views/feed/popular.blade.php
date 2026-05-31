@@ -99,17 +99,23 @@
                                 <div class="overflow-hidden">
                                     <h6 class="mb-0 fw-bold text-dark text-truncate">{{ $writer->name }}</h6>
                                     <span class="text-muted d-block text-truncate fs-11">&#64;{{ $writer->username }}</span>
-                                    <!-- Dynamic follower metric badge -->
-                                    <span class="badge bg-light text-secondary rounded-pill px-2 py-0.5 fs-11 mt-1">
-                                        <i class="bi bi-people-fill me-1"></i><span class="follower-count-{{ $writer->id }}">{{ $writer->followers_count }}</span> followers
-                                    </span>
+                                    
+                                    <div class="d-flex flex-wrap gap-1 align-items-center mt-1">
+                                        <!-- Dynamic follower metric badge -->
+                                        <span class="badge bg-light text-secondary rounded-pill px-2 py-1 fs-11">
+                                            <i class="bi bi-people-fill me-1"></i><span class="follower-count-{{ $writer->id }}">{{ $writer->followers_count }}</span> followers
+                                        </span>
+                                        <span class="badge {{ $writer->rank_badge_class }} rounded-pill px-2 py-0.5 fs-11">
+                                            {{ $writer->rank_title }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Interactive Follow Form Button -->
                             <div>
                                 @if(Auth::user()->isFollowing($writer->id))
                                     <button type="button" 
-                                            class="btn btn-brand text-white btn-sm rounded-pill px-3 py-1.5 fs-11 fw-semibold follow-btn" 
+                                            class="btn btn-brand text-white btn-sm rounded-pill px-3 py-1 fs-11 fw-semibold follow-btn" 
                                             onclick="toggleFollow(this, '{{ $writer->id }}')">
                                         Following
                                     </button>
@@ -157,56 +163,51 @@
 <!-- Interactive AJAX Followers Module -->
 <script>
     function toggleFollow(btn, userId) {
-        btn.disabled = true;
+            btn.disabled = true;
 
-        fetch(`/users/${userId}/follow`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-        .then(async response => {
-            const data = await response.json();
+            fetch(`/users/${userId}/follow`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.disabled = false;
+                if (data.success) {
+                    // Instantly update the follower counter inside the specific item layout
+                    const counter = document.querySelector(`.follower-count-${userId}`);
+                    if (counter) {
+                        counter.textContent = data.followers_count;
+                    }
 
-            if (!response.ok) {
-                throw data;
-            }
+                    if (data.is_following) {
+                        btn.textContent = 'Following';
+                        btn.classList.remove('btn-outline-brand');
+                        btn.classList.add('btn-brand', 'text-white');
 
-            return data;
-        })
-        .then(data => {
-            btn.disabled = false;
+                        showToast('You are now following this writer.', 'success');
+                    } else {
+                        btn.textContent = 'Follow';
+                        btn.classList.remove('btn-brand', 'text-white');
+                        btn.classList.add('btn-outline-brand');
 
-            const counter = document.querySelector(`.follower-count-${userId}`);
-            if (counter) {
-                counter.textContent = data.followers_count;
-            }
-
-            if (data.is_following) {
-                btn.textContent = 'Following';
-                btn.classList.remove('btn-outline-brand');
-                btn.classList.add('btn-brand', 'text-white');
-
-                showToast('You are now following this writer.', 'success');
-            } else {
-                btn.textContent = 'Follow';
-                btn.classList.remove('btn-brand', 'text-white');
-                btn.classList.add('btn-outline-brand');
-
-                showToast('You unfollowed this writer.', 'success');
-            }
-        })
-        .catch(error => {
-            btn.disabled = false;
-
-            showToast(
+                        showToast('You unfollowed this writer.', 'success');
+                    }
+                } else {
+                    alert(data.message || 'Something went wrong.');
+                }
+            })
+            .catch(error => {
+                btn.disabled = false;
+                showToast(
                 error.message || 'Something went wrong.',
                 'error'
-            );
-        });
-    }
+                );
+            });
+        }
 </script>
 </body>
 </html>
