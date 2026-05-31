@@ -10,9 +10,19 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 
+// Route::get('/', function () {
+//     return view('index');
+// });
+// Clean Landing Page Route fetching real published posts
 Route::get('/', function () {
-    return view('index');
-});
+    $recentPosts = \App\Models\Post::where('status', 'published')
+        ->with(['user', 'likes'])
+        ->latest()
+        ->take(2)
+        ->get();
+
+    return view('index', compact('recentPosts'));
+})->name('home');
 
 Route::get('/privacy-policy', function () {
     return view('privacy');
@@ -27,10 +37,10 @@ Route::get('/community', function () {
     })->name('community');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::get('/register-tots-account', [RegisterController::class, 'show'])->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
 
-    Route::get('/login', [LoginController::class, 'show'])->name('login');
+    Route::get('/login-to-tots', [LoginController::class, 'show'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1')->name('login.store');
 });
 

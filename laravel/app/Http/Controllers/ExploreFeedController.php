@@ -39,15 +39,21 @@ class ExploreFeedController extends Controller
 
         // 1. Fetch published posts with filters applied
         $postsQuery = Post::where('status', 'published')
-            ->withCount(['user', 'likes']);
+            ->with('user')
+            ->withCount('likes');
 
         // IF a tag parameter is present in the URL, filter the posts table
         if (!empty($selectedTag)) {
-            $postsQuery->where('tags', 'LIKE', '%' . $selectedTag . '%');
+            $postsQuery->whereRaw(
+                "FIND_IN_SET(?, REPLACE(tags, ', ', ','))",
+                [$selectedTag]
+            );
         }
 
-        $posts = $postsQuery->orderBy('created_at', 'desc')
-            ->paginate(5)
+        $posts = $postsQuery
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->cursorPaginate(4)
             ->withQueryString(); // Keeps the ?tag=... parameter intact during pagination links!
 
         // 2. Dynamic "Who to Follow"

@@ -152,6 +152,22 @@
         .footer-link:hover {
             color: #fff !important;
         }
+        .hover-brand-link {
+            transition: color 0.2s ease;
+        }
+        .hover-brand-link:hover {
+            color: var(--brand-primary) !important;
+        }
+
+        .w-90 {
+            width: 90%;
+        }
+        
+        @media (max-width: 991px) {
+            .w-90 {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -178,8 +194,13 @@
                     </ul>
                     <!-- Call To Action Buttons -->
                     <div class="d-flex align-items-center gap-3">
+                        @auth
+                        <a href="{{ route('pages.index') }}" class="text-decoration-none text-secondary fw-semibold px-3">Dashboard</a>
+                        <a href="{{ route('tots-feed') }}" class="btn btn-brand px-4 text-nowrap">Enter Feed</a>
+                        @else
                         <a href="{{ route('login') }}" class="text-decoration-none text-secondary fw-semibold border rounded-pill px-4 py-2">Log in</a>
                         <a href="{{ route('register') }}" class="btn btn-brand px-4 text-nowrap">Get Started</a>
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -187,7 +208,7 @@
     </header>
 
     <!-- Hero Section -->
-    <main class="py-5 overflow-hidden">
+    <main class="py-5 pt-3 overflow-hidden">
         <div class="container py-lg-4">
             <div class="row align-items-center g-5">
                 
@@ -195,7 +216,7 @@
                 <div class="col-lg-6 text-center text-lg-start">
                     <span class="badge bg-brand-light rounded-pill px-3 py-2 fw-semibold mb-4 fs-7">
                         <span class="spinner-grow spinner-grow-sm me-1" style="width: 8px; height: 8px;" role="status" aria-hidden="true"></span>
-                        Join 10,000+ active writers
+                        Join active writers today
                     </span>
                     
                     <h1 class="display-4 fw-extrabold text-slate-900 mb-4 lh-sm">
@@ -207,43 +228,99 @@
                     </p>
                     
                     <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
-                        <a href="#" class="btn btn-brand btn-lg px-4 fs-6">Start Your Journey</a>
-                        <a href="#" class="btn btn-outline-custom btn-lg px-4 fs-6">Explore Trending</a>
+                        @auth
+                        <a href="{{ route('pages.index') }}" class="btn btn-brand btn-lg px-4 fs-6">Start Your Masterpiece</a>
+                        <a href="{{ route('tots-feed') }}" class="btn btn-outline-custom btn-lg px-4 fs-6">Explore Trending</a>
+                        @else
+                        <a href="{{ route('register') }}" class="btn btn-brand btn-lg px-4 fs-6">Start Your Journey</a>
+                        <a href="{{ route('login') }}" class="btn btn-outline-custom btn-lg px-4 fs-6">Sign In to Explore</a>
+                        @endauth
                     </div>
                 </div>
 
-                <!-- Hero Right: Simulated Blog Cards -->
+                <!-- Hero Right: Simulated / Real Blog Cards -->
                 <div class="col-lg-6">
                     <div class="d-flex flex-column gap-4 position-relative">
-                        <!-- Preview Card 1 -->
-                        <div class="card preview-card p-4">
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <div class="avatar-gradient-1">
-                                    JE
+                        @if(isset($recentPosts) && $recentPosts->isNotEmpty())
+                            <!-- Dynamic Database Real Blog Cards -->
+                            @foreach($recentPosts as $index => $post)
+                                <div class="card preview-card p-4 {{ $index === 1 ? 'align-self-end w-90' : '' }}">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            @if($post->user->avatar)
+                                                <img src="{{ asset($post->user->avatar) }}" class="rounded-circle object-fit-cover" style="width: 42px; height: 42px;" alt="Avatar">
+                                            @else
+                                                <div class="{{ $index === 0 ? 'avatar-gradient-1' : 'avatar-gradient-2' }}">
+                                                    {{ strtoupper(substr($post->user->name, 0, 2)) }}
+                                                </div>
+                                            @endif
+                                            <div>
+                                                <h6 class="mb-0 fw-bold">{{ $post->user->name }}</h6>
+                                                <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
+                                            </div>
+                                        </div>
+                                        <span class="badge bg-light text-brand rounded-pill px-2.5 py-1 small">
+                                            <i class="bi bi-clock me-1"></i>{{ max(1, ceil(str_word_count(strip_tags($post->content)) / 200)) }} min read
+                                        </span>
+                                    </div>
+                                    <h5 class="fw-bold mb-2">
+                                        <a href="{{ route('posts.show', $post->slug) }}" class="text-decoration-none text-dark hover-brand-link">
+                                            {{ $post->title }}
+                                        </a>
+                                    </h5>
+                                    <p class="text-secondary small mb-3">
+                                        {{ $post->excerpt ?? Str::limit(strip_tags($post->content), 140) }}
+                                    </p>
+                                    <div class="d-flex align-items-center gap-3 pt-3 border-top border-light-subtle text-muted small">
+                                        <span><i class="bi bi-heart-fill text-danger me-1"></i>{{ $post->likes()->count() }} likes</span>
+                                        <span><i class="bi bi-eye-fill text-secondary me-1"></i>{{ $post->views }} reads</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Jino Estillore</h6>
-                                    <small class="text-muted">Published in Technology &bull; posted 5 mins ago</small>
+                            @endforeach
+                        @else
+                            <!-- Fallback Simulated Premium Mock Blog Cards -->
+                            <div class="card preview-card p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="avatar-gradient-1">AM</div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">Amara Miller</h6>
+                                            <small class="text-muted">Technology &bull; Just now</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-light text-brand rounded-pill px-2.5 py-1 small">
+                                        <i class="bi bi-clock me-1"></i>5 min read
+                                    </span>
+                                </div>
+                                <h5 class="fw-bold mb-2">Designing for the future: Why simplicity is the ultimate sophistication</h5>
+                                <p class="text-secondary small mb-3">The design landscape is rapidly shifting. In a world of increasing complexity, creating products that feel natural and straightforward is becoming a rare art...</p>
+                                <div class="d-flex align-items-center gap-3 pt-3 border-top border-light-subtle text-muted small">
+                                    <span><i class="bi bi-heart-fill text-danger me-1"></i>124 likes</span>
+                                    <span><i class="bi bi-eye-fill text-secondary me-1"></i>2.4k reads</span>
                                 </div>
                             </div>
-                            <h5 class="fw-bold mb-2">Designing for the future: Why simplicity is the ultimate sophistication</h5>
-                            <p class="text-secondary small mb-0">The design landscape is rapidly shifting. In a world of increasing complexity, creating products that feel natural and straightforward is becoming a rare art...</p>
-                        </div>
 
-                        <!-- Preview Card 2 -->
-                        <div class="card preview-card p-4 align-self-end w-90">
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <div class="avatar-gradient-2">
-                                    JE
+                            <div class="card preview-card p-4 align-self-end w-90">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="avatar-gradient-2">KH</div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">Kenji Haneda</h6>
+                                            <small class="text-muted">Life &bull; 2 hours ago</small>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-light text-brand rounded-pill px-2.5 py-1 small">
+                                        <i class="bi bi-clock me-1"></i>8 min read
+                                    </span>
                                 </div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Jino Estillore</h6>
-                                    <small class="text-muted">Published in Life &bull; posted 8 mins ago</small>
+                                <h5 class="fw-bold mb-2">What living in rural Japan taught me about slow productivity</h5>
+                                <p class="text-secondary small mb-3">After years in busy Tokyo agencies, stepping into the countryside reshuffled everything I knew about producing great, sustainable work...</p>
+                                <div class="d-flex align-items-center gap-3 pt-3 border-top border-light-subtle text-muted small">
+                                    <span><i class="bi bi-heart-fill text-danger me-1"></i>98 likes</span>
+                                    <span><i class="bi bi-eye-fill text-secondary me-1"></i>1.8k reads</span>
                                 </div>
                             </div>
-                            <h5 class="fw-bold mb-2">What living in rural Japan taught me about slow productivity</h5>
-                            <p class="text-secondary small mb-0">After years in busy Tokyo agencies, stepping into the countryside reshuffled everything I knew about producing great work...</p>
-                        </div>
+                        @endif
                     </div>
                 </div>
 

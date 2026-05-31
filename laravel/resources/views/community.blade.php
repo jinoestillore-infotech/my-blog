@@ -35,8 +35,13 @@
                         </li>
                     </ul>
                     <div class="d-flex align-items-center gap-3">
+                        @auth
+                        <a href="{{ route('pages.index') }}" class="text-decoration-none text-secondary fw-semibold px-3">Dashboard</a>
+                        <a href="{{ route('tots-feed') }}" class="btn btn-brand px-4 text-nowrap">Enter Feed</a>
+                        @else
                         <a href="{{ route('login') }}" class="text-decoration-none text-secondary fw-semibold border rounded-pill px-4 py-2">Log in</a>
                         <a href="{{ route('register') }}" class="btn btn-brand px-4 text-nowrap">Get Started</a>
+                        @endauth
                     </div>
                 </div>
             </div>

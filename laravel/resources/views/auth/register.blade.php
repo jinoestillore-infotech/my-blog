@@ -80,7 +80,7 @@
                     </div>
                     <!-- Login Redirect Link -->
                     <div class="text-center mt-2">
-                        <a href="/login" class="btn btn-outline-custom w-100 rounded-pill py-2.5 small fw-bold text-decoration-none d-block">Log In</a>
+                        <a href="{{ route('login') }}" class="btn btn-outline-custom w-100 rounded-pill py-2.5 small fw-bold text-decoration-none d-block">Log In</a>
                     </div>
                 </div>
             </div>

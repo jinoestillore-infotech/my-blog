@@ -26,12 +26,12 @@
         <nav class="navbar navbar-expand-md navbar-custom py-2">
             <div class="container">
                 <!-- Logo -->
-                <a class="navbar-brand fw-extrabold fs-3 text-brand" href="{{ route('feed.index') }}" style="letter-spacing: -0.5px;">
+                <a class="navbar-brand fw-extrabold fs-3 text-brand" href="{{ route('tots-feed') }}" style="letter-spacing: -0.5px;">
                     tots<span class="text-accent">.</span>
                 </a>
                 <!-- Back navigation action -->
                 <div class="ms-auto">
-                    <a href="{{ route('feed.index') }}" class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2 d-flex align-items-center gap-2">
+                    <a href="{{ route('tots-feed') }}" class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2 d-flex align-items-center gap-2">
                         <i class="bi bi-arrow-left"></i> Back to Explore
                     </a>
                 </div>
@@ -118,7 +118,7 @@
                     </div>
                     <!-- Footer Return Button -->
                     <div class="text-center pt-3 border-top border-light-subtle">
-                        <a href="{{ route('feed.index') }}" class="btn btn-brand rounded-pill px-5 py-2.5 fw-bold">
+                        <a href="{{ route('tots-feed') }}" class="btn btn-brand rounded-pill px-5 py-2.5 fw-bold">
                             <i class="bi bi-rss me-1"></i> Return to Explore Feed
                         </a>
                     </div>

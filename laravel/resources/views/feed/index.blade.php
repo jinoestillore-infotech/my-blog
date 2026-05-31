@@ -102,7 +102,6 @@
                                                 {{ strtoupper(substr($suggestedUser->name, 0, 2)) }}
                                             </div>
                                         @endif
-                                        
                                         <!-- User Details -->
                                         <div class="flex-grow-1 overflow-hidden">
                                             <h6 class="mb-0 fw-bold text-dark text-truncate small">{{ $suggestedUser->name }}</h6>
@@ -185,8 +184,11 @@
                                         <!-- User details -->
                                         <div class="flex-grow-1">
                                             <h6 class="mb-0 fw-bold text-dark">{{ $post->user->name }}</h6>
-                                            <small class="text-muted">&#64;{{ $post->user->username }} &bull; {{ $post->created_at->diffForHumans() }}</small>
+                                            <small class="text-muted" style="font-size: .75rem;">&#64;{{ $post->user->username }} &bull; {{ $post->created_at->diffForHumans() }}</small>
                                         </div>
+                                        <span class="badge bg-light text-brand rounded-pill px-1.5 py-1 d-none d-lg-block" style="font-size: .75rem;">
+                                        <i class="bi bi-clock me-1"></i>{{ max(1, ceil(str_word_count(strip_tags($post->content)) / 200)) }} min read
+                                        </span>
                                     </div>
                                     <!-- Post Content Details -->
                                     <div class="px-4 pb-3">
@@ -195,6 +197,9 @@
                                             <a href="{{ route('posts.show', $post->slug) }}" class="text-decoration-none text-dark hover-brand-link">
                                                 {{ $post->title }}
                                             </a>
+                                            <span class="badge bg-light text-brand rounded-pill px-1.5 py-1 d-md-none d-sm-block" style="font-size: .75rem;">
+                                            <i class="bi bi-clock me-1"></i>{{ max(1, ceil(str_word_count(strip_tags($post->content)) / 200)) }} min read
+                                            </span>
                                         </h3>
                                         <!-- Excerpt -->
                                         <p class="text-secondary small mb-0 lh-base">
@@ -235,7 +240,14 @@
                         </div>
                         <!-- Paginated Navigation Controls -->
                         <div class="d-flex justify-content-center mt-5">
-                            {{ $posts->links('pagination::bootstrap-5') }}
+                            @if($posts->hasMorePages())
+                                <div class="text-center mt-5">
+                                    <a href="{{ $posts->nextPageUrl() }}"
+                                    class="btn btn-brand rounded-pill px-4">
+                                        Load More
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     @endif
                 </div>

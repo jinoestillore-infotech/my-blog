@@ -63,7 +63,7 @@
 
                     <!-- Register Redirect Link -->
                     <div class="text-center mt-2">
-                        <a href="/register" class="btn btn-outline-custom w-100 rounded-pill py-2.5 small fw-bold text-decoration-none d-block">Create an account</a>
+                        <a href="{{ route('register') }}" class="btn btn-outline-custom w-100 rounded-pill py-2.5 small fw-bold text-decoration-none d-block">Create an account</a>
                     </div>
                 </div>
             </div>
