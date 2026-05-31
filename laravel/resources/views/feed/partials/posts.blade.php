@@ -13,7 +13,17 @@
             @endif
             <!-- User details -->
             <div class="flex-grow-1">
-                <h6 class="mb-0 fw-bold text-dark">{{ $post->user->name }}</h6>
+                <div class="d-flex align-items-center gap-2">
+                    <h6 class="mb-0 fw-bold text-dark">
+                        {{ $post->user->name }}
+                    </h6>
+                    @if(isset($alreadyFollowingLookup[$post->user->id]))
+                        <span class="badge text-info border rounded-pill px-2 py-1 d-flex align-items-center gap-1">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Following
+                        </span>
+                    @endif
+                </div>
                 <small class="text-muted" style="font-size: .75rem;">&#64;{{ $post->user->username }} &bull; {{ $post->created_at->diffForHumans() }}</small>
             </div>
             <span class="badge bg-light text-brand rounded-pill px-1.5 py-1 d-none d-lg-block" style="font-size: .75rem;">

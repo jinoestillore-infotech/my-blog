@@ -62,6 +62,7 @@ class ExploreFeedController extends Controller
 
         // 2. Dynamic "Who to Follow"
         // Grab IDs of users the current author is already following
+        $alreadyFollowingLookup = $currentUser->following()->pluck('users.id')->flip();
         $alreadyFollowingIds = $currentUser->following()->pluck('user_id')->toArray();
 
         // 3. Query up to 5 registered users who are NOT the current user AND NOT already followed
@@ -117,6 +118,6 @@ class ExploreFeedController extends Controller
         // Take the top 5 trending tags to display in our view widget
         $trendingTags = array_slice(array_keys($tagScores), 0, 5);
 
-        return view('feed.index', compact('posts', 'suggestedUsers', 'trendingTags', 'likedPostIds'));
+        return view('feed.index', compact('posts', 'suggestedUsers', 'trendingTags', 'likedPostIds', 'alreadyFollowingIds', 'alreadyFollowingLookup'));
     }
 }

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Share Community/Feed style base -->
     <link rel="stylesheet" href="{{ asset('css/feed.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/toast.css') }}">
     <style>
         .popular-rank-badge {
             width: 32px;
@@ -138,50 +139,74 @@
         </div>
     </main>
 
-    <!-- Bootstrap Bundle with Popper JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Bootstrap Bundle with Popper JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="{{ asset('js/toast.js') }}"></script>
+<div class="toast-container position-fixed top-0 end-0 p-3" id="toastPlacement"></div>
+@if(session('success'))
+<script>
+    showToast(@json(session('success')), 'success');
+</script>
+@endif
 
-    <!-- Interactive AJAX Followers Module -->
-    <script>
-        function toggleFollow(btn, userId) {
-            btn.disabled = true;
+@if($errors->any())
+<script>
+    showToast(@json($errors->first()), 'error');
+</script>
+@endif
+<!-- Interactive AJAX Followers Module -->
+<script>
+    function toggleFollow(btn, userId) {
+        btn.disabled = true;
 
-            fetch(`/users/${userId}/follow`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                btn.disabled = false;
-                if (data.success) {
-                    // Instantly update the follower counter inside the specific item layout
-                    const counter = document.querySelector(`.follower-count-${userId}`);
-                    if (counter) {
-                        counter.textContent = data.followers_count;
-                    }
+        fetch(`/users/${userId}/follow`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(async response => {
+            const data = await response.json();
 
-                    if (data.is_following) {
-                        btn.textContent = 'Following';
-                        btn.classList.remove('btn-outline-brand');
-                        btn.classList.add('btn-brand', 'text-white');
-                    } else {
-                        btn.textContent = 'Follow';
-                        btn.classList.remove('btn-brand', 'text-white');
-                        btn.classList.add('btn-outline-brand');
-                    }
-                } else {
-                    alert(data.message || 'Something went wrong.');
-                }
-            })
-            .catch(error => {
-                btn.disabled = false;
-                console.error('AJAX Error toggling follow status:', error);
-            });
-        }
-    </script>
+            if (!response.ok) {
+                throw data;
+            }
+
+            return data;
+        })
+        .then(data => {
+            btn.disabled = false;
+
+            const counter = document.querySelector(`.follower-count-${userId}`);
+            if (counter) {
+                counter.textContent = data.followers_count;
+            }
+
+            if (data.is_following) {
+                btn.textContent = 'Following';
+                btn.classList.remove('btn-outline-brand');
+                btn.classList.add('btn-brand', 'text-white');
+
+                showToast('You are now following this writer.', 'success');
+            } else {
+                btn.textContent = 'Follow';
+                btn.classList.remove('btn-brand', 'text-white');
+                btn.classList.add('btn-outline-brand');
+
+                showToast('You unfollowed this writer.', 'success');
+            }
+        })
+        .catch(error => {
+            btn.disabled = false;
+
+            showToast(
+                error.message || 'Something went wrong.',
+                'error'
+            );
+        });
+    }
+</script>
 </body>
 </html>

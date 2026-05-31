@@ -54,7 +54,6 @@ class CommunityController extends Controller
     {
         // Fetch users sorted strictly by followers count, excluding the current user
         $popularWriters = User::withCount('followers')
-            ->where('id', '!=', Auth::id())
             ->orderBy('followers_count', 'desc')
             ->paginate(12);
 

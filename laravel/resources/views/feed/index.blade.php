@@ -250,7 +250,7 @@
                             </div>
                             
                             <hr class="opacity-10 my-3">
-                            <a href="#" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
+                            <a href="{{ route('popular') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
                                 View Popular Writers <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
