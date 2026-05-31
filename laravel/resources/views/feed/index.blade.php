@@ -100,10 +100,32 @@
                             </div>
                         </div>
                         <!-- Dynamic Who To Follow Card suggestions -->
-                        <div class="card community-widget-card d-lg-none d-md-block p-4 border-0 shadow-0 rounded-4 mb-4">
-                            <h6 class="fw-bold text-dark mb-3">
-                                <i class="bi bi-lightning-charge-fill text-accent me-1"></i>Who to Follow
-                            </h6>
+                        <div id="whoToFollowCard" class="card community-widget-card d-lg-none d-md-block p-4 border-0 shadow-0 rounded-4 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold text-dark mb-0">
+                                    <i class="bi bi-lightning-charge-fill text-accent me-1"></i>
+                                    Who to Follow
+                                </h6>
+
+                                <div class="dropdown">
+                                    <button class="btn btn-sm border-0 p-1 text-muted"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                        <li>
+                                            <button class="dropdown-item"
+                                                    onclick="hideWhoToFollowCard()">
+                                                <i class="bi bi-eye-slash me-2"></i>
+                                                Hide
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             <div class="d-flex flex-column gap-3">
                                 @forelse($suggestedUsers as $suggestedUser)
                                     <div class="d-flex align-items-center gap-3">
@@ -137,9 +159,16 @@
                             </div>
                             <h6 class="fw-bold text-dark mb-3 mt-4"><i class="bi bi-hash text-brand"></i>Trending Topics</h6>
                             <div class="d-flex flex-wrap gap-1.5">
-                                @forelse($trendingTags as $tag)
-                                    <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge" onclick="filterByTag('{{ $tag }}')">
-                                        #{{ $tag }}
+                                @forelse($trendingTags as $tag => $data)
+                                    <!-- Here is where we insert the dynamic data count in a small badge next to the tag name -->
+                                    <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge" 
+                                          style="cursor: pointer;" 
+                                          onclick="filterByTag('{{ $tag }}')"
+                                          title="Popularity score: {{ round($data['score'], 1) }}">
+                                        #{{ $tag }} 
+                                        <span class="ms-1 px-1.5 py-0.2 bg-white rounded-circle text-muted border" style="font-size: 0.65rem;">
+                                            {{ $data['count'] >= 9 ? '9+' : $data['count'] }}
+                                        </span>
                                     </span>
                                 @empty
                                     <span class="text-muted small">No popular topics this week.</span>
@@ -254,13 +283,20 @@
                                 View Popular Writers <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
-                        <!-- Trending Topics tag cloud (True Dynamic Algorithm Output) -->
-                        <div class="card community-widget-card d-none d-lg-block p-4 border-0 shadow-sm rounded-4">
+                        <!-- Trending Topics tag cloud (True Dynamic Algorithm Output with Mention Counts) -->
+                        <div class="card community-widget-card p-4 border-0 shadow-sm rounded-4">
                             <h6 class="fw-bold text-dark mb-3"><i class="bi bi-hash text-brand"></i>Trending Topics</h6>
                             <div class="d-flex flex-wrap gap-1.5">
-                                @forelse($trendingTags as $tag)
-                                    <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge" onclick="filterByTag('{{ $tag }}')">
-                                        #{{ $tag }}
+                                @forelse($trendingTags as $tag => $data)
+                                    <!-- Here is where we insert the dynamic data count in a small badge next to the tag name -->
+                                    <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge" 
+                                          style="cursor: pointer;" 
+                                          onclick="filterByTag('{{ $tag }}')"
+                                          title="Popularity score: {{ round($data['score'], 1) }}">
+                                        #{{ $tag }} 
+                                        <span class="ms-1 px-1.5 py-0.2 text-warning" style="font-size: 0.65rem;">
+                                            {{ $data['count'] >= 10 ? '9+' : $data['count'] }}
+                                        </span>
                                     </span>
                                 @empty
                                     <span class="text-muted small">No popular topics this week.</span>
@@ -277,6 +313,17 @@
     
     <!-- Real AJAX Database Like Handler -->
     <script>
+        function hideWhoToFollowCard() {
+            const card = document.getElementById('whoToFollowCard');
+
+            card.style.transition = 'opacity .3s ease';
+            card.style.opacity = '0';
+
+            setTimeout(() => {
+                card.remove();
+            }, 300);
+        }
+
         function toggleLike(btn, postId) {
             const icon = btn.querySelector('i');
             const countSpan = btn.querySelector('.reaction-count');

@@ -54,10 +54,21 @@ class ExploreFeedController extends Controller
             );
         }
 
-        $posts = $postsQuery
-            ->orderByDesc('created_at')
-            ->orderByDesc('id')
-            ->cursorPaginate(4)
+        $posts = $postsQuery 
+            ->orderByRaw(" 
+                ( 
+                    (views * 20) 
+                    + (likes_count * 25) 
+                    + CASE 
+                      WHEN created_at >= NOW() - INTERVAL 1 DAY THEN 10
+                      WHEN created_at >= NOW() - INTERVAL 3 DAY THEN 50 
+                      WHEN created_at >= NOW() - INTERVAL 4 DAY THEN 30 
+                      ELSE 0
+                    END 
+                    + (RAND() * 5)
+                ) DESC 
+            ") 
+            ->cursorPaginate(4) 
             ->withQueryString(); // Keeps the ?tag=... parameter intact during pagination links!
 
         // 2. Dynamic "Who to Follow"
@@ -80,6 +91,7 @@ class ExploreFeedController extends Controller
             ->get(['tags', 'views', 'created_at']);
 
         $tagScores = [];
+        $tagCounts = []; // NEW: Store raw mention count for view display
 
         foreach ($recentPosts as $post) {
             // Split comma-separated string tags and trim whitespace
@@ -105,9 +117,12 @@ class ExploreFeedController extends Controller
                 if (!empty($normalizedTag)) {
                     if (!isset($tagScores[$normalizedTag])) {
                         $tagScores[$normalizedTag] = 0;
+                        $tagCounts[$normalizedTag] = 0;
                     }
                     // Accumulate score contribution
                     $tagScores[$normalizedTag] += $postScoreContribution;
+                    // Increment raw mention count
+                    $tagCounts[$normalizedTag] += 1;
                 }
             }
         }
@@ -115,8 +130,15 @@ class ExploreFeedController extends Controller
         // Sort tags by score high to low, preserving keys
         arsort($tagScores);
 
-        // Take the top 5 trending tags to display in our view widget
-        $trendingTags = array_slice(array_keys($tagScores), 0, 5);
+        // Take the top 5 trending tags and package them with their counts
+        $trendingTags = [];
+        $topKeys = array_slice(array_keys($tagScores), 0, 5);
+        foreach ($topKeys as $tag) {
+            $trendingTags[$tag] = [
+                'score' => $tagScores[$tag],
+                'count' => $tagCounts[$tag] // Send mention count to view
+            ];
+        }
 
         return view('feed.index', compact('posts', 'suggestedUsers', 'trendingTags', 'likedPostIds', 'alreadyFollowingIds', 'alreadyFollowingLookup'));
     }
