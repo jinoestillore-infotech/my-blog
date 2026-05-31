@@ -22,7 +22,7 @@
         <nav class="navbar navbar-expand-md navbar-custom py-2">
             <div class="container">
                 <!-- Logo -->
-                <a class="navbar-brand fw-extrabold fs-3 text-brand" href="/feed" style="letter-spacing: -0.5px;">
+                <a class="navbar-brand fw-extrabold fs-3 text-brand" href="{{ route('feed.index') }}" style="letter-spacing: -0.5px;">
                     tots<span class="text-accent">.</span>
                 </a>
                 <!-- User Dropdown -->
@@ -85,17 +85,74 @@
                                 </a>
                             </div>
                         </div>
+                        <!-- Dynamic Who To Follow Card suggestions -->
+                        <div class="card community-widget-card d-md-none d-sm-block p-4 border-0 shadow-0 rounded-4 mb-4">
+                            <h6 class="fw-bold text-dark mb-3">
+                                <i class="bi bi-lightning-charge-fill text-accent me-1"></i>Who to Follow
+                            </h6>
+                            <div class="d-flex flex-column gap-3">
+                                @forelse($suggestedUsers as $suggestedUser)
+                                    <div class="d-flex align-items-center gap-3">
+                                        
+                                        <!-- User Avatar or Initials Fallback -->
+                                        @if($suggestedUser->avatar)
+                                            <img src="{{ asset($suggestedUser->avatar) }}" class="rounded-circle object-fit-cover" style="width: 38px; height: 38px;" alt="Avatar">
+                                        @else
+                                            <div class="rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold small" style="width: 38px; height: 38px;">
+                                                {{ strtoupper(substr($suggestedUser->name, 0, 2)) }}
+                                            </div>
+                                        @endif
+                                        
+                                        <!-- User Details -->
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h6 class="mb-0 fw-bold text-dark text-truncate small">{{ $suggestedUser->name }}</h6>
+                                            <small class="text-muted d-block text-truncate fs-11">&#64;{{ $suggestedUser->username }}</small>
+                                        </div>
+                                        
+                                        <!-- Interactive Follow Form Button Triggering FollowController AJAX -->
+                                        <button type="button" 
+                                                class="btn btn-sm rounded-pill px-2.5 py-1 follow-btn btn-outline-brand" 
+                                                onclick="toggleFollow(this, '{{ $suggestedUser->id }}')">
+                                            Follow
+                                        </button>
+                                    </div>
+                                @empty
+                                    <div class="text-center py-2">
+                                        <p class="text-secondary small mb-0">No suggestions right now!</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                            
+                            <hr class="opacity-10 my-3">
+                            <a href="#" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
+                                View Popular Writers <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <!-- CENTER FEED: The Social Explore Post Feed -->
                 <div class="col-12 col-md-8 col-lg-6 mx-auto">
                     <!-- Quick Feed Greeting Banner -->
                     <div class="d-flex justify-content-between align-items-center mb-4 px-1">
-                        <h4 class="fw-extrabold text-dark mb-0">Explore Feed</h4>
-                        <span class="badge bg-white text-brand border rounded-pill px-3 py-1.5 small fw-semibold">
-                            <span class="spinner-grow spinner-grow-sm text-brand me-1" style="width: 6px; height: 6px;" role="status" aria-hidden="true"></span>
-                            Live Updates
-                        </span>
+                        <h4 class="fw-semibold text-dark mb-0">
+                            @if(request('tag'))
+                                Tag: <span class="text-brand">#{{ request('tag') }}</span>
+                            @else
+                                Explore Feed
+                            @endif
+                        </h4>
+                        
+                        @if(request('tag'))
+                            <!-- Elegant Clear Filter Trigger -->
+                            <a href="{{ url()->current() }}" class="btn text-danger btn-sm rounded-pill px-3 py-1.5 fw-bold fs-9">
+                                <i class="bi bi-x-circle me-1"></i> Clear Filter
+                            </a>
+                        @else
+                            <span class="badge bg-white text-brand border rounded-pill px-3 py-1.5 small fw-semibold">
+                                <span class="spinner-grow spinner-grow-sm text-brand text-success me-1" style="width: 6px; height: 6px;" role="status" aria-hidden="true"></span>
+                                Live Updates
+                            </span>
+                        @endif
                     </div>
                     <!-- Dynamic Post Check -->
                     @if($posts->isEmpty())
@@ -186,11 +243,10 @@
                 <div class="col-md-4 col-lg-3"> <!-- d-none d-md-block -->
                     <div class="sticky-sidebar">
                         <!-- Dynamic Who To Follow Card suggestions -->
-                        <div class="card community-widget-card p-4 border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card community-widget-card d-none d-md-block p-4 border-0 shadow-sm rounded-4 mb-4">
                             <h6 class="fw-bold text-dark mb-3">
                                 <i class="bi bi-lightning-charge-fill text-accent me-1"></i>Who to Follow
                             </h6>
-                            
                             <div class="d-flex flex-column gap-3">
                                 @forelse($suggestedUsers as $suggestedUser)
                                     <div class="d-flex align-items-center gap-3">
@@ -225,19 +281,21 @@
                             </div>
                             
                             <hr class="opacity-10 my-3">
-                            <a href="{{ route('community') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
-                                View Creator Directory <i class="bi bi-chevron-right"></i>
+                            <a href="#" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
+                                View Popular Writers <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
-                        <!-- Trending Topics tag cloud -->
+                        <!-- Trending Topics tag cloud (True Dynamic Algorithm Output) -->
                         <div class="card community-widget-card p-4 border-0 shadow-sm rounded-4">
                             <h6 class="fw-bold text-dark mb-3"><i class="bi bi-hash text-brand"></i>Trending Topics</h6>
                             <div class="d-flex flex-wrap gap-1.5">
-                                <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge">#Technology</span>
-                                <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge">#Mindfulness</span>
-                                <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge">#Design</span>
-                                <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge">#Travel</span>
-                                <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge">#Laravel</span>
+                                @forelse($trendingTags as $tag)
+                                    <span class="badge bg-light text-secondary rounded-pill px-2.5 py-1.5 hover-badge" onclick="filterByTag('{{ $tag }}')">
+                                        #{{ $tag }}
+                                    </span>
+                                @empty
+                                    <span class="text-muted small">No popular topics this week.</span>
+                                @endforelse
                             </div>
                         </div>
                     </div>
@@ -325,6 +383,15 @@
                 btn.disabled = false;
                 console.error('Error handling follow process:', error);
             });
+        }
+
+        function filterByTag(tag) {
+            const url = new URL(window.location.href);
+            // Append target tag as query parameter
+            url.searchParams.set('tag', tag);
+            // Delete pagination parameter to prevent out-of-bounds page results on the new filter
+            url.searchParams.delete('page');
+            window.location.href = url.toString();
         }
     </script>
     

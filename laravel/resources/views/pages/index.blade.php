@@ -116,6 +116,10 @@
                                                 <i class="bi bi-pencil-square me-1"></i>Edit Story
                                             </a>
                                         </div>
+                                        <span class="text-secondary small d-flex align-items-center gap-1">
+                                            <i class="bi bi-eye"></i>
+                                            {{ $post->views }} reads
+                                        </span>
                                     </div>
                                 </div>
                             @endforeach

@@ -35,7 +35,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     // Facebook-style Social Explore Feed (Strictly Authenticated)
-    Route::get('/feed', [ExploreFeedController::class, 'index'])->name('feed.index');
+    Route::get('/tots-feed', [ExploreFeedController::class, 'index'])->name('feed.index');
 
     Route::get('/tots', [DashboardController::class, 'index'])->name('pages.index');
     // Secure Post writing operations
