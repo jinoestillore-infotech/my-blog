@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExploreFeedController;
 use App\Http\Controllers\FollowController;
@@ -35,8 +36,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     // Facebook-style Social Explore Feed (Strictly Authenticated)
-    Route::get('/tots-feed', [ExploreFeedController::class, 'index'])->name('feed.index');
-
+    Route::get('/tots-feed', [ExploreFeedController::class, 'index'])->name('tots-feed');
+    // Community & Popularity Directories
+    // Route::get('/community', [CommunityController::class, 'index'])->name('community');
+    Route::get('/popular', [CommunityController::class, 'popular'])->name('popular');
     Route::get('/tots', [DashboardController::class, 'index'])->name('pages.index');
     // Secure Post writing operations
     Route::get('/my-tots', [PostController::class, 'index'])->name('posts.index');

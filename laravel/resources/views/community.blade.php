@@ -43,11 +43,10 @@
         </nav>
     </header>
     <!-- Main Section -->
-    <main class="py-5">
+    <main class="py-5 pt-3">
         <div class="container">
             <!-- Community Hero Section -->
             <div class="text-center max-w-2xl mx-auto mb-5">
-                <span class="badge bg-brand-light text-dark rounded-pill px-3 py-2 fw-semibold mb-3">Tots Directory</span>
                 <h1 class="display-5 fw-extrabold text-dark mb-3">Meet the Makers of Tots</h1>
                 <p class="lead text-secondary mx-auto" style="max-width: 650px;">
                     Discover amazing storytellers, professional builders, creative artists, and thought leaders pushing the limits of collaborative blogging.

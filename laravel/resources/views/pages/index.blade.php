@@ -37,7 +37,7 @@
             </div>
 
             <div class="d-flex align-items-center gap-2 mb-3">
-                <a href="{{ route('feed.index') }}" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3">
+                <a href="{{ route('tots-feed') }}" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3">
                     <i class="bi bi-globe me-1"></i> Explore Feed
                 </a>
             </div>

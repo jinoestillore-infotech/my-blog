@@ -22,7 +22,7 @@
         <nav class="navbar navbar-expand-md navbar-custom py-2">
             <div class="container">
                 <!-- Logo -->
-                <a class="navbar-brand fw-extrabold fs-3 text-brand" href="{{ route('feed.index') }}" style="letter-spacing: -0.5px;">
+                <a class="navbar-brand fw-extrabold fs-3 text-brand" href="{{ route('tots-feed') }}" style="letter-spacing: -0.5px;">
                     tots<span class="text-accent">.</span>
                 </a>
                 <!-- User Dropdown -->
@@ -124,7 +124,7 @@
                             </div>
                             
                             <hr class="opacity-10 my-3">
-                            <a href="#" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
+                            <a href="{{ route('popular') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
                                 View Popular Writers <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>

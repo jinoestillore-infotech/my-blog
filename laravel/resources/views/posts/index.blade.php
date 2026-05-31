@@ -37,7 +37,7 @@
                 <i class="bi bi-arrow-left"></i> Back to Dashboard
             </a>
             <!-- Library Heading and Header Controls -->
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
                 <div>
                     <h1 class="fw-extrabold text-dark tracking-tight mb-1">Tots Library</h1>
                     <p class="text-muted mb-0">Manage, organize, edit, and keep track of your drafts and published works.</p>
@@ -54,6 +54,9 @@
                         Drafts ({{ $draftCount }})
                     </a>
                 </div>
+            </div>
+            <div class="mb-4">
+                <a href="{{ route('posts.create') }}" class="btn btn-brand rounded-pill px-4">Write Story</a>
             </div>
             <!-- Empty State Check -->
             @if($posts->isEmpty())
