@@ -66,6 +66,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'excerpt' => 'nullable|string|max:500',
+            'tags' => 'nullable|string|max:255',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'status' => 'required|in:draft,published',
         ]);
@@ -99,6 +100,7 @@ class PostController extends Controller
             'slug' => $slug,
             'content' => $request->content,
             'excerpt' => $request->excerpt ?? Str::limit(strip_tags($request->content), 150),
+            'tags' => $request->tags,
             'featured_image' => $imagePath,
             'status' => $request->status,
         ]);
@@ -114,19 +116,12 @@ class PostController extends Controller
 
         // Increment reads uniquely only if the user has not viewed this post yet
         if (Auth::check()) {
-            $viewExists = DB::table('post_views')
-                ->where('user_id', Auth::id())
-                ->where('post_id', $post->id)
-                ->exists();
+            $user = Auth::user();
 
-            if (!$viewExists) {
-                // Register unique view record
-                DB::table('post_views')->insert([
-                    'user_id' => Auth::id(),
-                    'post_id' => $post->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+            // Standard Eloquent relationship existence check
+            if (!$post->viewsRelation()->where('user_id', $user->id)->exists()) {
+                // Register unique view record using attach()
+                $post->viewsRelation()->attach($user->id);
 
                 // Increment total view count on posts table safely
                 $post->increment('views');
@@ -183,6 +178,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'excerpt' => 'nullable|string|max:500',
+            'tags' => 'nullable|string|max:255',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'status' => 'required|in:draft,published',
         ]);
@@ -216,6 +212,7 @@ class PostController extends Controller
         $post->content = $request->content;
         $post->excerpt = $request->excerpt ?? Str::limit(strip_tags($request->content), 150);
         $post->status = $request->status;
+        $post->tags = $request->tags;
         $post->save();
 
         return redirect()->route('posts.index')->with('success', 'Your story has been updated!');

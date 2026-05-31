@@ -22,6 +22,7 @@ class Post extends Model
         'excerpt',
         'featured_image',
         'status',
+        'tags',
         'views',
     ];
 
@@ -48,6 +49,14 @@ class Post extends Model
     public function likes()
     {
         return $this->belongsToMany(User::class, 'post_likes');
+    }
+
+    /**
+     * Relationship: Unique user views tracking.
+     */
+    public function viewsRelation()
+    {
+        return $this->belongsToMany(User::class, 'post_views')->withTimestamps();
     }
 
     

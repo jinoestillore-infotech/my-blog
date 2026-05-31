@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Tots - Explore Stories and Connect with Bloggers</title>
-
     <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -184,7 +183,7 @@
                     @endif
                 </div>
                 <!-- RIGHT SIDEBAR: Community Widget suggestions & Trending Topics -->
-                <div class="col-md-4 col-lg-3 d-none d-md-block">
+                <div class="col-md-4 col-lg-3"> <!-- d-none d-md-block -->
                     <div class="sticky-sidebar">
                         <!-- Dynamic Who To Follow Card suggestions -->
                         <div class="card community-widget-card p-4 border-0 shadow-sm rounded-4 mb-4">

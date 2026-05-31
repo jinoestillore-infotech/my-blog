@@ -93,7 +93,7 @@
                                 <i class="bi bi-sliders text-brand"></i> Publish Controls
                             </h5>
                             <!-- Cover/Featured Image Upload Zone -->
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <label class="form-label text-uppercase tracking-wide small fw-bold text-muted">Cover Image</label>
                                 <div class="upload-zone position-relative text-center p-4 rounded-4" id="upload-zone">
                                     <input type="file" 
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                             <!-- Post Visibility Status -->
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <label for="status" class="form-label text-uppercase tracking-wide small fw-bold text-muted">Visibility Status</label>
                                 <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
                                     <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Save as Draft</option>
@@ -130,7 +130,7 @@
                                 @enderror
                             </div>
                             <!-- Custom Story Excerpt (Optional Summary) -->
-                            <div class="mb-4">
+                            <div class="mb-2">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <label for="excerpt" class="form-label text-uppercase tracking-wide small fw-bold text-muted mb-0">Story Excerpt</label>
                                     <span class="text-muted" style="font-size: 0.75rem;">Optional</span>
@@ -141,11 +141,24 @@
                                           rows="3" 
                                           maxlength="500" 
                                           placeholder="A short, catchy summary for preview cards...">{{ old('excerpt') }}</textarea>
-                                <div class="form-text text-muted small">
+                                <div class="form-text text-primary small" style="font-size: .75rem";>
                                     If left empty, we will auto-generate one from your main text.
                                 </div>
                                 @error('excerpt')
                                     <div class="invalid-feedback mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <!-- NEW: Tags Input Field Section -->
+                            <div class="mb-4">
+                                <label for="tags" class="form-label text-uppercase tracking-wide small fw-bold text-muted">
+                                    Story Tags (Keywords)
+                                </label>
+                                <input type="text" name="tags" id="tags" class="form-control rounded-3 @error('tags') is-invalid @enderror" value="{{ old('tags') }}" placeholder="e.g., Technology, Life, Productivity, Coding">
+                                <div class="form-text text-muted fs-11 mt-1.5">
+                                    <span class="text-primary" style="font-size: 0.75rem;">Separate individual tags with commas. These drive the trending topics algorithms.</span>
+                                </div>
+                                @error('tags')
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <!-- Submit and Save Action Buttons -->

@@ -88,12 +88,25 @@
                                 <i class="bi bi-sliders2 text-brand"></i>Publishing Settings
                             </h5>
                             <!-- Document Status Select -->
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <label for="status" class="form-label text-uppercase text-muted tracking-wide small fw-bold">Post Visibility Status</label>
                                 <select class="form-select custom-select" name="status" id="status">
                                     <option value="draft" {{ old('status', $post->status) === 'draft' ? 'selected' : '' }}>Draft (Private)</option>
                                     <option value="published" {{ old('status', $post->status) === 'published' ? 'selected' : '' }}>Published (Public)</option>
                                 </select>
+                            </div>
+                            <!-- NEW: Tags Editing Input Field Section -->
+                            <div class="mb-3">
+                                <label for="tags" class="form-label text-uppercase tracking-wide small fw-bold text-muted">
+                                    Story Tags (Keywords)
+                                </label>
+                                <input type="text" name="tags" id="tags" class="form-control rounded-3 @error('tags') is-invalid @enderror" value="{{ old('tags', $post->tags) }}" placeholder="e.g., Technology, Life, Productivity, Coding">
+                                <div class="form-text text-muted fs-11 mt-1.5">
+                                    <span class="text-primary" style="font-size: 0.75rem;">Keep tags split by commas so our search index maps your update correctly.</span>
+                                </div>
+                                @error('tags')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <!-- Cover Image upload block -->
                             <div class="mb-4">
@@ -114,7 +127,9 @@
                                 </div>
                                 <div class="mt-3 mb-0 pb-0">
                                     <input class="form-control form-control-sm border-0 bg-light rounded-pill" type="file" id="featured_image" name="featured_image" accept="image/*" onchange="previewUpload(this)">
-                                    <small class="text-muted d-block mt-1.5 fs-11">Recommended resolution: 1200x630. If empty, the existing image will remain.</small>
+                                    <div class="form-text text-muted fs-11 mt-1.5">
+                                        <span class="text-primary" style="font-size: 0.75rem;">Recommended resolution: 1200x630. If empty, the existing image will remain.</span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Actions triggers -->
