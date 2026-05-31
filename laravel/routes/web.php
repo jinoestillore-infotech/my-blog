@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\AIController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExploreFeedController;
@@ -69,6 +70,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    Route::post('/ai/improve', [AIController::class, 'improve'])->name('ai.improve');
 });
 
 // Public route to read individual posts (kept safe for later!)
