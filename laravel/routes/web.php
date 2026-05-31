@@ -33,9 +33,12 @@ Route::get('/terms-of-service', function () {
     return view('terms-of-service');
     })->name('terms');
 
-Route::get('/community', function () {
-        return view('community');
-    })->name('community');
+// Route::get('/community', function () {
+//         return view('community');
+//     })->name('community');
+
+// Community & Popularity Directories
+Route::get('/community', [CommunityController::class, 'index'])->name('community');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register-tots-account', [RegisterController::class, 'show'])->name('register');
@@ -48,8 +51,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     // Facebook-style Social Explore Feed (Strictly Authenticated)
     Route::get('/tots-feed', [ExploreFeedController::class, 'index'])->name('tots-feed');
-    // Community & Popularity Directories
-    // Route::get('/community', [CommunityController::class, 'index'])->name('community');
+
     Route::get('/popular', [CommunityController::class, 'popular'])->name('popular');
     Route::get('/tots', [DashboardController::class, 'index'])->name('pages.index');
     // Secure Post writing operations

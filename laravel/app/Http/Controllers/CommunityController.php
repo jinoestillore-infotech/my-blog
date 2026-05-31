@@ -14,36 +14,36 @@ class CommunityController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
      * Display the dynamic community directory sorted by popularity (followers count).
      */
-    // public function index(Request $request)
-    // {
-    //     $search = $request->query('search');
+    public function index(Request $request)
+    {
+        $search = $request->query('search');
 
-    //     // Start a query count on the followers relationship
-    //     $query = User::withCount('followers')
-    //         ->where('id', '!=', Auth::id()); // Exclude the current logged-in user
+        // Start a query count on the followers relationship
+        $query = User::withCount('followers')
+            ->where('id', '!=', Auth::id()); // Exclude the current logged-in user
 
-    //     // Handle the live search input from the directory search bar
-    //     if (!empty($search)) {
-    //         $query->where(function($q) use ($search) {
-    //             $q->where('name', 'LIKE', "%{$search}%")
-    //               ->orWhere('username', 'LIKE', "%{$search}%")
-    //               ->orWhere('bio', 'LIKE', "%{$search}%");
-    //         });
-    //     }
+        // Handle the live search input from the directory search bar
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('username', 'LIKE', "%{$search}%")
+                  ->orWhere('bio', 'LIKE', "%{$search}%");
+            });
+        }
 
-    //     // Sort by followers count (popularity) and paginate
-    //     $writers = $query->orderBy('followers_count', 'desc')
-    //         ->paginate(9)
-    //         ->withQueryString();
+        // Sort by followers count (popularity) and paginate
+        $writers = $query->orderBy('followers_count', 'desc')
+            ->paginate(9)
+            ->withQueryString();
 
-    //     return view('community', compact('writers', 'search'));
-    // }
+        return view('community', compact('writers', 'search'));
+    }
 
     /**
      * Display the dedicated Popular Writers ranking workspace.
