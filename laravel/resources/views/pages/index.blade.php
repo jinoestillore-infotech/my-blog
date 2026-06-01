@@ -145,19 +145,23 @@
                             <p class="text-muted small px-2">
                                 {{ Auth::user()->bio ?? "No author bio added yet. Tell the community who you are!" }}
                             </p>
-                            <hr class="text-muted opacity-20">
-                            <div class="m-1 d-flex align-items-center gap-2">
-                                <a href="{{ route('profile.edit') }}" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-2">
-                                    <i class="bi bi-gear me-1"></i> Edit Author Profile
+                            <!-- Mini Follow Stats details in sidebar -->
+                            <div class="d-flex justify-content-center gap-5 mb-1 text-center small">
+                                <div class="m-0">
+                                    <span class="d-block fw-bold text-dark small">{{ $followersCount }}</span>
+                                    <span class="text-muted fs-11 small">Followers</span>
+                                </div>
+                                <div class="border-start opacity-20"></div>
+                                <div>
+                                    <span class="d-block fw-bold text-dark small">{{ $followingCount }}</span>
+                                    <span class="text-muted fs-11 small">Following</span>
+                                </div>
+                            </div>
+                            <hr class="text-muted opacity-20 m-0 mb-4">
+                            <div class="m-1 d-flex justify-content-center align-items-center gap-2">
+                                <a href="{{ route('profile.show', Auth::user()->username) }}" class="btn btn-brand btn-sm rounded-pill px-3 py-1">
+                                    <i class="bi bi-person-fill me-1"></i> View My Profile
                                 </a>
-                                <!-- Secure Logout Link -->
-                                <a href="#" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-2" 
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="bi bi-box-arrow-right me-1"></i> Logout
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
                             </div>
                         </div>
                     </div>

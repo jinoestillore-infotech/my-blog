@@ -39,6 +39,8 @@ Route::get('/terms-of-service', function () {
 
 // Community & Popularity Directories
 Route::get('/community', [CommunityController::class, 'index'])->name('community');
+// Publicly viewable Author Profiles
+Route::get('/writers/{username}', [ProfileController::class, 'show'])->name('profile.show');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register-tots-account', [RegisterController::class, 'show'])->name('register');

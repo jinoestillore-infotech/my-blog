@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -15,6 +16,25 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    /**
+     * Display a specific writer's public profile containing all published posts.
+     */
+    public function show($username)
+    {
+        // Fetch user based on unique username
+        $user = User::where('username', $username)
+            ->withCount(['followers', 'following'])
+            ->firstOrFail();
+
+        // Paginate user's active published articles
+        $posts = $user->posts()
+            ->published()
+            ->latest()
+            ->paginate(6);
+
+        return view('profile.show', compact('user', 'posts'));
     }
 
     /**
@@ -76,6 +96,6 @@ class ProfileController extends Controller
         $user->bio = $request->bio;
         $user->save();
 
-        return redirect()->route('pages.index')->with('success', 'Your profile was updated successfully!');
+        return redirect()->route('profile.show', $user->username)->with('success', 'Your profile was updated successfully!');
     }
 }
