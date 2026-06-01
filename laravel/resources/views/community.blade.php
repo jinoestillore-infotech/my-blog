@@ -134,7 +134,7 @@
             </div>
 
             <div class="d-flex justify-content-center my-4">
-                {{ $writers->links('pagination::bootstrap-5') }}
+                {{ $writers->links('pagination::simple-bootstrap-5') }}
             </div>
 
             @guest

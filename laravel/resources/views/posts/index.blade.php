@@ -27,6 +27,9 @@
                     </a>
                     <span class="text-muted border-start ps-3 py-1">My Library</span>
                 </div>
+                <a href="{{ route('tots-feed') }}" class="btn btn-primary-custom text-decoration-none ms-lg-auto rounded-3" title="Tots Feed">
+                    <i class="bi bi-globe"></i>
+                </a>
             </div>
         </nav>
     </header>

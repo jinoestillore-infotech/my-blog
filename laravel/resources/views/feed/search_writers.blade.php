@@ -162,7 +162,7 @@
             </div>
             <!-- Beautiful Pagination Controls -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $writers->links('pagination::bootstrap-5') }}
+                {{ $writers->links('pagination::simple-bootstrap-5') }}
             </div>
 
         </div>

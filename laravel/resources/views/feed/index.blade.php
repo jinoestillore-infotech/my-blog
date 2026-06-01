@@ -38,7 +38,7 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
                         <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('pages.index') }}">
+                            <a class="dropdown-item d-flex align-items-center gap-2 small" href="{{ route('pages.index') }}">
                                 <i class="bi bi-speedometer2"></i>
                                 Dashboard
                             </a>
@@ -47,7 +47,7 @@
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                                <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger small">
                                     <i class="bi bi-box-arrow-right"></i>
                                     Logout
                                 </button>
@@ -80,7 +80,7 @@
                 <div class="col-12 col-lg-3">
                     <div class="sticky-sidebar">
                         <!-- Logged In User Quick Sidebar Info Card -->
-                        <div class="card profile-card p-4 border-0 shadow-sm rounded-4 text-center mb-4">
+                        <div class="card profile-card p-4 border-0 shadow-sm rounded-4 text-center mb-2">
                             @if(Auth::user()->avatar)
                                 <img src="{{ asset(Auth::user()->avatar) }}" class="profile-avatar mx-auto mb-3 object-fit-cover d-none d-lg-block" alt="Avatar">
                             @else
@@ -98,6 +98,11 @@
                                     <i class="bi bi-journal-bookmark-fill me-1"></i> My Library
                                 </a>
                             </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2 m-1 p-3 bg-white card shadow-sm border-0">
+                            <a href="{{ route('popular') }}" class="text-brand text-decoration-none small fw-semibold gap-1">
+                                View Popular Writers <i class="bi bi-chevron-right"></i>
+                            </a>
                         </div>
                         <!-- Dynamic Who To Follow Card suggestions -->
                         <div id="whoToFollowCard" class="card community-widget-card d-lg-none d-md-block p-4 border-0 shadow-0 rounded-4 mb-4">
@@ -175,8 +180,8 @@
                                 @endforelse
                             </div>
                             <hr class="opacity-10 my-3">
-                            <a href="{{ route('popular') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
-                                View Popular Writers <i class="bi bi-chevron-right"></i>
+                            <a href="{{ route('writers.search') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
+                                Follow/Search Writers <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
                     </div>
@@ -279,8 +284,8 @@
                             </div>
                             
                             <hr class="opacity-10 my-3">
-                            <a href="{{ route('popular') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
-                                View Popular Writers <i class="bi bi-chevron-right"></i>
+                            <a href="{{ route('writers.search') }}" class="text-brand text-decoration-none small fw-semibold d-flex align-items-center gap-1">
+                                Follow/Search Writers <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
                         <!-- Trending Topics tag cloud (True Dynamic Algorithm Output with Mention Counts) -->
