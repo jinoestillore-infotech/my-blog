@@ -119,6 +119,9 @@
                                 <p class="text-secondary small mb-0 lh-base">
                                     {{ $post->user->bio ?? "This author hasn't updated their profile bio yet. Check out more stories on their Tots dashboard." }}
                                 </p>
+                                <a href="{{ route('profile.show', $post->user->username) }}" class="btn btn-brand mt-3 text-decoration-none">
+                                    Visit Profile
+                                </a>
                             </div>
                         </div>
                     </div>

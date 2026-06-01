@@ -169,7 +169,7 @@
                             <div class="mb-3">
                                 <label class="form-label text-dark small fw-bold">Your Secret Answer</label>
                                 <input type="password" name="security_answer" id="security_answer" class="form-control rounded-3" 
-                                       placeholder="{{ $user->security_answer ? '•••••••• (Already Configured)' : 'Your recovery answer...' }}" required>
+                                       placeholder="{{ $user->security_answer ? '(Already Configured)' : 'Your recovery answer...' }}" required>
                                 <div class="form-text text-muted" style="font-size: 11px;">Answers are stored using modern hashes and are completely confidential.</div>
                             </div>
 
@@ -183,7 +183,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-outline-brand w-100 rounded-pill py-2 fw-bold">
+                            <button type="submit" class="btn btn-brand w-100 rounded-pill py-2.5 fw-bold">
                                 Save Recovery Setup
                             </button>
                         </form>
