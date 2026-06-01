@@ -54,23 +54,31 @@ class ExploreFeedController extends Controller
             );
         }
 
+        // Time limits computed via Carbon to ensure Timezone synchronization between PHP and MySQL
+        $oneDayAgo = Carbon::now()->subDay();
+        $twoDaysAgo = Carbon::now()->subDays(2);
+        $threeDaysAgo = Carbon::now()->subDays(3);
+        $fourDaysAgo = Carbon::now()->subDays(4);
+
+        // Sorting algorithm with stabilized pagination (Removing RAND() to prevent duplicate post loads)
         $posts = $postsQuery 
             ->orderByRaw(" 
-                ( 
-                    (views * 20) 
-                    + (likes_count * 25) 
+                (
+                    (views * 2) 
+                    + (likes_count * 3) 
                     + CASE 
-                      WHEN created_at >= NOW() - INTERVAL 1 DAY THEN 10
-                      WHEN created_at >= NOW() - INTERVAL 3 DAY THEN 50 
-                      WHEN created_at >= NOW() - INTERVAL 4 DAY THEN 30 
+                      WHEN created_at >= ? THEN 4
+                      WHEN created_at >= ? THEN 3
+                      WHEN created_at >= ? THEN 5
+                      WHEN created_at >= ? THEN 2
                       ELSE 0
-                    END 
-                    + (RAND() * 5)
-                ) DESC 
-            ") 
-            ->cursorPaginate(4) 
+                    END
+                ) DESC, 
+                id DESC
+            ", [$oneDayAgo, $twoDaysAgo, $threeDaysAgo, $fourDaysAgo]) 
+            ->paginate(15) 
             ->withQueryString(); // Keeps the ?tag=... parameter intact during pagination links!
-
+        
         // 2. Dynamic "Who to Follow"
         // Grab IDs of users the current author is already following
         $alreadyFollowingLookup = $currentUser->following()->pluck('users.id')->flip();
@@ -85,9 +93,16 @@ class ExploreFeedController extends Controller
 
         // 4. Dynamic "Trending Topics" Algorithm (Our Base Rules)
         // Retrieve tags, views, and creation dates of posts published in the last 30 days
+        // $recentPosts = Post::where('status', 'published')
+        //     ->whereNotNull('tags')
+        //     ->where('created_at', '>=', Carbon::now()->subDays(30))
+        //     ->get(['tags', 'views', 'created_at']);
+
         $recentPosts = Post::where('status', 'published')
             ->whereNotNull('tags')
-            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->where('created_at', '>=', now()->subDays(30))
+            ->orderByDesc('views')
+            ->limit(500) // cap workload
             ->get(['tags', 'views', 'created_at']);
 
         $tagScores = [];

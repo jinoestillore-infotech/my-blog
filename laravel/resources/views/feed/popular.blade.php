@@ -79,7 +79,7 @@
                             <div class="d-flex align-items-center gap-3 overflow-hidden">
                                 <!-- Rank Number Indicator -->
                                 @php 
-                                    $rank = $popularWriters->firstItem() + $index; 
+                                    $rank = $index + 1; 
                                 @endphp
                                 <div class="popular-rank-badge rounded-circle d-flex align-items-center justify-content-center fw-extrabold 
                                     {{ $rank == 1 ? 'rank-1' : '' }} 
@@ -138,9 +138,11 @@
             </div>
 
             <!-- Beautiful Pagination Controls -->
-            <div class="d-flex justify-content-center mt-4">
-                {{ $popularWriters->links('pagination::bootstrap-5') }}
-            </div>
+            @if(method_exists($popularWriters, 'links'))
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $popularWriters->links('pagination::bootstrap-5') }}
+                </div>
+            @endif
 
         </div>
     </main>
@@ -197,7 +199,7 @@
                         showToast('You unfollowed this writer.', 'success');
                     }
                 } else {
-                    alert(data.message || 'Something went wrong.');
+                    showToast(data.message || 'You unfollowed this writer.', 'error');
                 }
             })
             .catch(error => {

@@ -47,6 +47,20 @@ border-bottom: 1px solid #f1f5f9;
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
 }
 
+.btn-outline-brand {
+color: var(--brand-primary);
+border: 1px solid var(--brand-primary);
+background-color: transparent;
+font-weight: 600;
+font-size: 0.75rem;
+transition: all 0.2s ease;
+}
+.btn-outline-brand:hover {
+color: #ffffff;
+background-color: var(--brand-primary);
+transform: translateY(-1px);
+}
+
 /* Search Box Container */
 .search-box {
 border-color: #e2e8f0 !important;

@@ -101,17 +101,22 @@
 
                             <div class="d-flex align-items-center justify-content-between pt-3 border-top border-light-subtle">
                                 <span class="text-muted small">
-                                    <strong class="text-dark follower-count-{{ $writer->id }}">{{ $writer->followers_count }}</strong> Followers
+                                    <strong class="text-dark follower-count-{{ $writer->id }}">
+                                        {{ $writer->followers_count }}
+                                    </strong>
+                                    Follower{{ $writer->followers_count <= 1 ? '' : 's' }}
                                 </span>
 
                                 @auth
-                                    <button type="button" 
-                                            class="btn btn-sm rounded-pill px-3 framework-follow-btn {{ Auth::user()->isFollowing($writer->id) ? 'btn-brand py-1 text-white' : 'btn-outline-dark' }}" 
-                                            onclick="toggleCommunityFollow(this, '{{ $writer->id }}')">
-                                        {{ Auth::user()->isFollowing($writer->id) ? 'Following' : 'Follow' }}
+                                    @php $isFollowing = isset($followingIds[$writer->id]); @endphp
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm rounded-pill px-3 framework-follow-btn {{ $isFollowing ? 'btn-brand py-1 text-white' : 'btn-outline-dark' }}"
+                                        onclick="toggleCommunityFollow(this, '{{ $writer->id }}')">
+                                        {{ $isFollowing ? 'Following' : 'Follow' }}
                                     </button>
                                 @else
-                                    <a href="{{ route('login') }}" class="btn btn-outline-dark btn-sm px-3 rounded-pill">Follow</a>
+                                    <a href="{{ route('login') }}" class="btn btn-outline-brand btn-sm rounded-pill px-3 py-1.5 fs-11 fw-semibold follow-btn">Follow</a>
                                 @endauth
                             </div>
                         </div>

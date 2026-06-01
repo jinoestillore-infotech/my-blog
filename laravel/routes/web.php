@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/popular', [CommunityController::class, 'popular'])->name('popular');
     Route::get('/tots', [DashboardController::class, 'index'])->name('pages.index');
+
+    Route::get('/tots-writers/search', [CommunityController::class, 'findWriters'])->name('writers.search');
     // Secure Post writing operations
     Route::get('/my-tots', [PostController::class, 'index'])->name('posts.index');
     Route::get('/write-a-tots', [PostController::class, 'create'])->name('posts.create');
@@ -70,7 +72,6 @@ Route::middleware('auth')->group(function () {
     // Dynamic User Profile Settings Workspace
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::post('/ai/improve', [AIController::class, 'improve'])->name('ai.improve');
