@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Tots - A platform where bloggers connect, share stories, and grow together</title>
-
+    <link rel="icon" type="image/png" href="{{ asset('images/logo/tots.png') }}">
     <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
