@@ -53,19 +53,26 @@
                         <div class="profile-avatar-container">
                             @if($user->avatar)
                                 <img src="{{ asset($user->avatar) }}" class="profile-avatar object-fit-cover rounded-circle" alt="{{ $user->name }}">
+                                <div class="d-flex justify-content-center my-2">
+                                    <span class="badge {{ $user->rank_badge_class }} rounded-pill px-2.5 py-1.5 fs-11 mt-1">
+                                        {{ $user->rank_title }}
+                                    </span>
+                                </div>
                             @else
                                 <div class="profile-avatar rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-extrabold fs-1 border">
                                     {{ strtoupper(substr($user->name, 0, 2)) }}
+                                </div>
+                                <div class="d-flex justify-content-center my-2">
+                                    <span class="badge {{ $user->rank_badge_class }} rounded-pill px-2.5 py-1.5 fs-11 mt-1">
+                                        {{ $user->rank_title }}
+                                    </span>
                                 </div>
                             @endif
                         </div>
                         <!-- User Info -->
                         <div class="text-center text-md-start flex-grow-1">
                             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-2 mb-1">
-                                <h1 class="h2 fw-extrabold text-dark mb-0">{{ $user->name }}</h1>
-                                <span class="badge {{ $user->rank_badge_class }} rounded-pill px-2.5 py-1.5 fs-11 mt-1">
-                                    {{ $user->rank_title }}
-                                </span>
+                                <h1 class="h2 fw-extrabold text-dark mb-0 mt-2">{{ $user->name }}</h1>
                             </div>
                             <p class="text-brand fs-6 fw-semibold mb-2">&#64;{{ $user->username }}</p>
                             <!-- Social Counter stats -->
@@ -94,7 +101,7 @@
                                     <button type="button" 
                                             class="btn {{ Auth::user()->isFollowing($user->id) ? 'btn-brand text-white' : 'btn-outline-brand' }} rounded-pill px-4 py-2.5 fw-bold" 
                                             onclick="toggleProfileFollow(this, '{{ $user->id }}')">
-                                        {{ Auth::user()->isFollowing($user->id) ? 'Following' : 'Follow Creator' }}
+                                        {{ Auth::user()->isFollowing($user->id) ? 'Following' : 'Follow' }}
                                     </button>
                                 @endif
                             @else

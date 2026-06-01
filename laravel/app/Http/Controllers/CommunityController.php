@@ -27,10 +27,6 @@ class CommunityController extends Controller
         // Start a query count on the followers relationship
         $query = User::withCount('followers');
 
-        if (Auth::check()) {
-            $query->where('id', '!=', Auth::id());
-        }
-
         // Handle the live search input from the directory search bar
         if (!empty($search)) {
             $query->where(function($q) use ($search) {
