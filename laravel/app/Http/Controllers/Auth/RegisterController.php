@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,15 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users', 'alpha_num'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::min(12)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
             'terms' => ['required', 'accepted'],
         ]);
         $user = User::create([

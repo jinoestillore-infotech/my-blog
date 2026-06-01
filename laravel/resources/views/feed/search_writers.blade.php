@@ -72,10 +72,17 @@
         <div class="container" style="max-width: 850px;">
             <!-- Discovery Header & Search Input Box -->
             <div class="text-center mb-5">
-                <h1 class="fw-extrabold text-dark tracking-tight mb-2">Find Writers & Creators</h1>
-                <p class="text-secondary lead mx-auto mb-4" style="max-width: 520px;">
-                    Search for your favorite storytellers, classmates, or authors and follow them to customize your dashboard feed.
-                </p>
+                <div class="mb-4">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('pages.index') }}" class="text-brand text-decoration-none">Tots Feed</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Find</li>
+                        </ol>
+                    </nav>
+                    <h1 class="fw-extrabold text-dark tracking-tight">Find Writers & Creators</h1>
+                    <p class="text-secondary small">Search for your favorite storytellers, classmates, or authors and follow them to customize your dashboard feed.
+                    </p>
+                </div>
                 <!-- Facebook Aesthetic Search Bar -->
                 <div class="row justify-content-center mt-3">
                     <div class="col-md-9 col-lg-8">

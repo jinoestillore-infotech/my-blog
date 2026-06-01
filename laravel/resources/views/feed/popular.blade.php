@@ -60,10 +60,15 @@
     <main class="py-5 pt-3">
         <div class="container" style="max-width: 800px;">
             <!-- Header Section -->
-            <div class="text-center mb-3">
-                <h1 class="fw-extrabold text-dark tracking-tight mb-2">Popular Storytellers</h1>
-                <p class="text-secondary lead mx-auto" style="max-width: 550px;">
-                    The most followed minds on Tots. Discover active writers, connect with creators, and grow your literary circles.
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('pages.index') }}" class="text-brand text-decoration-none">Tots Feed</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Popular</li>
+                    </ol>
+                </nav>
+                <h1 class="fw-extrabold text-dark tracking-tight">Popular Storytellers</h1>
+                <p class="text-secondary small">The most followed minds on Tots. Discover active writers, connect with creators, and grow your literary circles.
                 </p>
             </div>
             <!-- Writers Rankings List Card -->

@@ -10,6 +10,7 @@ use App\Http\Controllers\ExploreFeedController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SecurityController;
 
 // Route::get('/', function () {
 //     return view('index');
@@ -74,6 +75,12 @@ Route::middleware('auth')->group(function () {
     // Dynamic User Profile Settings Workspace
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/settings/security', [SecurityController::class, 'index'])->name('settings.security');
+    Route::put('/settings/security/password', [SecurityController::class, 'updatePassword'])->middleware('throttle:5,1')->name('settings.security.password');
+    Route::put('/settings/security/question',[SecurityController::class, 'updateQuestion'])->middleware('throttle:5,1')->name('settings.security.question');
+
+
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::post('/ai/improve', [AIController::class, 'improve'])->name('ai.improve');

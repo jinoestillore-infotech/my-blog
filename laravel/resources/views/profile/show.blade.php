@@ -28,11 +28,8 @@
                 </a>
                 <div class="ms-auto d-flex align-items-center gap-2">
                     @auth
-                        <a href="{{ route('pages.index') }}" class="btn btn-outline-custom btn-sm rounded-circle small">
-                            <i class="bi bi-speedometer2"></i>
-                        </a>
-                        <a href="{{ route('tots-feed') }}" class="btn btn-brand btn-sm rounded-circle small">
-                            <i class="bi bi-globe"></i>
+                        <a href="{{ route('pages.index') }}" class="btn btn-outline-custom btn-sm rounded-pill py-1 px-3 small">
+                            <i class="bi bi-arrow-left"></i> Go Back
                         </a>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2">Log In</a>
@@ -42,8 +39,11 @@
             </div>
         </nav>
     </header>
-    <main class="py-5">
+    <main class="py-5 pt-3">
         <div class="container">
+            <a href="{{ route('tots-feed') }}" class="btn btn-brand btn-sm rounded-pill small mb-3">
+                <i class="bi bi-globe me-1"></i> Tots Feed
+            </a>
             <!-- Profile Cover Card Jumbotron -->
             <div class="card profile-header-card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
                 <div class="profile-banner-bg"></div>

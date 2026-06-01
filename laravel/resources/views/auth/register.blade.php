@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             <div class="col-11 col-md-8 col-lg-5 mt-1">
                 <!-- Registration Card -->
-                <div class="card auth-card p-4 p-md-5 border-0 shadow-sm">
+                <div class="card auth-card p-4 pt-2 pt-md-4 p-md-5 mt-2 border-0 shadow-sm">
                     <div class="text-center mb-2 mt-0">
                         <h4 class="fw-bold text-dark mb-1">Create your account</h4>
                     </div>
@@ -12,7 +12,7 @@
                     <form method="POST" action="/register">
                         @csrf
                         <!-- Full Name Field -->
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="name" class="form-label small fw-bold text-secondary">Full Name</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted border-end-0"><i class="bi bi-person"></i></span>
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <!-- Username Field -->
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="username" class="form-label small fw-bold text-secondary">Username</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted border-end-0"><i class="bi bi-at"></i></span>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <!-- Email Field -->
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="email" class="form-label small fw-bold text-secondary">Email Address</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted border-end-0"><i class="bi bi-envelope"></i></span>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <!-- Password Field -->
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="password" class="form-label small fw-bold text-secondary">Password</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted border-end-0"><i class="bi bi-lock"></i></span>
@@ -54,9 +54,15 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-text small text-muted">
+                                <span style="font-size: .75rem;">
+                                Use at least 12 characters, including uppercase and lowercase letters,
+                                a number, and a special character (e.g. !, @, #, $).
+                                </span>
+                            </div>
                         </div>
                         <!-- Confirm Password Field -->
-                        <div class="mb-4">
+                        <div class="mb-2">
                             <label for="password_confirmation" class="form-label small fw-bold text-secondary">Confirm Password</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted border-end-0"><i class="bi bi-shield-check"></i></span>
