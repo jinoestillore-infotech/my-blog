@@ -33,7 +33,7 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <label for="password" class="form-label small fw-bold text-secondary mb-0">Password</label>
-                                <a href="/forgot-password" class="text-brand text-decoration-none small fw-medium">Forgot password?</a>
+                                <a href="{{ route('password.request') }}" class="text-brand text-decoration-none small fw-medium">Forgot password?</a>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted border-end-0"><i class="bi bi-lock"></i></span>

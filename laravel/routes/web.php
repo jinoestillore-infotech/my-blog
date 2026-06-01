@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AIController;
@@ -49,6 +50,12 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/login-to-tots', [LoginController::class, 'show'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1')->name('login.store');
+
+    // Forgot Password Security recovery pipeline routes
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showRequestForm'])->name('password.request');
+    Route::post('/forgot-password/email', [ForgotPasswordController::class, 'verifyEmail'])->name('password.email');
+    Route::get('/forgot-password/reset', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset.form');
+    Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 });
 
 Route::middleware('auth')->group(function () {

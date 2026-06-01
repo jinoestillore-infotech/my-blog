@@ -91,7 +91,7 @@
                     <!-- Post Featured Cover Image -->
                     @if($post->featured_image)
                         <div class="featured-image-wrapper mb-5 rounded-4 overflow-hidden shadow-sm">
-                            <img src="{{ asset($post->featured_image) }}" class="img-fluid w-100 object-fit-cover" alt="{{ $post->title }}" style="max-height: 450px;">
+                            <img src="{{ asset($post->featured_image) }}" class="img-fluid w-100 object-fit-cover" alt="{{ $post->title }}" style="max-height: 450px;" loading="lazy">
                         </div>
                     @endif
                     <!-- Main Body Content Text Prose -->
