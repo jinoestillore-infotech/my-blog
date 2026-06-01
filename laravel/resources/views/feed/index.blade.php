@@ -36,14 +36,21 @@
                             Hi, {{ Auth::user()->name }}
                         </span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
-                        <li>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 p-0 m-0 mt-2 rounded-3">
+                        <li class="p-0 m-0">
                             <a class="dropdown-item d-flex align-items-center gap-2 small" href="{{ route('pages.index') }}">
                                 <i class="bi bi-speedometer2"></i>
                                 Dashboard
                             </a>
                         </li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li><hr class="dropdown-divider p-0 m-0"></li>
+                        <li class="p-0 m-0">
+                            <a class="dropdown-item d-flex align-items-center gap-2 small" href="{{ route('settings') }}">
+                                <i class="bi bi-gear"></i>
+                                Settings
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider p-0 m-0"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

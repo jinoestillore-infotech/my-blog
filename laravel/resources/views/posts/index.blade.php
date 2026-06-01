@@ -43,7 +43,6 @@
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
                 <div>
                     <h1 class="fw-extrabold text-dark tracking-tight mb-1">Tots Library</h1>
-                    <p class="text-muted mb-0">Manage, organize, edit, and keep track of your drafts and published works.</p>
                 </div>
                 <!-- Simple filter metrics tabs -->
                 <div class="d-flex gap-2 bg-white p-1.5 rounded-pill border shadow-sm">

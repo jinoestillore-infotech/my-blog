@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::get('/settings/security', [SecurityController::class, 'index'])->name('settings.security');
+    Route::get('/settings/security', [SecurityController::class, 'index'])->name('settings');
     Route::put('/settings/security/password', [SecurityController::class, 'updatePassword'])->middleware('throttle:5,1')->name('settings.security.password');
     Route::put('/settings/security/question',[SecurityController::class, 'updateQuestion'])->middleware('throttle:5,1')->name('settings.security.question');
 

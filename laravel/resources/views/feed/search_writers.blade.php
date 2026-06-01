@@ -71,7 +71,7 @@
     <main class="py-5 pt-3">
         <div class="container" style="max-width: 850px;">
             <!-- Discovery Header & Search Input Box -->
-            <div class="text-center mb-5">
+            <div class="mb-4">
                 <div class="mb-4">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -84,7 +84,7 @@
                     </p>
                 </div>
                 <!-- Facebook Aesthetic Search Bar -->
-                <div class="row justify-content-center mt-3">
+                <div class="row justify-content-end mt-3">
                     <div class="col-md-9 col-lg-8">
                         <form action="{{ route('writers.search') }}" method="GET">
                             <div class="search-box-container p-2 d-flex align-items-center shadow-sm">

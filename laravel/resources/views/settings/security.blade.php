@@ -58,7 +58,7 @@
                 </a>
                 
                 <div class="ms-auto d-flex align-items-center gap-2">
-                    <a href="{{ route('pages.index') }}" class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2 d-flex align-items-center gap-2">
+                    <a href="{{ route('tots-feed') }}" class="btn btn-outline-custom btn-sm rounded-pill px-4 py-2 d-flex align-items-center gap-2">
                         <i class="bi bi-arrow-left"></i> Go Back
                     </a>
                 </div>
@@ -73,24 +73,13 @@
             <div class="mb-4">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('pages.index') }}" class="text-brand text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('tots-feed') }}" class="text-brand text-decoration-none">Tots Feed</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Security Settings</li>
                     </ol>
                 </nav>
                 <h1 class="fw-extrabold text-dark tracking-tight">Security & Recovery Settings</h1>
                 <p class="text-secondary small">Maintain your privacy, update your key credentials, and safeguard your author profile.</p>
             </div>
-
-            <!-- Error and Success Notifications -->
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show border-0 rounded-4 shadow-sm mb-4 p-3 d-flex align-items-center" role="alert" style="background-color: #f0fdf4; border-left: 4px solid #16a34a !important;">
-                    <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
-                    <div>
-                        <strong class="text-success">Security Update:</strong> {{ session('success') }}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
             <div class="row g-4">
                 <!-- UPDATE PASSWORD COLUMN -->
                 <div class="col-12 col-md-6">

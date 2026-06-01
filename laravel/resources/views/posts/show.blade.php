@@ -46,17 +46,14 @@
     </header>
 
     <!-- Main Article Reading Space -->
-    <main class="py-5">
+    <main class="py-5 pt-4">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-xl-7">
                     <!-- Article Header Metas -->
                     <header class="mb-4">
-                        <h1 class="display-5 fw-extrabold text-dark lh-sm mb-4 tracking-tight">
-                            {{ $post->title }}
-                        </h1>
                         <!-- Author Meta Bar -->
-                        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 py-3 border-top border-bottom border-light-subtle">
+                        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 py-2 border-bottom border-light-subtle">
                             <!-- Author + Avatar Group -->
                             <div class="d-flex align-items-center gap-2">
                                 <!-- Avatar -->
@@ -87,6 +84,9 @@
                                 <span class="fw-semibold">{{ $post->views }} reads</span>
                             </div>
                         </div>
+                        <h1 class="display-5 fw-extrabold text-dark lh-sm mb-4 mt-2 tracking-tight">
+                            {{ $post->title }}
+                        </h1>
                     </header>
                     <!-- Post Featured Cover Image -->
                     @if($post->featured_image)
