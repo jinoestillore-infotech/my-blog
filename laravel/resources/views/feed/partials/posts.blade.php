@@ -3,19 +3,23 @@
     <article class="card feed-post-card border-0 shadow-sm rounded-4 overflow-hidden">
         <!-- Post Author Metadata Header -->
         <div class="p-4 pb-3 d-flex align-items-center gap-3">
-            <!-- Author Profile Pic -->
-            @if($post->user->avatar)
-                <img src="{{ asset($post->user->avatar) }}" class="feed-author-img object-fit-cover rounded-circle" alt="Author">
-            @else
-                <div class="feed-author-placeholder rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold">
-                    {{ strtoupper(substr($post->user->name, 0, 2)) }}
-                </div>
-            @endif
+            <!-- Author Profile Pic Link -->
+            <a href="{{ route('profile.show', $post->user->username) }}" class="text-decoration-none">
+                @if($post->user->avatar)
+                    <img src="{{ asset($post->user->avatar) }}" class="feed-author-img object-fit-cover rounded-circle" alt="{{ $post->user->name }}'s Avatar">
+                @else
+                    <div class="feed-author-placeholder rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold">
+                        {{ strtoupper(substr($post->user->name, 0, 2)) }}
+                    </div>
+                @endif
+            </a>
             <!-- User details -->
             <div class="flex-grow-1">
                 <div class="d-flex align-items-center gap-2">
                     <h6 class="mb-0 fw-bold text-dark">
-                        {{ $post->user->name }}
+                        <a href="{{ route('profile.show', $post->user->username) }}" class="text-decoration-none text-dark hover-brand-link">
+                            {{ $post->user->name }}
+                        </a>
                     </h6>
                     @if(isset($alreadyFollowingLookup[$post->user->id]))
                         <span class="badge text-info border rounded-pill px-2 py-1 d-flex align-items-center gap-1">
