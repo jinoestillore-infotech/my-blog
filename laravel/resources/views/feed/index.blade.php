@@ -313,7 +313,7 @@
                                             <img src="{{ asset($suggestedUser->avatar) }}" class="rounded-circle object-fit-cover" style="width: 38px; height: 38px;" alt="Avatar">
                                         @else
                                             <div class="rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold small" style="width: 38px; height: 38px;">
-                                                {{ strtoupper(substr($suggestedUser->name, 0, 2)) }}
+                                                {{ strtoupper(substr($suggestedUser->name, 0, 1)) }}
                                             </div>
                                         @endif
                                         
