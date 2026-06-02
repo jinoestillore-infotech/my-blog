@@ -49,7 +49,7 @@ class ReportController extends Controller
         // Validate reason and optional details payload
         $request->validate([
             'reason' => 'required|string|max:255',
-            'details' => 'nullable|string|max:1000',
+            'details' => 'required|string|min:12|max:1000',
         ]);
 
         // Secure insertion

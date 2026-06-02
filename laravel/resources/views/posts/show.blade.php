@@ -19,6 +19,7 @@
 
     <!-- Custom Story Reader CSS -->
     <link rel="stylesheet" href="{{ asset('css/show.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/toast.css') }}">
 </head>
 <body class="bg-reader">
     <!-- Navigation Header -->
@@ -229,7 +230,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="report-details" class="form-label small fw-bold text-dark">Provide Details (Optional)</label>
+                            <label for="report-details" class="form-label small fw-bold text-dark">Provide Details</label>
                             <textarea id="report-details" name="details" class="form-control rounded-3" rows="3" placeholder="Provide extra detail descriptions, references, or links to help administrators investigate..."></textarea>
                         </div>
                         
@@ -247,6 +248,20 @@
 
 <!-- Bootstrap Bundle with Popper JS CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="{{ asset('js/toast.js') }}"></script>
+<div class="toast-container position-fixed top-0 end-0 p-3" id="toastPlacement"></div>
+@if(session('success'))
+<script>
+    showToast(@json(session('success')), 'success');
+</script>
+@endif
+
+@if($errors->any())
+<script>
+    showToast(@json($errors->first()), 'error');
+</script>
+@endif
+
 <!-- AJAX Interactive Handlers -->
     <script>
         function toggleShowPageLike(btn, postId) {
@@ -296,9 +311,11 @@
                 if (data.bookmarked) {
                     text.textContent = 'Unsave Story';
                     btn.classList.add('text-danger');
+                    showToast("Story Saved.", "success");
                 } else {
                     text.textContent = 'Save for Later';
                     btn.classList.remove('text-danger');
+                    showToast("Unsaved Story.", "success");
                 }
             })
             .catch(error => console.error('Error toggling bookmark:', error))
