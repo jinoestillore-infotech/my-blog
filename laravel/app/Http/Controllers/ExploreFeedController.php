@@ -36,6 +36,7 @@ class ExploreFeedController extends Controller
     {
         $currentUser = Auth::user();
         $selectedTag = $request->query('tag');
+        $search = $request->query('search');
         $likedPostIds = $currentUser
             ->likedPosts()
             ->pluck('posts.id')
@@ -54,31 +55,52 @@ class ExploreFeedController extends Controller
             );
         }
 
-        // Time limits computed via Carbon to ensure Timezone synchronization between PHP and MySQL
-        $oneDayAgo = Carbon::now()->subDay();
-        $twoDaysAgo = Carbon::now()->subDays(2);
-        $threeDaysAgo = Carbon::now()->subDays(3);
-        $fourDaysAgo = Carbon::now()->subDays(4);
+        // IF a search keyword is provided, filter by story title
+        if (!empty($search)) {
+            $postsQuery->where('title', 'LIKE', "%{$search}%");
+        }
 
+        // Time limits computed via Carbon to ensure Timezone synchronization between PHP and MySQL
+        // $oneDayAgo = Carbon::now()->subDay();
+        // $twoDaysAgo = Carbon::now()->subDays(2);
+        // $threeDaysAgo = Carbon::now()->subDays(3);
+        // $fourDaysAgo = Carbon::now()->subDays(4);
         // Sorting algorithm with stabilized pagination (Removing RAND() to prevent duplicate post loads)
-        $posts = $postsQuery 
-            ->orderByRaw(" 
+        // $posts = $postsQuery 
+        //     ->orderByRaw(" 
+        //         (
+        //             (views * 2) 
+        //             + (likes_count * 3) 
+        //             + CASE 
+        //               WHEN created_at >= ? THEN 4
+        //               WHEN created_at >= ? THEN 3
+        //               WHEN created_at >= ? THEN 5
+        //               WHEN created_at >= ? THEN 2
+        //               ELSE 0
+        //             END
+        //         ) DESC, 
+        //         id DESC
+        //     ", [$oneDayAgo, $twoDaysAgo, $threeDaysAgo, $fourDaysAgo]) 
+        //     ->paginate(15) 
+        //     ->withQueryString(); // Keeps the ?tag=... parameter intact during pagination links!
+        $posts = $postsQuery
+            ->orderByRaw("
                 (
-                    (views * 2) 
-                    + (likes_count * 3) 
-                    + CASE 
-                      WHEN created_at >= ? THEN 4
-                      WHEN created_at >= ? THEN 3
-                      WHEN created_at >= ? THEN 5
-                      WHEN created_at >= ? THEN 2
-                      ELSE 0
-                    END
-                ) DESC, 
+                    (
+                        (views * 2)
+                        + (likes_count * 5)
+                        + (168 - LEAST(TIMESTAMPDIFF(HOUR, created_at, NOW()), 168))
+                    )
+                    /
+                    POW(
+                        TIMESTAMPDIFF(HOUR, created_at, NOW()) + 2,
+                        1.2
+                    )
+                ) DESC,
                 id DESC
-            ", [$oneDayAgo, $twoDaysAgo, $threeDaysAgo, $fourDaysAgo]) 
-            ->paginate(15) 
-            ->withQueryString(); // Keeps the ?tag=... parameter intact during pagination links!
-        
+            ")
+            ->paginate(15)
+            ->withQueryString();
         // 2. Dynamic "Who to Follow"
         // Grab IDs of users the current author is already following
         $alreadyFollowingLookup = $currentUser->following()->pluck('users.id')->flip();

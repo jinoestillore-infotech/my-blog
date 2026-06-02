@@ -105,7 +105,11 @@ class PostController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('posts.index')->with('success', 'Your story was saved successfully!');
+        $message = $request->status === 'published'
+            ? 'Your story was published successfully!'
+            : 'Your story was saved as a draft successfully!';
+
+        return redirect()->route('posts.index')->with('success', $message);
     }
     /**
      * Display the specified blog post to readers.

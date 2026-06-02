@@ -96,15 +96,13 @@
                         @auth
                             <div class="d-flex align-items-center">
                                 <button type="button" 
-                                        class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-3 py-1 {{ $post->isLikedBy(Auth::user()) ? 'liked-active' : '' }}" 
+                                        class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-3 py-1 me-3 {{ $post->isLikedBy(Auth::user()) ? 'liked-active' : '' }}" 
                                         onclick="toggleShowPageLike(this, '{{ $post->id }}')">
                                     <i class="bi {{ $post->isLikedBy(Auth::user()) ? 'bi-heart-fill text-danger' : 'bi-heart text-danger' }}"></i>
                                     <span class="small fw-semibold text-dark">
                                         <span id="show-page-likes-count">{{ $post->likes()->count() }}</span>
                                     </span>
                                 </button>
-                                
-                                <span class="mx-2 text-muted">&bull;</span>
                                 <i class="bi bi-eye text-secondary me-1"></i>
                                 <span class="small fw-semibold text-secondary">{{ $post->views }} reads</span>
                             </div>
@@ -119,12 +117,10 @@
                             </button>
                         @else
                             <div class="d-flex align-items-center">
-                                <a href="{{ route('login') }}" class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-3 py-1 text-decoration-none">
+                                <a href="{{ route('login') }}" class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-3 py-1 me-3 text-decoration-none">
                                     <i class="bi bi-heart text-danger"></i>
                                     <span class="small fw-semibold text-dark">{{ $post->likes()->count() }}</span>
                                 </a>
-                                
-                                <span class="mx-2 text-muted">&bull;</span>
                                 <i class="bi bi-eye text-secondary me-1"></i>
                                 <span class="small fw-semibold text-secondary">{{ $post->views }} reads</span>
                             </div>

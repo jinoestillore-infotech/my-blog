@@ -218,6 +218,35 @@
                             </span>
                         @endif
                     </div>
+                    <!-- Beautiful Feed Story Search Bar Form -->
+                     <div class="d-flex justify-content-end mb-4">
+                        <form action="{{ route('tots-feed') }}" method="GET" class="search-bar">
+                            <div class="input-group shadow-sm rounded-pill overflow-hidden bg-white border border-light-subtle p-1">
+                                <span class="input-group-text bg-white border-0 text-muted ps-3">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input
+                                    type="text"
+                                    name="search"
+                                    value="{{ request('search') }}"
+                                    class="form-control border-0 bg-transparent py-2 shadow-none"
+                                    placeholder="Search stories by title..."
+                                >
+                                @if(request('tag'))
+                                    <input type="hidden" name="tag" value="{{ request('tag') }}">
+                                @endif
+                                @if(request('search'))
+                                    <a href="{{ route('tots-feed', request()->except('search')) }}"
+                                    class="btn btn-link text-decoration-none text-muted d-flex align-items-center px-3 small">
+                                        Clear
+                                    </a>
+                                @endif
+                                <button type="submit" class="btn btn-brand rounded-pill px-4">
+                                    Search
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                     <!-- Dynamic Post Check -->
                     @if($posts->isEmpty())
                         <!-- Empty Feed Slate Placeholder -->

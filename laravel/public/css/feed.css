@@ -255,3 +255,21 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
+
+.search-bar {
+    width: 70%;
+    transition: width 0.3s ease;
+}
+
+.search-bar:focus-within {
+    width: 100%;
+}
+
+.search-bar:focus-within .btn,
+.search-bar:focus-within a {
+    display: none;
+}
+
+.search-bar input {
+    flex: 1;
+}
