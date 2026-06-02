@@ -42,7 +42,46 @@
                     <i class="bi bi-globe me-1"></i> Tots Feed
                 </a>
             </div>
-
+            <!-- Quick Profile Details -->
+            <div class="card d-block d-lg-none profile-summary-card p-4 border-0 shadow-sm rounded-4 mb-4">
+                <div class="text-center">
+                    @if(Auth::user()->avatar)
+                        <img src="{{ asset(Auth::user()->avatar) }}" class="profile-avatar-placeholder mx-auto mb-3 object-fit-cover" alt="Avatar">
+                    @else
+                    <!-- Placeholder avatar initials -->
+                    <div class="profile-avatar-placeholder mx-auto mb-3">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 3)) }}
+                    </div>
+                    @endif
+                    <h5 class="fw-bold text-dark mb-1">{{ Auth::user()->name }}</h5>
+                    <p class="text-brand small mb-3">&#64;{{ Auth::user()->username }}</p>
+                    <!-- Bio Field -->
+                    <p class="text-muted small px-2 d-none d-lg-block">
+                        {{ Auth::user()->bio ?? "No author bio added yet. Tell the community who you are!" }}
+                    </p>
+                    <!-- Mini Follow Stats details in sidebar -->
+                    <div class="d-flex justify-content-center d-none d-lg-block gap-5 mb-1 text-center small">
+                        <div class="m-0">
+                            <span class="d-block fw-bold text-dark small">{{ $followersCount }}</span>
+                            <span class="text-muted fs-11 small">Followers</span>
+                        </div>
+                        <div class="border-start opacity-20"></div>
+                        <div>
+                            <span class="d-block fw-bold text-dark small">{{ $followingCount }}</span>
+                            <span class="text-muted fs-11 small">Following</span>
+                        </div>
+                    </div>
+                    <hr class="text-muted opacity-20 m-0 mb-4">
+                    <div class="m-1 d-flex flex-wrap align-items-center justify-content-center gap-2">
+                        <a href="{{ route('profile.show', Auth::user()->username) }}" class="btn btn-brand btn-sm rounded-pill px-3 py-1">
+                            <i class="bi bi-person-fill me-1"></i> View My Profile
+                        </a>
+                        <a href="{{ route('posts.saved') }}" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-1">
+                            <i class="bi bi-bookmark-fill me-1"></i> Saved Tots
+                        </a>
+                    </div>
+                </div>
+            </div>
             <div class="row g-4">
                 <!-- Left Main Content Column: Creator's Stats and Posts -->
                 <div class="col-lg-8">
@@ -130,7 +169,7 @@
                 <!-- Right Sidebar Column: User Quick Profile & Quick Draft -->
                 <div class="col-lg-4">
                     <!-- Quick Profile Details -->
-                    <div class="card profile-summary-card p-4 border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card profile-summary-card d-none d-lg-block p-4 border-0 shadow-sm rounded-4 mb-4">
                         <div class="text-center">
                             @if(Auth::user()->avatar)
                                 <img src="{{ asset(Auth::user()->avatar) }}" class="profile-avatar-placeholder mx-auto mb-3 object-fit-cover" alt="Avatar">
@@ -159,16 +198,19 @@
                                 </div>
                             </div>
                             <hr class="text-muted opacity-20 m-0 mb-4">
-                            <div class="m-1 d-flex justify-content-center align-items-center gap-2">
+                            <div class="m-1 d-flex flex-wrap align-items-center justify-content-center gap-2">
                                 <a href="{{ route('profile.show', Auth::user()->username) }}" class="btn btn-brand btn-sm rounded-pill px-3 py-1">
                                     <i class="bi bi-person-fill me-1"></i> View My Profile
+                                </a>
+                                <a href="{{ route('posts.saved') }}" class="btn btn-outline-custom btn-sm rounded-pill px-3 py-1">
+                                    <i class="bi bi-bookmark-fill me-1"></i> Saved Tots
                                 </a>
                             </div>
                         </div>
                     </div>
                     <!-- Quick Draft Form Module -->
                     <div class="card quick-draft-card p-4 border-0 shadow-sm rounded-4">
-                        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-lightning-charge-fill text-accent me-1"></i>Quick Draft</h5>
+                        <h5 class="fw-bold text-dark mb-3">Quick Draft</h5>
                         <form action="{{ route('posts.store') }}" method="POST">
                             @csrf
                             <!-- Automatically force status to draft -->

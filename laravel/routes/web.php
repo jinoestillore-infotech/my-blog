@@ -80,7 +80,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{id}/follow', [FollowController::class, 'toggleFollow'])->name('users.follow');
     // Bookmark save to read later interaction endpoint
     Route::post('/posts/{id}/bookmark', [PostController::class, 'toggleBookmark'])->name('posts.bookmark');
-    
+    // Dedicated Saved Queue / Reading List route
+    Route::get('/my-saved-tots', [PostController::class, 'saved'])->name('posts.saved');
+
     // Dynamic User Profile Settings Workspace
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

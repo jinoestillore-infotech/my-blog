@@ -164,7 +164,7 @@ class PostController extends Controller
             'bookmarked' => count($saved['attached']) > 0
         ]);
     }
-    
+
     /**
      * Show the form for editing an existing post.
      */
@@ -260,5 +260,21 @@ class PostController extends Controller
             : 'Published story deleted successfully.';
 
         return redirect()->route('posts.index')->with('success', $message);
+    }
+
+    /**
+     * Display the authenticated user's personal Saved Queue / Reading List.
+     */
+    public function saved()
+    {
+        $user = Auth::user();
+
+        // Fetch user's saved stories through the relationship, eager loading the author profiles
+        $posts = $user->bookmarkedPosts()
+            ->with('user')
+            ->latest('bookmarks.created_at')
+            ->simplePaginate(9);
+
+        return view('posts.saved', compact('posts'));
     }
 }
