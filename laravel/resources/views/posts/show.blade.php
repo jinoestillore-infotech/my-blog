@@ -109,15 +109,33 @@
                                 <i class="bi bi-eye text-secondary me-1"></i>
                                 <span class="small fw-semibold text-secondary">{{ $post->views }} reads</span>
                             </div>
-
-                            <button type="button" 
-                                    class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-4 py-2 {{ $post->isBookmarkedBy(Auth::user()) ? 'bookmarked-active' : '' }}" 
-                                    onclick="toggleShowPageBookmark(this, '{{ $post->id }}')">
-                                <i class="bi {{ $post->isBookmarkedBy(Auth::user()) ? 'bi-bookmark-dash-fill text-primary' : 'bi-bookmark text-secondary' }}"></i>
-                                <span class="small fw-semibold text-dark" id="bookmark-status-text">
-                                    {{ $post->isBookmarkedBy(Auth::user()) ? 'Saved for Later' : 'Save for Later' }}
-                                </span>
-                            </button>
+                            @php $isBookmarked = $post->isBookmarkedBy(Auth::user()); @endphp
+                            <div class="dropdown">
+                                <!-- 3 dots button -->
+                                <button class="btn btn-link p-0 text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end m-0 p-0">
+                                    <!-- Bookmark action -->
+                                    <li class="">
+                                        <button type="button"
+                                            class="dropdown-item d-flex align-items-center gap-2 {{ $isBookmarked ? 'text-danger' : '' }}"
+                                            onclick="toggleShowPageBookmark(this, '{{ $post->id }}')">
+                                            <span class="bookmark-status-text">
+                                                {{ $isBookmarked ? 'Unsave Story' : 'Save for Later' }}
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <!-- Divider -->
+                                    <li><hr class="dropdown-divider m-0 p-0"></li>
+                                    <!-- Report -->
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#">
+                                            Report story
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         @else
                             <div class="d-flex align-items-center">
                                 <a href="{{ route('login') }}" class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-3 py-1 me-3 text-decoration-none">
@@ -222,16 +240,14 @@
             .then(response => response.json())
             .then(data => {
                 const icon = btn.querySelector('i');
-                const text = document.getElementById('bookmark-status-text');
+                const text = btn.querySelector('.bookmark-status-text');
 
                 if (data.bookmarked) {
-                    icon.className = 'bi bi-bookmark-dash-fill text-primary';
-                    text.textContent = 'Saved for Later';
-                    btn.classList.add('bookmarked-active');
+                    text.textContent = 'Unsave Story';
+                    btn.classList.add('text-danger');
                 } else {
-                    icon.className = 'bi bi-bookmark text-secondary';
                     text.textContent = 'Save for Later';
-                    btn.classList.remove('bookmarked-active');
+                    btn.classList.remove('text-danger');
                 }
             })
             .catch(error => console.error('Error toggling bookmark:', error))
