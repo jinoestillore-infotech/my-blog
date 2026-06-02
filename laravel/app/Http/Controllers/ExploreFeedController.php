@@ -24,23 +24,18 @@ class ExploreFeedController extends Controller
      *
      * STREAMING_CHUNK: Fetching published community stories for the authenticated newsfeed...
      */
-    // public function index()
-    // {
-    //     // Eager load 'user' and count 'likes' directly in database to solve N+1 performance bottlenecks
-    //     $posts = Post::with('user')->withCount('likes')->published()->latest()->paginate(10);
-        
-    //     return view('feed.index', compact('posts'));
-    // }
-
     public function index(Request $request)
     {
         $currentUser = Auth::user();
         $selectedTag = $request->query('tag');
         $search = $request->query('search');
-        $likedPostIds = $currentUser
-            ->likedPosts()
-            ->pluck('posts.id')
-            ->flip();
+        $likedPostIds = $currentUser->likedPosts()->pluck('posts.id')->flip();
+
+        // 1. Resolve following IDs to prevent SQL injection or compilation crashes
+        $followingIds = $currentUser->following()->pluck('users.id')->toArray();
+        // CRITICAL FIX: If not following anyone, use a dummy value [0] to keep SQL IN (...) compiled and valid
+        $safeFollowingIds = empty($followingIds) ? [0] : $followingIds;
+        $placeholders = implode(',', array_fill(0, count($safeFollowingIds), '?'));
 
         // 1. Fetch published posts with filters applied
         $postsQuery = Post::where('status', 'published')
@@ -83,22 +78,32 @@ class ExploreFeedController extends Controller
         //     ", [$oneDayAgo, $twoDaysAgo, $threeDaysAgo, $fourDaysAgo]) 
         //     ->paginate(15) 
         //     ->withQueryString(); // Keeps the ?tag=... parameter intact during pagination links!
+        
+        /**
+         * SECURE GRAVITY FORMULA WITH BOUND SAFETY:
+         * We wrap TIMESTAMPDIFF inside GREATEST(..., 0) to avoid timezone discrepancies or negative hours
+         * from causing undefined values inside POW() fractional calculations.
+         */
         $posts = $postsQuery
             ->orderByRaw("
                 (
                     (
                         (views * 2)
                         + (likes_count * 5)
-                        + (168 - LEAST(TIMESTAMPDIFF(HOUR, created_at, NOW()), 168))
+                        + (168 - LEAST(GREATEST(TIMESTAMPDIFF(HOUR, created_at, NOW()), 0), 168))
+                        + CASE 
+                            WHEN user_id IN ($placeholders) THEN 90
+                            ELSE 0
+                        END
                     )
                     /
                     POW(
-                        TIMESTAMPDIFF(HOUR, created_at, NOW()) + 2,
+                        GREATEST(TIMESTAMPDIFF(HOUR, created_at, NOW()), 0) + 2,
                         1.2
                     )
                 ) DESC,
                 id DESC
-            ")
+            ", $safeFollowingIds)
             ->paginate(15)
             ->withQueryString();
         // 2. Dynamic "Who to Follow"

@@ -148,7 +148,7 @@
                                             <img src="{{ asset($suggestedUser->avatar) }}" class="rounded-circle object-fit-cover" style="width: 38px; height: 38px;" alt="Avatar">
                                         @else
                                             <div class="rounded-circle bg-brand-light text-brand d-flex align-items-center justify-content-center fw-bold small" style="width: 38px; height: 38px;">
-                                                {{ strtoupper(substr($suggestedUser->name, 0, 2)) }}
+                                                {{ strtoupper(substr($suggestedUser->name, 0, 1)) }}
                                             </div>
                                         @endif
                                         <!-- User Details -->
@@ -179,7 +179,7 @@
                                           onclick="filterByTag('{{ $tag }}')"
                                           title="Popularity score: {{ round($data['score'], 1) }}">
                                         #{{ $tag }} 
-                                        <span class="ms-1 px-1.5 py-0.2 bg-white rounded-circle text-muted border" style="font-size: 0.65rem;">
+                                        <span class="ms-1 px-1.5 py-0.2 bg-white rounded-circle text-warning border" style="font-size: 0.65rem;">
                                             {{ $data['count'] >= 9 ? '9+' : $data['count'] }}
                                         </span>
                                     </span>
@@ -212,10 +212,27 @@
                                 <i class="bi bi-x-circle me-1"></i> Clear Filter
                             </a>
                         @else
-                            <span class="badge bg-white text-brand border rounded-pill px-3 py-1.5 small fw-semibold">
-                                <span class="spinner-grow spinner-grow-sm text-brand text-success me-1" style="width: 6px; height: 6px;" role="status" aria-hidden="true"></span>
-                                Live Updates
-                            </span>
+                            <!-- Interactive Auto-Refresh Control Widget -->
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="dropdown d-inline-block">
+                                    <button class="btn btn-outline-custom btn-sm rounded-pill px-2.5 py-1.5 d-flex align-items-center gap-1.5 fs-9 text-secondary border border-light-subtle bg-white hover-brand-link" 
+                                            type="button" 
+                                            id="autoRefreshDropdown" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false"
+                                            style="font-size: 0.75rem;">
+                                        <i class="bi bi-arrow-clockwise text-brand me-1" id="refresh-icon"></i>
+                                        <span id="refresh-status-text" class="fw-semibold text-muted">Auto: 1 Min</span>
+                                        <span class="badge bg-brand-light text-brand font-monospace rounded-pill ms-1 py-0.5 px-1.5" id="refresh-timer" style="font-size: 0.65rem;">60s</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 small p-1" aria-labelledby="autoRefreshDropdown">
+                                        <li><button class="dropdown-item rounded-2 py-1.5 small" type="button" onclick="changeRefreshInterval(60, '1 Min')"><i class="bi bi-clock me-1 text-primary"></i>1 Minute</button></li>
+                                        <li><button class="dropdown-item rounded-2 py-1.5 small" type="button" onclick="changeRefreshInterval(120, '2 Mins')"><i class="bi bi-clock me-1 text-success"></i>2 Minutes</button></li>
+                                        <li><hr class="dropdown-divider my-1"></li>
+                                        <li><button class="dropdown-item rounded-2 py-1.5 small" type="button" onclick="changeRefreshInterval(0, 'Off')"><i class="bi bi-slash-circle me-1 text-danger"></i>Turn Off</button></li>
+                                    </ul>
+                                </div>
+                            </div>
                         @endif
                     </div>
                     <!-- Beautiful Feed Story Search Bar Form -->
@@ -452,7 +469,72 @@
             window.location.href = url.toString();
         }
 
+        let refreshTimer = null;
+        let refreshCountdown = 60; // default value
+        let currentInterval = 60;  // dynamic interval placeholder
+
+        function startRefreshTimer() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            
+            if (currentInterval === 0) {
+                const timerBadge = document.getElementById('refresh-timer');
+                if (timerBadge) timerBadge.classList.add('d-none');
+                return;
+            }
+
+            const timerBadge = document.getElementById('refresh-timer');
+            if (timerBadge) {
+                timerBadge.classList.remove('d-none');
+                timerBadge.textContent = refreshCountdown + 's';
+            }
+
+            refreshTimer = setInterval(() => {
+                refreshCountdown--;
+                if (timerBadge) {
+                    timerBadge.textContent = refreshCountdown + 's';
+                }
+
+                if (refreshCountdown <= 0) {
+                    clearInterval(refreshTimer);
+                    triggerBackgroundFeedRefresh();
+                }
+            }, 1000);
+        }
+
+        function triggerBackgroundFeedRefresh() {
+            const statusText = document.getElementById('refresh-status-text');
+            const refreshIcon = document.getElementById('refresh-icon');
+
+            if (statusText) statusText.textContent = 'Refreshing...';
+            if (refreshIcon) refreshIcon.classList.add('spin-animation');
+
+            // Execute full-page hard reload to pull down fresh data and synchronize with database natively
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        }
+
+        function changeRefreshInterval(seconds, displayLabel) {
+            currentInterval = seconds;
+            refreshCountdown = seconds;
+            
+            const statusText = document.getElementById('refresh-status-text');
+            const timerBadge = document.getElementById('refresh-timer');
+            
+            if (statusText) {
+                statusText.textContent = 'Auto: ' + displayLabel;
+            }
+
+            if (seconds === 0) {
+                if (refreshTimer) clearInterval(refreshTimer);
+                if (timerBadge) timerBadge.classList.add('d-none');
+            } else {
+                startRefreshTimer();
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            startRefreshTimer();
             const loadMoreBtn = document.getElementById('load-more-btn');
             if (!loadMoreBtn) return;
 
