@@ -39,7 +39,7 @@
                     <!-- Terms Header -->
                     <div class="text-center mb-5">
                         <h1 class="display-5 fw-extrabold text-slate-900 mb-3">Terms of Service</h1>
-                        <p class="text-secondary">Last updated: {{ date('F d, Y') }}</p>
+                        <p class="text-secondary">Last updated: May 29, 2026</p>
                     </div>
                     <!-- Terms Card Container -->
                     <div class="card terms-card p-4 p-md-5 mb-5">

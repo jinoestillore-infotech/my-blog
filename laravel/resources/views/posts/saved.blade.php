@@ -45,11 +45,11 @@
                     <span class="text-muted border-start ps-2 py-1">Saved Queue</span>
                 </div>
                 <div class="ms-auto d-flex align-items-center gap-2">
-                    <a href="{{ route('tots-feed') }}" class="btn btn-outline-custom btn-sm rounded-circle">
-                        <i class="bi bi-globe"></i>
-                    </a>
-                    <a href="{{ route('pages.index') }}" class="btn btn-outline-custom btn-sm rounded-circle">
+                    <a href="{{ route('pages.index') }}" class="btn btn-outline-dark btn-sm rounded-circle">
                         <i class="bi bi-speedometer2"></i>
+                    </a>
+                    <a href="{{ route('tots-feed') }}" class="btn btn-primary-custom rounded-3">
+                        <i class="bi bi-globe"></i>
                     </a>
                 </div>
             </div>
