@@ -119,7 +119,7 @@
                                     <!-- Bookmark action -->
                                     <li class="">
                                         <button type="button"
-                                            class="dropdown-item d-flex align-items-center gap-2 {{ $isBookmarked ? 'text-danger' : '' }}"
+                                            class="dropdown-item d-flex align-items-center gap-2 py-2 {{ $isBookmarked ? 'text-danger' : '' }}"
                                             onclick="toggleShowPageBookmark(this, '{{ $post->id }}')">
                                             <span class="bookmark-status-text">
                                                 {{ $isBookmarked ? 'Unsave Story' : 'Save for Later' }}
@@ -130,9 +130,15 @@
                                     <li><hr class="dropdown-divider m-0 p-0"></li>
                                     <!-- Report -->
                                     <li>
-                                        <a class="dropdown-item text-danger" href="#">
-                                            Report story
-                                        </a>
+                                        @auth
+                                            <button type="button" class="dropdown-item text-danger d-flex align-items-center gap-2 rounded-2 py-2" onclick="openReportModal()">
+                                                Report story
+                                            </button>
+                                        @else
+                                            <a class="dropdown-item text-danger d-flex align-items-center gap-2 rounded-2 py-2" href="{{ route('login') }}">
+                                                Report story
+                                            </a>
+                                        @endauth
                                     </li>
                                 </ul>
                             </div>
@@ -194,6 +200,51 @@
             </div>
         </div>
     </main>
+    <!-- Beautiful Reporting Bootstrap Modal -->
+    <div class="modal fade" id="reportStoryModal" tabindex="-1" aria-labelledby="reportStoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header border-0 bg-danger-subtle text-danger pt-4 px-4 pb-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 text-danger"></i>
+                        <h5 class="modal-title fw-extrabold" id="reportStoryModalLabel">Report Story</h5>
+                    </div>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="report-story-form" onsubmit="submitStoryReport(event, '{{ $post->id }}')">
+                    @csrf
+                    <div class="modal-body px-4 py-3">
+                        <p class="text-secondary small">Help us protect our Tots community. If you believe this story violates community standard rules, please choose a category below and write detail notes.</p>
+                        
+                        <div class="mb-3">
+                            <label for="report-reason" class="form-label small fw-bold text-dark">Reason of Violation</label>
+                            <select id="report-reason" name="reason" class="form-select rounded-3" required>
+                                <option value="" disabled selected>Select a category...</option>
+                                <option value="Harassment or Hate Speech">Harassment or Hate Speech</option>
+                                <option value="Plagiarism or Copyright Infringement">Plagiarism or Copyright Infringement</option>
+                                <option value="Spam or Deceptive Practices">Spam or Deceptive Practices</option>
+                                <option value="Adult Content or Violence">Adult Content or Violence</option>
+                                <option value="Other / Violates Guidelines">Other / Violates Guidelines</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="report-details" class="form-label small fw-bold text-dark">Provide Details (Optional)</label>
+                            <textarea id="report-details" name="details" class="form-control rounded-3" rows="3" placeholder="Provide extra detail descriptions, references, or links to help administrators investigate..."></textarea>
+                        </div>
+                        
+                        <!-- Alert message inside modal for clean status feedbacks -->
+                        <div id="report-modal-alert" class="d-none alert border-0 rounded-3 small p-2.5 mb-0" role="alert"></div>
+                    </div>
+                    <div class="modal-footer border-0 pb-4 px-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4 py-2 text-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" id="submit-report-btn" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 <!-- Bootstrap Bundle with Popper JS CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- AJAX Interactive Handlers -->
@@ -252,6 +303,82 @@
             })
             .catch(error => console.error('Error toggling bookmark:', error))
             .finally(() => btn.disabled = false);
+        }
+
+        let reportModal = null;
+
+        function openReportModal() {
+            // Reset the form fields and alerts
+            const form = document.getElementById('report-story-form');
+            form.reset();
+            
+            const alertBox = document.getElementById('report-modal-alert');
+            alertBox.className = 'd-none alert border-0 rounded-3 small p-2.5 mb-0';
+            alertBox.textContent = '';
+
+            const submitBtn = document.getElementById('submit-report-btn');
+            submitBtn.disabled = false;
+
+            if (!reportModal) {
+                reportModal = new bootstrap.Modal(document.getElementById('reportStoryModal'));
+            }
+            reportModal.show();
+        }
+
+        function submitStoryReport(event, postId) {
+            event.preventDefault();
+
+            const form = event.target;
+            const submitBtn = document.getElementById('submit-report-btn');
+            const alertBox = document.getElementById('report-modal-alert');
+            
+            // Disable button to prevent double clicks
+            submitBtn.disabled = true;
+
+            const formData = {
+                reason: document.getElementById('report-reason').value,
+                details: document.getElementById('report-details').value,
+            };
+
+            fetch(`/posts/${postId}/report`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                return response.json().then(data => {
+                    return { status: response.status, data: data };
+                });
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    // Success state: show green message inside alert block
+                    alertBox.className = 'alert alert-success border-0 rounded-3 small p-2.5 mb-0';
+                    alertBox.textContent = res.data.message;
+
+                    // Automatically close the modal after 2.5 seconds
+                    setTimeout(() => {
+                        if (reportModal) {
+                            reportModal.hide();
+                        }
+                    }, 2500);
+                } else {
+                    // Validation or security barrier error state
+                    alertBox.className = 'alert alert-danger border-0 rounded-3 small p-2.5 mb-0';
+                    alertBox.textContent = res.data.message || 'Validation failed. Check inputs and try again.';
+                    submitBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting report:', error);
+                alertBox.className = 'alert alert-danger border-0 rounded-3 small p-2.5 mb-0';
+                alertBox.textContent = 'A critical connectivity error occurred. Please try again.';
+                submitBtn.disabled = false;
+            });
         }
     </script>
 </body>

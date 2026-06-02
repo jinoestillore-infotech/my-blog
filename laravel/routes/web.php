@@ -11,6 +11,7 @@ use App\Http\Controllers\ExploreFeedController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SecurityController;
 
 // Route::get('/', function () {
@@ -80,6 +81,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{id}/follow', [FollowController::class, 'toggleFollow'])->name('users.follow');
     // Bookmark save to read later interaction endpoint
     Route::post('/posts/{id}/bookmark', [PostController::class, 'toggleBookmark'])->name('posts.bookmark');
+    // Secure Report API Endpoint
+    Route::post('/posts/{id}/report', [ReportController::class, 'store'])->name('posts.report');
+ 
     // Dedicated Saved Queue / Reading List route
     Route::get('/my-saved-tots', [PostController::class, 'saved'])->name('posts.saved');
 
