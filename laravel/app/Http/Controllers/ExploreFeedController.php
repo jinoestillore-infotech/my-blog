@@ -104,7 +104,7 @@ class ExploreFeedController extends Controller
                 ) DESC,
                 id DESC
             ", $safeFollowingIds)
-            ->paginate(15)
+            ->paginate(10)
             ->withQueryString();
         // 2. Dynamic "Who to Follow"
         // Grab IDs of users the current author is already following

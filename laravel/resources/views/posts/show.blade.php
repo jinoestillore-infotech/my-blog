@@ -53,7 +53,7 @@
                     <!-- Article Header Metas -->
                     <header class="mb-4">
                         <!-- Author Meta Bar -->
-                        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 py-2 border-bottom border-light-subtle">
+                        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 py-2">
                             <!-- Author + Avatar Group -->
                             <div class="d-flex align-items-center gap-2">
                                 <!-- Avatar -->
@@ -77,11 +77,14 @@
                                 </div>
                             </div>
                             <!-- Views Counter -->
-                            <div class="ms-md-auto d-flex align-items-center gap-1 text-muted small bg-light px-3 py-1 rounded-pill">
+                            <div class="ms-lg-auto d-flex align-items-center gap-1 text-muted small bg-light rounded-pill">
+                                <span class="badge bg-transparent text-brand rounded-pill px-2 py-1" style="font-size: .75rem;">
+                                    <i class="bi bi-clock me-1"></i>{{ max(1, ceil(str_word_count(strip_tags($post->content)) / 200)) }} min read
+                                </span>
                                 {{ $post->created_at->format('M d, Y') }}
                             </div>
                         </div>
-                        <h1 class="display-5 fw-extrabold text-dark lh-sm mb-4 mt-2 tracking-tight">
+                        <h1 class="display-5 border-top fw-extrabold text-dark lh-sm mb-4 mt-2 tracking-tight pt-3">
                             {{ $post->title }}
                         </h1>
                     </header>
@@ -92,7 +95,7 @@
                         </div>
                     @endif
                     <!-- Interactive Actions Toolbar (Like & Save for Later) -->
-                    <div class="d-flex justify-content-between align-items-center gap-2 pt-1 pb-3 border-bottom mb-4">
+                    <div class="d-flex justify-content-between align-items-center gap-2 pt-1 pb-3 mb-4">
                         @auth
                             <div class="d-flex align-items-center">
                                 <button type="button" 
