@@ -69,7 +69,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class, 'post_likes');
     }
-    
+
+    /**
+     * Get all posts that this user has saved to read later.
+     */
+    public function bookmarkedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'bookmarks')->withTimestamps();
+    }
+
     public function following()
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'user_id')->withTimestamps();
@@ -138,6 +146,30 @@ class User extends Authenticatable
             return 'bg-info-subtle text-info';
         } else {
             return 'bg-light-subtle text-secondary';
+        }
+    }
+
+    /**
+     * Get the corresponding premium text styling class matching the rank.
+     *
+     * @return string
+     */
+    public function getRankTextileAttribute()
+    {
+        $count = $this->followers_count ?? $this->followers()->count();
+
+        if ($count >= 200) {
+            return 'text-warning-emphasis';
+        } elseif ($count >= 100) {
+            return 'text-danger';
+        } elseif ($count >= 50) {
+            return 'text-success';
+        } elseif ($count >= 10) {
+            return 'text-primary';
+        } elseif ($count >= 5) {
+            return 'text-info';
+        } else {
+            return 'text-secondary';
         }
     }
 }

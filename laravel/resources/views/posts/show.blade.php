@@ -79,9 +79,6 @@
                             <!-- Views Counter -->
                             <div class="ms-md-auto d-flex align-items-center gap-1 text-muted small bg-light px-3 py-1 rounded-pill">
                                 {{ $post->created_at->format('M d, Y') }}
-                                <span class="d-none d-md-inline mx-2">&bull;</span>
-                                <i class="bi bi-eye ms-2"></i>
-                                <span class="fw-semibold">{{ $post->views }} reads</span>
                             </div>
                         </div>
                         <h1 class="display-5 fw-extrabold text-dark lh-sm mb-4 mt-2 tracking-tight">
@@ -90,10 +87,54 @@
                     </header>
                     <!-- Post Featured Cover Image -->
                     @if($post->featured_image)
-                        <div class="featured-image-wrapper mb-5 rounded-4 overflow-hidden shadow-sm">
+                        <div class="featured-image-wrapper mb-2 rounded-4 overflow-hidden shadow-sm">
                             <img src="{{ asset($post->featured_image) }}" class="img-fluid w-100 object-fit-cover" alt="{{ $post->title }}" style="max-height: 450px;" loading="lazy">
                         </div>
                     @endif
+                    <!-- Interactive Actions Toolbar (Like & Save for Later) -->
+                    <div class="d-flex justify-content-between align-items-center gap-2 pt-1 pb-3 border-bottom mb-4">
+                        @auth
+                            <div class="d-flex align-items-center">
+                                <button type="button" 
+                                        class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-3 py-1 {{ $post->isLikedBy(Auth::user()) ? 'liked-active' : '' }}" 
+                                        onclick="toggleShowPageLike(this, '{{ $post->id }}')">
+                                    <i class="bi {{ $post->isLikedBy(Auth::user()) ? 'bi-heart-fill text-danger' : 'bi-heart text-danger' }}"></i>
+                                    <span class="small fw-semibold text-dark">
+                                        <span id="show-page-likes-count">{{ $post->likes()->count() }}</span>
+                                    </span>
+                                </button>
+                                
+                                <span class="mx-2 text-muted">&bull;</span>
+                                <i class="bi bi-eye text-secondary me-1"></i>
+                                <span class="small fw-semibold text-secondary">{{ $post->views }} reads</span>
+                            </div>
+
+                            <button type="button" 
+                                    class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-4 py-2 {{ $post->isBookmarkedBy(Auth::user()) ? 'bookmarked-active' : '' }}" 
+                                    onclick="toggleShowPageBookmark(this, '{{ $post->id }}')">
+                                <i class="bi {{ $post->isBookmarkedBy(Auth::user()) ? 'bi-bookmark-dash-fill text-primary' : 'bi-bookmark text-secondary' }}"></i>
+                                <span class="small fw-semibold text-dark" id="bookmark-status-text">
+                                    {{ $post->isBookmarkedBy(Auth::user()) ? 'Saved for Later' : 'Save for Later' }}
+                                </span>
+                            </button>
+                        @else
+                            <div class="d-flex align-items-center">
+                                <a href="{{ route('login') }}" class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-3 py-1 text-decoration-none">
+                                    <i class="bi bi-heart text-danger"></i>
+                                    <span class="small fw-semibold text-dark">{{ $post->likes()->count() }}</span>
+                                </a>
+                                
+                                <span class="mx-2 text-muted">&bull;</span>
+                                <i class="bi bi-eye text-secondary me-1"></i>
+                                <span class="small fw-semibold text-secondary">{{ $post->views }} reads</span>
+                            </div>
+
+                            <a href="{{ route('login') }}" class="btn btn-reaction btn-sm rounded-pill d-flex align-items-center gap-2 px-4 py-2 text-decoration-none">
+                                <i class="bi bi-bookmark text-secondary"></i>
+                                <span class="small fw-semibold text-dark">Save for Later</span>
+                            </a>
+                        @endauth
+                    </div>
                     <!-- Main Body Content Text Prose -->
                     <article class="story-body-content text-secondary mb-5 text-break lh-lg">
                         {!! nl2br(e($post->content)) !!}
@@ -136,7 +177,67 @@
             </div>
         </div>
     </main>
-    <!-- Bootstrap Bundle with Popper JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Bootstrap Bundle with Popper JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- AJAX Interactive Handlers -->
+    <script>
+        function toggleShowPageLike(btn, postId) {
+            btn.disabled = true;
+
+            fetch(`/posts/${postId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const icon = btn.querySelector('i');
+                const likesCount = document.getElementById('show-page-likes-count');
+                
+                likesCount.textContent = data.likes_count;
+
+                if (data.liked) {
+                    icon.className = 'bi bi-heart-fill text-danger';
+                    btn.classList.add('liked-active');
+                } else {
+                    icon.className = 'bi bi-heart text-danger';
+                    btn.classList.remove('liked-active');
+                }
+            })
+            .catch(error => console.error('Error toggling like:', error))
+            .finally(() => btn.disabled = false);
+        }
+
+        function toggleShowPageBookmark(btn, postId) {
+            btn.disabled = true;
+
+            fetch(`/posts/${postId}/bookmark`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const icon = btn.querySelector('i');
+                const text = document.getElementById('bookmark-status-text');
+
+                if (data.bookmarked) {
+                    icon.className = 'bi bi-bookmark-dash-fill text-primary';
+                    text.textContent = 'Saved for Later';
+                    btn.classList.add('bookmarked-active');
+                } else {
+                    icon.className = 'bi bi-bookmark text-secondary';
+                    text.textContent = 'Save for Later';
+                    btn.classList.remove('bookmarked-active');
+                }
+            })
+            .catch(error => console.error('Error toggling bookmark:', error))
+            .finally(() => btn.disabled = false);
+        }
+    </script>
 </body>
 </html>

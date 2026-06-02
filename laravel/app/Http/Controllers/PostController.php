@@ -149,6 +149,23 @@ class PostController extends Controller
     }
 
     /**
+     * Toggle the authenticated user's bookmark/save state on a post.
+     */
+    public function toggleBookmark($id)
+    {
+        $post = Post::findOrFail($id);
+        $user = Auth::user();
+
+        // Toggle bookmark save state
+        $saved = $post->bookmarkedBy()->toggle($user->id);
+
+        return response()->json([
+            'success' => true,
+            'bookmarked' => count($saved['attached']) > 0
+        ]);
+    }
+    
+    /**
      * Show the form for editing an existing post.
      */
     public function edit($id)

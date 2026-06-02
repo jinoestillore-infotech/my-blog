@@ -78,6 +78,8 @@ Route::middleware('auth')->group(function () {
 
     // Secure Follow API Toggle Route
     Route::post('/users/{id}/follow', [FollowController::class, 'toggleFollow'])->name('users.follow');
+    // Bookmark save to read later interaction endpoint
+    Route::post('/posts/{id}/bookmark', [PostController::class, 'toggleBookmark'])->name('posts.bookmark');
     
     // Dynamic User Profile Settings Workspace
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

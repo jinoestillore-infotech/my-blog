@@ -135,10 +135,10 @@
                         <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Storyteller Status</h5>
                         <div class="d-flex align-items-center gap-3">
                             <div class="status-icon-wrapper">
-                                <i class="bi bi-trophy-fill text-warning fs-4"></i>
+                                <i class="bi bi-trophy-fill {{ $user->rank_textile }} fs-4"></i>
                             </div>
                             <div>
-                                <h6 class="fw-bold text-dark mb-0">{{ $user->rank_title }}</h6>
+                                <h6 class="{{ $user->rank_textile }} fw-bold mb-0">{{ $user->rank_title }}</h6>
                                 <p class="text-secondary small mb-0">Dynamic milestone rank</p>
                             </div>
                         </div>

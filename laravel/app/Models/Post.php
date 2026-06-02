@@ -70,4 +70,24 @@ class Post extends Model
         }
         return $this->likes()->where('user_id', $user->id)->exists();
     }
+
+    /**
+     * Relationship: Get all users who have saved/bookmarked this post to read later.
+     */
+    public function bookmarkedBy()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
+    }
+
+    /**
+     * Helper to verify if a user has saved this post to read later.
+     */
+    public function isBookmarkedBy($user)
+    {
+        if (!$user) {
+            return false;
+        }
+        return $this->bookmarkedBy()->where('user_id', $user->id)->exists();
+    }
+
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Tots - A platform where bloggers connect, share stories, and grow together</title>
+    <meta name="description" content="Write, publish, and grow on Tots. Connect with bloggers worldwide, share your ideas, and discover inspiring stories from every niche.">
     <link rel="icon" type="image/png" href="{{ asset('images/logo/tots.png') }}">
     <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
