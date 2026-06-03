@@ -13,6 +13,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\WriterReportController;
 
 // Route::get('/', function () {
 //     return view('index');
@@ -81,14 +82,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{id}/follow', [FollowController::class, 'toggleFollow'])->name('users.follow');
     // Bookmark save to read later interaction endpoint
     Route::post('/posts/{id}/bookmark', [PostController::class, 'toggleBookmark'])->name('posts.bookmark');
-    // Secure Report API Endpoint
+    // Secure Community Reporting endpoints
     Route::post('/posts/{id}/report', [ReportController::class, 'store'])->name('posts.report');
- 
+    Route::post('/users/{id}/report', [WriterReportController::class, 'store'])
+        ->name('users.report');
     // Dedicated Saved Queue / Reading List route
     Route::get('/my-saved-tots', [PostController::class, 'saved'])->name('posts.saved');
 
     // Dynamic User Profile Settings Workspace
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/settings/security', [SecurityController::class, 'index'])->name('settings');

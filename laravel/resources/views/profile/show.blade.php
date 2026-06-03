@@ -98,17 +98,29 @@
                                     </a>
                                 @else
                                     <!-- Other profile follow interaction -->
-                                    <button type="button" 
-                                            class="btn {{ Auth::user()->isFollowing($user->id) ? 'btn-brand text-white' : 'btn-outline-brand' }} rounded-pill px-4 py-2.5 fw-bold" 
-                                            onclick="toggleProfileFollow(this, '{{ $user->id }}')">
-                                        {{ Auth::user()->isFollowing($user->id) ? 'Following' : 'Follow' }}
-                                    </button>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <button type="button" 
+                                                class="btn {{ Auth::user()->isFollowing($user->id) ? 'btn-brand text-white' : 'btn-outline-brand' }} rounded-pill px-4 py-2.5 fw-bold" 
+                                                onclick="toggleProfileFollow(this, '{{ $user->id }}')">
+                                            {{ Auth::user()->isFollowing($user->id) ? 'Following' : 'Follow' }}
+                                        </button>
+                                        <button type="button" 
+                                            class="btn btn-outline-danger rounded-pill px-4 py-2.5 fw-bold" 
+                                            onclick="openWriterReportModal()">
+                                            Report
+                                        </button>
+                                    </div>
                                 @endif
                             @else
                                 <!-- Guest follow fallback -->
-                                <a href="{{ route('login') }}" class="btn btn-outline-brand rounded-pill px-4 py-2.5 fw-bold">
-                                    Follow Creator
-                                </a>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a href="{{ route('login') }}" class="btn btn-outline-brand rounded-pill px-4 py-2.5 fw-bold">
+                                        Follow Creator
+                                    </a>
+                                    <a href="{{ route('login') }}" class="btn btn-outline-danger rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1">
+                                        Report
+                                    </a>
+                                </div>
                             @endauth
                         </div>
                     </div>
@@ -214,6 +226,51 @@
             </div>
         </div>
     </main>
+    <!-- Polished Writer Reporting Bootstrap Modal -->
+    <div class="modal fade" id="reportWriterModal" tabindex="-1" aria-labelledby="reportWriterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header border-0 bg-danger-subtle text-danger pt-4 px-4 pb-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 text-danger"></i>
+                        <h5 class="modal-title fw-extrabold" id="reportWriterModalLabel">Report Writer Profile</h5>
+                    </div>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="report-writer-form" onsubmit="submitWriterReport(event, '{{ $user->id }}')">
+                    @csrf
+                    <div class="modal-body px-4 py-3">
+                        <p class="text-secondary small">Help us protect our Tots community. If you believe this writer profile violations community policy or engages in bad behavior, please let us know.</p>
+                        
+                        <div class="mb-3">
+                            <label for="report-reason" class="form-label small fw-bold text-dark">Reason of Violation</label>
+                            <select id="report-reason" name="reason" class="form-select rounded-3" required>
+                                <option value="" disabled selected>Select a category...</option>
+                                <option value="Impersonation or Identity Theft">Impersonation or Identity Theft</option>
+                                <option value="Harassment, Hate Speech or Bullying">Harassment, Hate Speech or Bullying</option>
+                                <option value="Systemic Spamming or Repetitive Links">Spamming or Deceptive Practices</option>
+                                <option value="Plagiarism or Stolen Intellectual Property">Plagiarism or Copyright Abuse</option>
+                                <option value="Other Policy Violation">Other Policy Violation</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="report-details" class="form-label small fw-bold text-dark">Provide Detail Context</label>
+                            <textarea id="report-details" name="details" class="form-control rounded-3" rows="3" placeholder="Provide extra details or links to help our administration team evaluate..."></textarea>
+                        </div>
+                        
+                        <!-- Dynamic Alert Box -->
+                        <div id="report-modal-alert" class="d-none alert border-0 rounded-3 small p-2.5 mb-0" role="alert"></div>
+                    </div>
+                    <div class="modal-footer border-0 pb-4 px-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4 py-2 text-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" id="submit-report-btn" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 <!-- Bootstrap Bundle with Popper JS CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="{{ asset('js/toast.js') }}"></script>
@@ -266,6 +323,79 @@
         .catch(error => {
             btn.disabled = false;
             console.error('AJAX network error toggling follow status:', error);
+        });
+    }
+
+    let reportModal = null;
+
+    function openWriterReportModal() {
+        // Reset form properties
+        const form = document.getElementById('report-writer-form');
+        form.reset();
+        
+        const alertBox = document.getElementById('report-modal-alert');
+        alertBox.className = 'd-none alert border-0 rounded-3 small p-2.5 mb-0';
+        alertBox.textContent = '';
+
+        const submitBtn = document.getElementById('submit-report-btn');
+        submitBtn.disabled = false;
+
+        if (!reportModal) {
+            reportModal = new bootstrap.Modal(document.getElementById('reportWriterModal'));
+        }
+        reportModal.show();
+    }
+
+    function submitWriterReport(event, userId) {
+        event.preventDefault();
+
+        const submitBtn = document.getElementById('submit-report-btn');
+        const alertBox = document.getElementById('report-modal-alert');
+        
+        submitBtn.disabled = true;
+
+        const formData = {
+            reason: document.getElementById('report-reason').value,
+            details: document.getElementById('report-details').value,
+        };
+
+        fetch(`/users/${userId}/report`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            return response.json().then(data => {
+                return { status: response.status, data: data };
+            });
+        })
+        .then(res => {
+            if (res.status === 200) {
+                alertBox.className = 'alert alert-success border-0 rounded-3 small p-2.5 mb-0';
+                alertBox.textContent = res.data.message;
+
+                // Close modal smoothly after 2 seconds
+                setTimeout(() => {
+                    if (reportModal) {
+                        reportModal.hide();
+                    }
+                }, 2000);
+                showToast("Submitted Report Successfully!", "success");
+            } else {
+                alertBox.className = 'alert alert-danger border-0 rounded-3 small p-2.5 mb-0';
+                alertBox.textContent = res.data.message || 'Failed to submit report. Please try again.';
+                submitBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error submitting writer report:', error);
+            alertBox.className = 'alert alert-danger border-0 rounded-3 small p-2.5 mb-0';
+            alertBox.textContent = 'A critical network error occurred. Please check your connection and try again.';
+            submitBtn.disabled = false;
         });
     }
 </script>
