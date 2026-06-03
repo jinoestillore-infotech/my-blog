@@ -45,18 +45,22 @@
                         </div>
 
                         <!-- Remember Me Checkbox -->
-                        <div class="form-check mb-4 text-start">
+                        <div class="form-check mb-3 text-start">
                             <input class="form-check-input" type="checkbox" id="remember" name="remember">
                             <label class="form-check-label small text-muted" for="remember">
                                 Keep me logged in
                             </label>
                         </div>
-
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-brand w-100 py-2.5 rounded-pill fw-bold mb-3">Sign In</button>
+                        <div class="mb-1 text-start">
+                            <p class="small text-muted" for="terms">
+                                You may read our <a href="{{ route('community-standards') }}" class="text-brand text-decoration-none fw-medium">Community Standards</a> before logging in.
+                            </p>
+                        </div>
                     </form>
                     <!-- Divider -->
-                    <div class="position-relative text-center my-3">
+                    <div class="position-relative text-center my-2">
                         <hr class="text-muted">
                         <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted">New to Tots?</span>
                     </div>
