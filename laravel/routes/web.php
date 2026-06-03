@@ -37,6 +37,9 @@ Route::get('/terms-of-service', function () {
     return view('terms-of-service');
     })->name('terms');
 
+Route::get('/community-standards', function () {
+    return view('community-standards');
+    })->name('community-standards');
 // Route::get('/community', function () {
 //         return view('community');
 //     })->name('community');
