@@ -86,17 +86,8 @@
                 <p class="text-secondary small">Maintain secure authentication boundaries across sessions by updating your keys.</p>
             </div>
 
-            <div class="d-flex gap-2 mb-4 bg-white p-2 rounded-4 shadow-sm border border-light-subtle">
-                <a href="{{ route('settings.password') }}" class="nav-link-custom text-decoration-none active flex-fill text-center">
-                    <i class="bi bi-shield-lock-fill me-2"></i>Change Password
-                </a>
-                <a href="{{ route('settings.question') }}" class="nav-link-custom text-decoration-none flex-fill text-center">
-                    <i class="bi bi-shield-fill-plus me-2"></i>Security Question
-                </a>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-12">
+            <div class="row justify-content-center justify-content-lg-start">
+                <div class="col-12 col-lg-8">
                     <div class="card settings-card p-4 shadow-sm bg-white border-light-subtle">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <div class="bg-primary-subtle text-primary rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
