@@ -95,7 +95,7 @@
                                 Welcome to Tots! We believe that digital self-expression should be empowering, collaborative, and entirely transparent. Tots is a social publishing community designed to bring diverse voices together to write, connect, and grow.
                             </p>
                             <p class="text-secondary lh-lg">
-                                To protect our creators and ensure our space remains safe and inspiring, we have developed these **Community Standards**. By registering an account and publishing content on Tots, you commit to upholding these core parameters and guidelines.
+                                To protect our creators and ensure our space remains safe and inspiring, we have developed these <span class="fw-bold">Community Standards</span>. By registering an account and publishing content on Tots, you commit to upholding these core parameters and guidelines.
                             </p>
                         </section>
 
@@ -134,7 +134,7 @@
                                 <div class="accordion-item border-0 mb-3 rounded-4 overflow-hidden shadow-sm">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                            <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i> Harassment, Hate Speech & Bullying
+                                            Harassment, Hate Speech & Bullying
                                         </button>
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#behaviorAccordion">
@@ -147,7 +147,7 @@
                                 <div class="accordion-item border-0 mb-3 rounded-4 overflow-hidden shadow-sm">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            <i class="bi bi-shield-slash-fill text-danger me-2"></i> Plagiarism & Copyright Violations
+                                            Plagiarism & Copyright Violations
                                         </button>
                                     </h2>
                                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#behaviorAccordion">
@@ -160,7 +160,7 @@
                                 <div class="accordion-item border-0 mb-3 rounded-4 overflow-hidden shadow-sm">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            <i class="bi bi-link-45deg text-danger me-2"></i> Systemic Spam & Deceptive Links
+                                            Systemic Spam & Deceptive Links
                                         </button>
                                     </h2>
                                     <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#behaviorAccordion">
@@ -173,7 +173,7 @@
                                 <div class="accordion-item border-0 mb-3 rounded-4 overflow-hidden shadow-sm">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                            <i class="bi bi-person-bounding-box text-danger me-2"></i> Impersonation or Identity Theft
+                                            Impersonation or Identity Theft
                                         </button>
                                     </h2>
                                     <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#behaviorAccordion">
@@ -225,14 +225,14 @@
                         <section id="valid-vs-abusive" class="mb-5 pt-3">
                             <h2 class="fw-extrabold text-dark mb-3">Valid vs. Abusive Reporting</h2>
                             <p class="text-secondary lh-lg mb-4">
-                                Similar to Facebook’s policy frameworks, we protect our writers from **weaponized reporting**—where tools are used to silence or harass authors of differing opinions.
+                                We protect our writers from <span class="fw-bold">weaponized reporting</span>—where tools are used to silence or harass authors of differing opinions.
                             </p>
 
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="p-4 rounded-4 bg-success-subtle h-100 border border-success-subtle">
                                         <h5 class="fw-bold text-success-emphasis mb-3">
-                                            <i class="bi bi-patch-check-fill me-1"></i> What makes a report VALID
+                                            What makes a report VALID
                                         </h5>
                                         <ul class="text-success-emphasis ps-3 small lh-lg">
                                             <li class="mb-2"><strong>Direct Evidence:</strong> The flagged content clearly contains hate speech, direct threats, or uncredited copy-pasted text.</li>
@@ -245,7 +245,7 @@
                                 <div class="col-md-6">
                                     <div class="p-4 rounded-4 bg-danger-subtle h-100 border border-danger-subtle">
                                         <h5 class="fw-bold text-danger-emphasis mb-3">
-                                            <i class="bi bi-patch-exclamation-fill me-1"></i> What makes a report ABUSIVE
+                                            What makes a report ABUSIVE
                                         </h5>
                                         <ul class="text-danger-emphasis ps-3 small lh-lg">
                                             <li class="mb-2"><strong>Disagreement Flags:</strong> Reporting a story simply because you disagree with the author's arguments, design patterns, or opinions.</li>
@@ -273,15 +273,15 @@
 
                             <div class="list-group border-0">
                                 <div class="list-group-item border-0 p-0 mb-3 text-secondary">
-                                    <h6 class="fw-bold text-dark"><i class="bi bi-exclamation-circle text-warning me-1"></i> 1. Informal Warning</h6>
+                                    <h6 class="fw-bold text-dark">1. Informal Warning</h6>
                                     <p class="small mb-0 ms-4">For minor or first-time policy errors, the author receives a dynamic warning explaining the violation and guiding them to update their post content.</p>
                                 </div>
                                 <div class="list-group-item border-0 p-0 mb-3 text-secondary">
-                                    <h6 class="fw-bold text-dark"><i class="bi bi-eraser-fill text-brand me-1"></i> 2. Content Pruning & De-listing</h6>
+                                    <h6 class="fw-bold text-dark">2. Content Pruning & De-listing</h6>
                                     <p class="small mb-0 ms-4">The offending story is permanently removed or set back into a private "Draft" status so the public feed remains compliant.</p>
                                 </div>
                                 <div class="list-group-item border-0 p-0 text-secondary">
-                                    <h6 class="fw-bold text-dark"><i class="bi bi-person-x-fill text-danger me-1"></i> 3. Account Suspension or Termination</h6>
+                                    <h6 class="fw-bold text-dark">3. Account Suspension or Termination</h6>
                                     <p class="small mb-0 ms-4">Systemic rule-breaking, persistent spam, hate speech, or severe impersonation will result in temporary suspension or a permanent platform-wide ban.</p>
                                 </div>
                             </div>

@@ -394,13 +394,15 @@
                 </p>
 
                 <!-- Links -->
-                <div class="d-flex gap-3 small">
+                <div class="d-flex flex-wrap gap-3 small">
                     <a href="{{ route('privacy') }}" class="text-secondary text-decoration-none footer-link">
                         Privacy Policy
                     </a>
-
                     <a href="{{ route('terms') }}" class="text-secondary text-decoration-none footer-link">
                         Terms of Service
+                    </a>
+                    <a href="{{ route('community-standards') }}" class="text-secondary text-decoration-none footer-link">
+                        Community Standards
                     </a>
                 </div>
 
