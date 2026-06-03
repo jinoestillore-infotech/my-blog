@@ -383,6 +383,8 @@
                             reportModal.hide();
                         }
                     }, 2500);
+                    showToast("Submitted Report Successfully!", "success");
+
                 } else {
                     // Validation or security barrier error state
                     alertBox.className = 'alert alert-danger border-0 rounded-3 small p-2.5 mb-0';

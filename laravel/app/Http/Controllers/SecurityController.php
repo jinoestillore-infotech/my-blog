@@ -36,6 +36,24 @@ class SecurityController extends Controller
     }
 
     /**
+     * Render the dedicated Password Change view.
+     */
+    public function showPasswordForm()
+    {
+        return view('settings.password');
+    }
+
+    /**
+     * Render the dedicated Security Question setup view.
+     */
+    public function showQuestionForm()
+    {
+        $user = Auth::user();
+        $questions = self::QUESTIONS;
+        return view('settings.question', compact('user', 'questions'));
+    }
+    
+    /**
      * Update password.
      */
     public function updatePassword(Request $request)
@@ -70,10 +88,7 @@ class SecurityController extends Controller
 
         $request->session()->regenerate();
 
-        return back()->with(
-            'success',
-            'Your password has been changed successfully!'
-        );
+        return redirect()->route('settings')->with('success', 'Your password has been changed successfully!');
     }
 
     /**
@@ -109,9 +124,6 @@ class SecurityController extends Controller
             'security_answer' => Hash::make($normalizedAnswer),
         ]);
 
-        return back()->with(
-            'success',
-            'Your account security recovery question has been configured!'
-        );
+        return redirect()->route('settings')->with('success', 'Your account recovery question has been configured!');
     }
 }
