@@ -27,6 +27,7 @@ class User extends Authenticatable
         'bio',
         'security_question',
         'security_answer',
+        'role',
     ];
 
     /**

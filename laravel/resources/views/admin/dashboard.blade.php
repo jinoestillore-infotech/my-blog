@@ -87,9 +87,6 @@
                 <div class="col-12 col-md-4">
                     <a href="{{ route('admin.users.index') }}" class="card admin-card p-4 shadow-sm border-light-subtle h-100">
                         <div class="d-flex align-items-start gap-3">
-                            <div class="bg-primary-subtle text-primary icon-wrapper">
-                                <i class="bi bi-person-workspace fs-3"></i>
-                            </div>
                             <div class="flex-grow-1">
                                 <h5 class="fw-extrabold text-dark mb-1">User Registry</h5>
                                 <p class="text-secondary small mb-3">Audit registration details, reclassify system roles, or remove violating profiles.</p>
@@ -103,9 +100,6 @@
                 <div class="col-12 col-md-4">
                     <a href="{{ route('admin.reports.stories') }}" class="card admin-card p-4 shadow-sm border-light-subtle h-100">
                         <div class="d-flex align-items-start gap-3">
-                            <div class="bg-danger-subtle text-danger icon-wrapper">
-                                <i class="bi bi-flag-fill fs-3 text-danger"></i>
-                            </div>
                             <div class="flex-grow-1">
                                 <h5 class="fw-extrabold text-dark mb-1">Story Reports</h5>
                                 <p class="text-secondary small mb-3">Verify flagged story content. Dismiss reports or delete violations straight from the queue.</p>
@@ -124,9 +118,6 @@
                 <div class="col-12 col-md-4">
                     <a href="{{ route('admin.reports.writers') }}" class="card admin-card p-4 shadow-sm border-light-subtle h-100">
                         <div class="d-flex align-items-start gap-3">
-                            <div class="bg-warning-subtle text-warning-emphasis icon-wrapper">
-                                <i class="bi bi-exclamation-octagon-fill fs-3 text-warning"></i>
-                            </div>
                             <div class="flex-grow-1">
                                 <h5 class="fw-extrabold text-dark mb-1">Writer Reports</h5>
                                 <p class="text-secondary small mb-3">Inspect writers accused of impersonation, copyright theft, or harassment.</p>
