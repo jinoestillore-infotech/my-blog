@@ -16,7 +16,7 @@
 
     <header class="sticky-top">
         <nav class="navbar navbar-expand-md navbar-custom py-2">
-            <div class="container">
+            <div class="container-fluid">
                 <span class="navbar-brand fw-extrabold fs-3 text-brand" style="letter-spacing: -0.5px;">
                     tots<span class="text-accent">.</span><span class="fs-6 text-muted font-monospace bg-light border p-1 rounded-3 ms-1">admin</span>
                 </span>
@@ -31,7 +31,7 @@
     </header>
 
     <main class="py-5">
-        <div class="container">
+        <div class="container-fluid">
 
             @if(session('success'))
                 <div class="alert alert-success border-0 shadow-sm rounded-4 p-3 mb-4">
@@ -134,10 +134,18 @@
 
                                                 @if($report->post)
                                                     <!-- Action form to delete violating story (and auto resolve associated reports) -->
-                                                    <form action="{{ route('admin.reports.stories.destroy_story', $report->post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this story for violating community guidelines?')" class="d-inline">
+                                                    <form action="{{ route('admin.reports.stories.destroy_story', $report->post->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3">Delete Post</button>
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-danger btn-sm rounded-pill px-3 open-delete-modal"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteConfirmModal"
+                                                            data-title="{{ $report->post->title }}"
+                                                            data-url="{{ route('admin.reports.stories.destroy_story', $report->post->id) }}">
+                                                            Delete Post
+                                                        </button>
                                                     </form>
                                                 @endif
                                             @endif
@@ -160,10 +168,51 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $reports->links('pagination::bootstrap-5') }}
+                {{ $reports->links('pagination::simple-bootstrap-5') }}
             </div>
 
         </div>
     </main>
+    <!-- Beautiful Reusable Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+                <div class="modal-header border-0 bg-danger-subtle text-danger pt-4 px-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                        <h5 class="modal-title fw-extrabold" id="deleteConfirmModalLabel">
+                            Delete This Story</h5>
+                    </div>
+                </div>
+                <div class="modal-body px-4 py-4">
+                    <p class="text-secondary mb-3">Are you sure you want to permanently delete this story?</p>
+                    <p class="fw-bold text-dark mb-0 bg-light p-3 rounded-3 border-start border-danger border-3" id="delete-story-title-display"></p>
+                    <p class="text-danger small mt-2 mb-0"><i class="bi bi-info-circle"></i> This operation is permanent and cannot be undone.</p>
+                </div>
+                <div class="modal-footer border-0 pb-4 px-4 pt-0">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-light rounded-pill px-4 py-2 text-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form id="delete-story-form" method="POST" class="">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger rounded-pill px-4 py-2">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.querySelectorAll('.open-delete-modal').forEach(button => {
+    button.addEventListener('click', function () {
+        const title = this.dataset.title;
+        const url = this.dataset.url;
+
+        document.getElementById('delete-story-title-display').textContent = title;
+        document.getElementById('delete-story-form').action = url;
+    });
+});
+</script>
 </body>
 </html>

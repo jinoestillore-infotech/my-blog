@@ -16,7 +16,7 @@
 
     <header class="sticky-top">
         <nav class="navbar navbar-expand-md navbar-custom py-2">
-            <div class="container">
+            <div class="container-fluid">
                 <span class="navbar-brand fw-extrabold fs-3 text-brand" style="letter-spacing: -0.5px;">
                     tots<span class="text-accent">.</span><span class="fs-6 text-muted font-monospace bg-light border p-1 rounded-3 ms-1">admin</span>
                 </span>
@@ -31,7 +31,7 @@
     </header>
 
     <main class="py-5">
-        <div class="container">
+        <div class="container-fluid">
 
             @if(session('success'))
                 <div class="alert alert-success border-0 shadow-sm rounded-4 p-3 mb-4">
@@ -158,7 +158,7 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $users->links('pagination::bootstrap-5') }}
+                {{ $users->links('pagination::simple-bootstrap-5') }}
             </div>
 
         </div>

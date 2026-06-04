@@ -16,7 +16,7 @@
 
     <header class="sticky-top">
         <nav class="navbar navbar-expand-md navbar-custom py-2">
-            <div class="container">
+            <div class="container-fluid">
                 <span class="navbar-brand fw-extrabold fs-3 text-brand" style="letter-spacing: -0.5px;">
                     tots<span class="text-accent">.</span><span class="fs-6 text-muted font-monospace bg-light border p-1 rounded-3 ms-1">admin</span>
                 </span>
@@ -31,7 +31,7 @@
     </header>
 
     <main class="py-5">
-        <div class="container">
+        <div class="container-fluid">
 
             @if(session('success'))
                 <div class="alert alert-success border-0 shadow-sm rounded-4 p-3 mb-4">
@@ -128,7 +128,7 @@
                                             @if($report->reportedUser)
                                                 <!-- Dynamic verification link redirects directly to public profile in new tab -->
                                                 <a href="{{ route('profile.show', $report->reportedUser->username) }}" target="_blank" class="btn btn-light border btn-sm rounded-pill px-3">
-                                                    <i class="bi bi-eye"></i> Verify Writer
+                                                    Verify
                                                 </a>
                                             @endif
 
@@ -146,13 +146,13 @@
                                                     @csrf
                                                     @method('PATCH')
                                                     <input type="hidden" name="status" value="resolved">
-                                                    <button type="submit" class="btn btn-brand btn-sm rounded-pill px-3">Resolve Flag</button>
+                                                    <button type="submit" class="btn btn-brand btn-sm rounded-pill px-3">Resolve</button>
                                                 </form>
 
                                                 @if($report->reportedUser)
                                                     <!-- Quick links to user registry page to manage or delete profile instantly -->
                                                     <a href="{{ route('admin.users.index', ['search' => $report->reportedUser->username]) }}" class="btn btn-outline-danger btn-sm rounded-pill px-3">
-                                                        Manage Profile
+                                                        Purge
                                                     </a>
                                                 @endif
                                             @endif
@@ -180,5 +180,6 @@
 
         </div>
     </main>
+    
 </body>
 </html>
