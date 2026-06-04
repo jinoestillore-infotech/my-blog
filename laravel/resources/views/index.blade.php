@@ -221,7 +221,7 @@
                     </span>
                     
                     <h1 class="display-4 fw-extrabold text-slate-900 mb-4 lh-sm">
-                        Where bloggers <span class="text-gradient">connect</span>, share stories, and grow together.
+                        Where writers <span class="text-gradient">connect</span>, share stories, and grow together.
                     </h1>
                     
                     <p class="lead text-secondary mb-5">
@@ -337,7 +337,7 @@
                     Why writers and readers love Tots
                 </h2>
                 <p class="lead text-secondary mx-auto" style="max-width: 700px;">
-                    We designed a blogging space focused entirely on fostering rich connections, distraction-free writing, and community support.
+                    We designed a writing/blogging space focused entirely on fostering rich connections, distraction-free writing, and community support.
                 </p>
             </div>
 

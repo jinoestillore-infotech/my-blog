@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -63,7 +66,38 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 });
 
-Route::middleware('auth')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Dedicated Administration Interface Portal (Separated Authentication)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->group(function () {
+    // Guest Admin Auth
+    Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/login', [AdminAuthController::class, 'login']);
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+    // Authenticated Admin Dashboard Control Panel
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+        // User Management
+        Route::get('/users', [AdminReportController::class, 'users'])->name('admin.users.index');
+        Route::patch('/users/{id}/role', [AdminReportController::class, 'updateUserRole'])->name('admin.users.role');
+        Route::delete('/users/{id}', [AdminReportController::class, 'destroyUser'])->name('admin.users.destroy');
+
+        // Flagged Story Reports Moderation
+        Route::get('/reports/stories', [AdminReportController::class, 'storyReports'])->name('admin.reports.stories');
+        Route::patch('/reports/stories/{id}', [AdminReportController::class, 'updateStoryReport'])->name('admin.reports.stories.update');
+        Route::delete('/reports/stories/violating/{id}', [AdminReportController::class, 'destroyViolatingStory'])->name('admin.reports.stories.destroy_story');
+
+        // Flagged Writer Profile Reports Moderation
+        Route::get('/reports/writers', [AdminReportController::class, 'writerReports'])->name('admin.reports.writers');
+        Route::patch('/reports/writers/{id}', [AdminReportController::class, 'updateWriterReport'])->name('admin.reports.writers.update');
+    });
+});
+
+Route::middleware('auth', 'activity')->group(function () {
     // Facebook-style Social Explore Feed (Strictly Authenticated)
     Route::get('/tots-feed', [ExploreFeedController::class, 'index'])->name('tots-feed');
 
