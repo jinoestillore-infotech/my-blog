@@ -73,8 +73,8 @@ Route::middleware('guest')->group(function () {
 */
 Route::prefix('admin')->group(function () {
     // Guest Admin Auth
-    Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
-    Route::post('/login', [AdminAuthController::class, 'login']);
+    Route::get('/auth/admin-login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/auth/admin-login', [AdminAuthController::class, 'login'])->name('admin.login.store');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
     // Authenticated Admin Dashboard Control Panel

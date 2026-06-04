@@ -48,7 +48,7 @@ class AdminAuthController extends Controller
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.dashboard'))
-                ->with('success', 'Authentication completed successfully. Welcome, Master.');
+                ->with('success', 'Authentication completed successfully.');
         }
 
         return back()->withErrors([

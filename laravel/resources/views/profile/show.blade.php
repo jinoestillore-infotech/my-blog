@@ -46,7 +46,13 @@
             </a>
             <!-- Profile Cover Card Jumbotron -->
             <div class="card profile-header-card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
-                <div class="profile-banner-bg"></div>
+                <div class="profile-banner-bg">
+                    @if($user->role === 'admin')
+                        <h2 class="text-light text-center fw-bold mt-3">The Creator of Tots</h2>
+                    @else
+                        <h2 class="text-dark d-none"></h2>
+                    @endif
+                </div>
                 <div class="p-4 p-md-5 pt-0 position-relative">
                     <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end gap-4 profile-header-content">
                         <!-- Avatar Container -->
@@ -72,7 +78,7 @@
                         <!-- User Info -->
                         <div class="text-center text-md-start flex-grow-1">
                             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-2 mb-1">
-                                <h1 class="h2 fw-extrabold text-dark mb-0 mt-2">{{ $user->name }}</h1>
+                                <h1 class="h2 fw-extrabold {{ $user->role === 'admin' ? 'text-danger' : 'text-dark' }} mb-0 mt-2">{{ $user->name }}</h1>
                             </div>
                             <p class="text-brand fs-6 fw-semibold mb-2">&#64;{{ $user->username }}</p>
                             <!-- Social Counter stats -->
