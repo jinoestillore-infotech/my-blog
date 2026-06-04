@@ -10,13 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 </head>
-<body class="bg-auth d-flex align-items-center justify-content-center min-vh-100 py-5">
+<body class="bg-auth d-flex align-items-center justify-content-center min-vh-100 py-5 pt-2">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-10 col-md-8 col-lg-5">
-                
                 <div class="text-center mb-4">
                     <span class="text-decoration-none fw-extrabold fs-2 text-brand" style="letter-spacing: -0.5px;">
                         tots<span class="text-accent">.</span><span class="fs-6 text-muted font-monospace bg-light border p-1 rounded-3 ms-1">admin</span>
@@ -24,7 +23,7 @@
                 </div>
 
                 <div class="card auth-card p-4 p-md-5 border-0 shadow-sm">
-                    <div class="text-center mb-4">
+                    <div class="text-center mb-2">
                         <h4 class="fw-bold text-dark mb-1">Administrative Sign In</h4>
                         <p class="text-muted small">Enter credentials to open secure master database systems.</p>
                     </div>
