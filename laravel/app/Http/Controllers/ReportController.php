@@ -37,7 +37,20 @@ class ReportController extends Controller
         // Security barrier: Verify if this user has already reported this specific post
         $duplicateCheck = Report::where('user_id', $currentUser->id)
             ->where('post_id', $post->id)
-            ->exists();
+            ->first();
+
+        if ($duplicateCheck && $duplicateCheck->status === 'dismissed') {
+            $duplicateCheck->update([
+                'reason' => $request->reason,
+                'details' => $request->details,
+                'status' => 'pending',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Your report has been resubmitted.'
+            ]);
+        }
 
         if ($duplicateCheck) {
             return response()->json([

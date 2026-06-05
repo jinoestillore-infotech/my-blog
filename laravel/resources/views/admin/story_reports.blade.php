@@ -113,7 +113,7 @@
                                             @if($report->post)
                                                 <!-- Dynamic verification link redirects to view post in new tab -->
                                                 <a href="{{ route('posts.show', $report->post->slug) }}" target="_blank" class="btn btn-light border btn-sm rounded-pill px-3">
-                                                    <i class="bi bi-eye"></i> Verify Story
+                                                    <i class="bi bi-eye"></i> Verify
                                                 </a>
                                             @endif
 
@@ -138,7 +138,7 @@
                                                             data-bs-target="#deleteConfirmModal"
                                                             data-title="{{ $report->post->title }}"
                                                             data-url="{{ route('admin.reports.stories.destroy_story', $report->post->id) }}">
-                                                            Delete Post
+                                                            Purge
                                                         </button>
                                                     </form>
                                                 @endif

@@ -95,7 +95,7 @@ class AdminReportController extends Controller
         ]);
 
         $report->update(['status' => $request->status]);
-
+        $report->delete();
         return back()->with('success', "Story report status updated to: " . ucfirst($request->status));
     }
 
